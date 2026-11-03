@@ -1,0 +1,42 @@
+name: Nightly stats
+
+on:
+  schedule:
+    - cron: '17 9 * * *'   # 4:17 a.m. Eastern (5:17 during daylight time), after the last West Coast final
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nightly-stats
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Past seasons and per-game play-by-play never change, so keep them between runs.
+      - uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: rimblaze-cache-${{ github.run_id }}
+          restore-keys: rimblaze-cache-
+
+      - name: Build stats
+        run: node scripts/build-stats.mjs
+
+      - name: Commit data
+        run: |
+          git config user.name "rimblaze-bot"
+          git config user.email "bot@rimblaze.com"
+          git add -A   # data/cache stays out via .gitignore
+          git diff --cached --quiet || git commit -m "Nightly stats $(date -u +%F)"
+          git push

@@ -1,0 +1,867 @@
+<title>RimBlaze</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Live NBA tracker for rare buckets: logo threes, buzzer-beaters, go-ahead daggers, and-ones and half-court heaves, plus triple-doubles, 50-point games and career milestones.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://rimblaze.com/">
+<meta property="og:site_name" content="RimBlaze">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RimBlaze: every NBA player on fire, the second it happens">
+<meta property="og:description" content="Logo threes, buzzer-beaters, go-ahead daggers, triple-doubles, 50-point nights and career milestones from every NBA game.">
+<meta property="og:url" content="https://rimblaze.com/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#18202F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: HomeRuns' sibling. Big headline beside a live half-court shot chart, then the feed with a stat stack, leaders, the chase, team totals and alerts. */
+:root{
+  --bg:#F5F2EE; --surface:#FFFFFF; --surface-2:#EEE8E1; --line:#DDD3C8;
+  --text:#1C1612; --muted:#6B5D51; --leather:#D9480F; --leather-2:#B83A0A;
+  --court:#18202F; --on-court:#F1EEE9; --on-court-muted:#A9B3C4;
+  --floor-in:#D9A066; --floor-out:#B57640; --paint:#7A3B1A; --gold:#FFC23D;
+  --input-bg:#0F1522; --input-line:#33405A;
+  --shadow:0 1px 0 rgba(28,22,18,.04), 0 10px 30px -18px rgba(28,22,18,.35);
+  --display:Archivo,Impact,"Arial Narrow",sans-serif;
+  --body:Inter,system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E0C0A; --surface:#191512; --surface-2:#241E19; --line:#382E26;
+    --text:#F2ECE5; --muted:#A99A8C; --leather:#FF7A3D; --leather-2:#E2571B;
+    --court:#141A27; --on-court:#F1EEE9; --on-court-muted:#A9B3C4;
+    --floor-in:#B9824E; --floor-out:#8E5A2E; --paint:#5E2D14; --gold:#FFC23D;
+    --input-bg:#0F1522; --input-line:#33405A;
+    --shadow:0 12px 34px -20px rgba(0,0,0,.8); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E0C0A; --surface:#191512; --surface-2:#241E19; --line:#382E26;
+  --text:#F2ECE5; --muted:#A99A8C; --leather:#FF7A3D; --leather-2:#E2571B;
+  --court:#141A27; --on-court:#F1EEE9; --on-court-muted:#A9B3C4;
+  --floor-in:#B9824E; --floor-out:#8E5A2E; --paint:#5E2D14; --gold:#FFC23D;
+  --input-bg:#0F1522; --input-line:#33405A;
+  --shadow:0 12px 34px -20px rgba(0,0,0,.8); color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--display);font-stretch:80%;font-weight:800;letter-spacing:-.01em;line-height:1.02;margin:0;text-transform:uppercase;text-wrap:balance}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--leather);outline-offset:3px}
+.sr{position:absolute;left:-9999px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-stretch:78%;font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.01em}
+.logo svg{width:28px;height:28px;flex:none}
+.logo b{color:var(--leather);font-weight:900}
+nav{display:none;gap:26px;font-size:14px;font-weight:500;color:var(--muted)}
+nav a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:11px 16px;border-radius:3px;background:var(--leather);color:#fff;white-space:nowrap}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+@media(min-width:820px){nav{display:flex}}
+
+/* hero */
+.hero{padding:34px 0 8px}
+.live-pill{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--leather);box-shadow:0 0 0 0 var(--leather);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.hero h1{font-size:clamp(2.7rem,9.5vw,6rem);max-width:12ch}
+.hero h1 em{font-style:normal;color:var(--leather)}
+.hero p.lead{max-width:52ch;color:var(--muted);font-size:17px;margin:18px 0 22px}
+.hero-grid{display:grid;gap:22px}
+.hero-grid > *{min-width:0}
+@media(min-width:960px){.hero-grid{grid-template-columns:1fr 1.05fr;align-items:center;gap:44px}}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+
+/* what counts */
+.rules{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.rule{font-family:var(--mono);font-size:11px;padding:4px 8px;border-radius:3px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.rule b{color:var(--text);font-weight:600;letter-spacing:.06em}
+
+/* court card */
+.court-card{background:var(--court);border-radius:6px;padding:14px 14px 10px;color:var(--on-court);box-shadow:var(--shadow);overflow:hidden}
+.court-card .cap{display:flex;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--on-court-muted);margin-bottom:6px}
+.court-card svg{width:100%;height:auto;display:block;max-height:460px}
+.cl{fill:none;stroke:#FFF8EE;stroke-width:2;opacity:.85}
+.cl.dash{stroke-dasharray:6 7;opacity:.55}
+.ctext{fill:#FFF8EE;opacity:.7;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.arc{fill:none;stroke:#FFF8EE;stroke-width:1.8;stroke-linecap:round;opacity:.55}
+.arc.new{stroke:var(--leather);stroke-width:2.6;opacity:1;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.1s ease-out forwards}
+.arc.sel{stroke:var(--gold);stroke-width:2.8;opacity:1}
+@keyframes draw{to{stroke-dashoffset:0}}
+.spot{fill:#FFF8EE;stroke:#18202F;stroke-width:1.5;cursor:pointer}
+.spot.new{fill:var(--leather)}
+.spot.sel{fill:var(--gold)}
+.court-foot{font-size:12px;color:var(--on-court-muted);min-height:18px;padding:4px 2px 0}
+.court-foot b{color:var(--on-court)}
+
+/* notice */
+.notice{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:3px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+.tag.warn{border-color:var(--leather);color:var(--leather)}
+
+/* sections */
+section{padding-block:44px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(1.9rem,5.5vw,3rem)}
+.sec-head .sub{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:7px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+input[type="date"]{font-family:var(--mono);font-size:12px;padding:6px 8px;border:1px solid var(--line);border-radius:3px;background:var(--surface);color:var(--text)}
+
+/* feed */
+.feed{display:grid;gap:10px;align-content:start}
+.bk{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:14px;border-left:4px solid var(--leather);cursor:pointer}
+.bk[aria-selected="true"]{outline:2px solid var(--leather);outline-offset:-1px}
+.bk.fresh{animation:slide .5s ease-out}
+@keyframes slide{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.dist{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:40px;line-height:1;text-align:center;min-width:76px}
+.dist small{display:block;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;color:var(--muted);margin-top:4px}
+.who{font-weight:600;font-size:17px}
+.who a:hover,td a:hover{text-decoration:underline;text-underline-offset:3px}
+.badges{display:inline-flex;gap:4px;flex-wrap:wrap;vertical-align:2px;margin-left:6px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:2px 6px;border-radius:3px;background:var(--leather);color:#fff}
+.badge.alt{background:var(--text);color:var(--bg)}
+.meta{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-family:var(--mono);font-size:11.5px;padding:3px 8px;background:var(--surface-2);border-radius:3px}
+.chip b{font-weight:600}
+.watch{display:inline-block;margin-top:9px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--leather);font-weight:600}
+.watch:hover{text-decoration:underline}
+.feed-layout{display:grid;gap:18px}
+.feed-layout > *{min-width:0}
+@media(min-width:960px){.feed-layout{grid-template-columns:1.5fr 1fr}}
+.more{justify-self:start;margin-top:4px}
+.empty{padding:22px;color:var(--muted)}
+
+/* stack */
+.stack{display:grid;gap:14px;align-content:start}
+.big{padding:18px}
+.big .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.big .v{font-family:var(--display);font-stretch:72%;font-weight:900;font-size:54px;line-height:1;margin:6px 0 2px}
+.big .v span{font-size:20px;color:var(--muted);font-weight:700}
+
+/* table */
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{padding:12px 14px;text-align:left;font-size:14px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+td.big-n{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:22px}
+.rank{color:var(--muted);width:30px}
+
+/* chase */
+.chase{padding:22px;display:grid;gap:14px}
+.bar{height:14px;background:var(--surface-2);border-radius:99px;position:relative}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--court),var(--leather));border-radius:99px}
+.bar .mk{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--text);opacity:.6}
+.bar-lbl{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+
+/* teams */
+.teams{padding:20px;display:grid;gap:12px}
+.tm{display:grid;grid-template-columns:minmax(90px,190px) minmax(0,1fr) 40px;align-items:center;gap:10px;font-size:13.5px}
+.tm > span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tm .b{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.tm .b i{display:block;height:100%;background:var(--court);border-radius:99px}
+.tm.hot .b i{background:var(--leather)}
+.tm span.n{text-align:right;font-family:var(--mono);font-size:12px}
+.note{font-size:12px;color:var(--muted);margin-top:12px}
+
+/* alerts */
+.alerts{background:var(--court);color:var(--on-court);border-radius:6px;padding:30px 22px;display:grid;gap:18px}
+.alerts h2{color:#fff;font-size:clamp(1.9rem,6vw,3rem)}
+.alerts p{color:var(--on-court-muted);margin:0;max-width:46ch}
+.form{display:flex;gap:8px;flex-wrap:wrap}
+.form input{flex:1 1 220px;min-width:0;padding:12px 14px;border:1px solid var(--input-line);background:var(--input-bg);color:#fff;border-radius:3px;font:inherit;font-size:15px}
+.form input::placeholder{color:#7D8AA3}
+.ok{font-size:13px;color:var(--gold);min-height:20px}
+@media(min-width:900px){.alerts{grid-template-columns:1.2fr 1fr;align-items:center;padding:40px}}
+
+/* big nights */
+.tabs{display:inline-flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:var(--surface)}
+.tabs button{border:0;background:transparent;padding:8px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--leather);color:#fff}
+.feats{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr))}
+.ft{padding:16px;display:grid;gap:10px;align-content:start}
+.ft-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.ft-top > div{min-width:0}
+.ft .pts{font-family:var(--display);font-stretch:72%;font-weight:900;font-size:44px;line-height:.9;text-align:right}
+.ft .pts small{display:block;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;color:var(--muted);margin-top:4px}
+.line{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.line div{padding:6px 4px;text-align:center;font-family:var(--mono);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;border-right:1px solid var(--line)}
+.line div:last-child{border-right:0}
+.line div small{display:block;font-size:9.5px;font-weight:500;letter-spacing:.1em;color:var(--muted)}
+.line div.hit{background:color-mix(in srgb,var(--leather) 14%,var(--surface));color:var(--leather)}
+.dd-row{padding:14px 16px;font-size:13.5px;color:var(--muted);margin-top:10px}
+.dd-row b{color:var(--text)}
+.ms{display:grid;gap:16px;padding:20px}
+.ms-item{display:grid;gap:7px}
+.ms-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.ms-head .who{font-size:16px}
+.ms-need{font-family:var(--mono);font-size:12px;color:var(--leather);font-weight:600}
+.split{display:grid;gap:14px}
+.split > *{min-width:0}
+@media(min-width:960px){.split{grid-template-columns:1.5fr 1fr}}
+
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:26px 34px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.arc.new{stroke-dashoffset:0}html{scroll-behavior:auto}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="RimBlaze home">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4.5 21C1.5 14 4 7.5 9 3.5c-.6 3.4.8 5.6 2.8 6.6-.4-3.8 1.6-7.4 5.2-9.1-.6 3.3 1 5.6 3.4 6.9C17 6.2 10.8 9.4 8.6 15.6 7.6 18.2 6.4 20 4.5 21Z" fill="#FFC23D"/><circle cx="19" cy="19" r="11.5" fill="#D9480F" stroke="#1C1612" stroke-width="1.5"/><path d="M7.5 19h23M19 7.5v23M11 10.6c3.4 3.8 3.4 13 0 16.8M27 10.6c-3.4 3.8-3.4 13 0 16.8" stroke="#1C1612" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Rim<b>Blaze</b>
+    </a>
+    <nav aria-label="Primary">
+      <a href="#live">Live</a><a href="#nights">Big nights</a><a href="#leaders">Leaders</a><a href="#chase">Chase</a><a href="#teams">Teams</a><a href="#alerts">Alerts</a>
+    </nav>
+    <a href="#alerts" class="btn">Get alerts</a>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="live-pill mono"><span class="dot" id="liveDot"></span> <span id="liveText">Connecting to NBA…</span></div>
+        <h1>Every rare bucket. <em>The second it drops.</em></h1>
+        <p class="lead">Logo threes, buzzer-beaters, go-ahead daggers, and-ones and half-court heaves from every NBA game, with the distance, the time left and a clip. Plus every big night: triple-doubles, 50-point games, 20-20s and the career milestones coming next.</p>
+        <div class="cta">
+          <a class="btn" href="#live">Watch the live feed</a>
+          <a class="btn ghost" href="#leaders">Leaders</a>
+        </div>
+        <div class="rules" aria-label="What counts as a rare bucket">
+          <span class="rule"><b>LOGO</b> 3 from 30+ ft</span>
+          <span class="rule"><b>HEAVE</b> make from 40+ ft</span>
+          <span class="rule"><b>BUZZER</b> 1.0 s or less left</span>
+          <span class="rule"><b>GO-AHEAD</b> final 30 s of Q4 or OT</span>
+          <span class="rule"><b>AND-ONE</b> / 4-PT play</span>
+        </div>
+        <div class="notice" id="notice"></div>
+      </div>
+
+      <div class="court-card" aria-label="Shot chart of the night's rare buckets">
+        <div class="cap mono"><span id="courtTitle">Tonight’s shot chart</span><span id="count">0 rare</span></div>
+        <svg viewBox="0 0 500 470" role="img" aria-label="Half court with rare bucket locations">
+          <defs>
+            <radialGradient id="floor" cx="50%" cy="90%" r="95%"><stop offset="0" style="stop-color:var(--floor-in)"/><stop offset="1" style="stop-color:var(--floor-out)"/></radialGradient>
+          </defs>
+          <rect x="0" y="0" width="500" height="470" fill="url(#floor)"/>
+          <rect x="170" y="280" width="160" height="190" fill="var(--paint)" opacity=".55"/>
+          <g class="cl-g">
+            <rect class="cl" x="1" y="1" width="498" height="468"/>
+            <path class="cl" d="M190 1 A60 60 0 0 0 310 1"/>
+            <rect class="cl" x="170" y="280" width="160" height="190"/>
+            <path class="cl" d="M190 280 A60 60 0 0 1 310 280"/>
+            <path class="cl dash" d="M190 280 A60 60 0 0 0 310 280"/>
+            <path class="cl" d="M30 470 V328 A237.5 237.5 0 0 1 470 328 V470"/>
+            <path class="cl dash" d="M8 245 A300 300 0 0 1 492 245"/>
+            <line class="cl" x1="220" y1="430" x2="280" y2="430"/>
+            <circle class="cl" cx="250" cy="417.5" r="8" style="stroke:var(--leather);opacity:1"/>
+          </g>
+          <text class="ctext" x="250" y="146" text-anchor="middle">LOGO RANGE · 30 FT</text>
+          <text class="ctext" x="250" y="24" text-anchor="middle" dy="40">HALF COURT · 47 FT</text>
+          <g id="arcs"></g>
+          <g id="spots"></g>
+        </svg>
+        <div class="court-foot" id="courtFoot">Tap a shot spot to see the bucket.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="live">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="feedTitle">Live rare bucket feed</h2>
+      <div class="tools">
+        <div class="seg" role="group" aria-label="Sort rare buckets">
+          <button type="button" data-sort="time" aria-pressed="true">Latest</button>
+          <button type="button" data-sort="d" aria-pressed="false">Deepest</button>
+          <button type="button" data-sort="clutch" aria-pressed="false">Clutchest</button>
+        </div>
+        <label for="dateInput" class="sr">Game date</label>
+        <input type="date" id="dateInput">
+      </div>
+    </div>
+    <div class="feed-layout">
+      <div class="feed" id="feed"><div class="card empty">Loading rare buckets…</div></div>
+      <div class="stack">
+        <div class="card big"><div class="k mono" id="kDeep">Deepest make tonight</div><div class="v num" id="deep">—<span> ft</span></div><div class="meta" id="deep-who">—</div></div>
+        <div class="card big"><div class="k mono" id="kHorn">Closest to the horn</div><div class="v num" id="horn">—<span> s left</span></div><div class="meta" id="horn-who">—</div></div>
+        <div class="card big"><div class="k mono" id="kTotal">Rare buckets tonight</div><div class="v num" id="total">0</div><div class="meta" id="total-sub">Across all games</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nights" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Big nights</h2>
+      <div class="tabs" role="tablist" aria-label="Feats by span">
+        <button type="button" role="tab" id="tab-game" aria-selected="true" aria-controls="pane-game">Game</button>
+        <button type="button" role="tab" id="tab-season" aria-selected="false" aria-controls="pane-season">Season</button>
+        <button type="button" role="tab" id="tab-career" aria-selected="false" aria-controls="pane-career">Career</button>
+      </div>
+    </div>
+    <div class="rules" style="margin:-4px 0 16px" aria-label="What counts as a big night">
+      <span class="rule"><b>TRIPLE-DOUBLE</b> 10+ in three of PTS REB AST STL BLK</span>
+      <span class="rule"><b>40 / 50 / 60</b> point games</span>
+      <span class="rule"><b>20-20</b> points and rebounds</span>
+      <span class="rule"><b>5x5</b> 5+ in all five</span>
+      <span class="rule"><b>15+ AST</b> · <b>20+ REB</b> · <b>5+ STL/BLK</b></span>
+      <span class="rule"><b>10+ THREES</b></span>
+      <span class="rule"><b>PERFECT</b> 8+ shots, no misses</span>
+    </div>
+
+    <div id="pane-game" role="tabpanel" aria-labelledby="tab-game">
+      <div class="sub mono" id="gameSub" style="margin-bottom:12px;font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase">Loading box scores</div>
+      <div class="feats" id="featsGrid"><div class="card empty">Loading box scores…</div></div>
+      <div class="card dd-row" id="ddRow" hidden></div>
+    </div>
+
+    <div id="pane-season" role="tabpanel" aria-labelledby="tab-season" hidden>
+      <div class="split">
+        <div class="card tbl">
+          <table>
+            <thead><tr><th></th><th>Player</th><th>Team</th><th>Triple-dbl</th><th>Double-dbl</th><th>30+ pts</th><th>40+ pts</th><th>DD streak</th></tr></thead>
+            <tbody id="seasonBody"></tbody>
+          </table>
+        </div>
+        <div class="card ms" id="seasonChase"></div>
+      </div>
+      <p class="note" id="seasonNote"></p>
+    </div>
+
+    <div id="pane-career" role="tabpanel" aria-labelledby="tab-career" hidden>
+      <div class="split">
+        <div class="card ms" id="careerWatch"></div>
+        <div class="card tbl">
+          <table style="min-width:340px">
+            <thead><tr><th>Career club</th><th>Active members</th><th>Next in</th></tr></thead>
+            <tbody id="clubBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="note" id="careerNote"></p>
+    </div>
+  </div>
+</section>
+
+<section id="leaders" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head"><h2>Rare bucket leaders</h2><span class="sub mono" id="leadersSub">Loading</span></div>
+    <div class="card tbl">
+      <table>
+        <thead><tr><th></th><th>Player</th><th>Team</th><th>Rare</th><th>Logo 3s</th><th>Buzzer</th><th>Go-ahead</th><th>Deepest</th></tr></thead>
+        <tbody id="leadersBody"><tr><td colspan="8" class="empty">Loading leaders…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="chase" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head"><h2>The chase</h2><span class="sub mono">Records &amp; range</span></div>
+    <div class="card chase" id="chaseCard"><div class="meta">Loading…</div></div>
+  </div>
+</section>
+
+<section id="teams" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head"><h2>Team daggers</h2><span class="sub mono" id="teamsSub">Rare buckets by team</span></div>
+    <div class="card teams" id="teamsCard"><div class="meta">Loading…</div></div>
+  </div>
+</section>
+
+<section id="alerts" style="padding-top:8px">
+  <div class="wrap">
+    <div class="alerts">
+      <div>
+        <h2>Never miss<br>a dagger.</h2>
+        <p style="margin-top:12px">Follow your players and teams. We’ll notify you the moment one drops a logo three or beats the horn, with the clip attached.</p>
+      </div>
+      <div>
+        <form class="form" id="alert-form">
+          <label for="em" class="sr">Email</label>
+          <input id="em" type="email" placeholder="you@email.com" required>
+          <button class="btn" type="submit">Notify me</button>
+        </form>
+        <div class="ok" id="ok" role="status"></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 RimBlaze. Play-by-play from NBA.com live data; clips open on NBA.com. Not affiliated with the National Basketball Association.</span>
+    <span class="mono">rimblaze.com</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+var CDN='https://cdn.nba.com/static/json', TZ='America/New_York', NS='http://www.w3.org/2000/svg';
+function today(){return new Date().toLocaleDateString('en-CA',{timeZone:TZ});}
+function fmtDate(iso){return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function fx(v,d){return v==null||isNaN(v)?'—':Number(v).toFixed(d||0);}
+function per(p){return p<=4?'Q'+p:(p===5?'OT':'OT'+(p-4));}
+function clockStr(s){if(s==null)return '';if(s<60)return '0:'+(s<10?'0':'')+s.toFixed(1);var m=Math.floor(s/60),r=Math.floor(s%60);return m+':'+(r<10?'0':'')+r;}
+function slugify(s){return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
+var SAMPLE_PROFILE='https://claude.ai/artifact/Vn5FYt4sQJQvHCGnUZXFmq';
+function plink(name,pid){
+  if(pid)return '<a href="players/'+slugify(name)+'-'+pid+'/">'+esc(name)+'</a>';
+  if(name==='Kenji Alvarez')return '<a href="'+SAMPLE_PROFILE+'" target="_blank" rel="noopener">'+esc(name)+'</a>';
+  return esc(name);
+}
+function parseClock(c){var m=/PT(\d+)M([\d.]+)S/.exec(c||'');return m?(+m[1])*60+(+m[2]):null;}
+
+var S={mode:'loading',date:null,isToday:true,buckets:[],sort:'time',sel:null,showAll:false,anyLive:false,schedule:null,week:[]};
+
+/* ---------- NBA live data ---------- */
+function getJSON(url,ms){
+  var c=new AbortController(),t=setTimeout(function(){c.abort();},ms||9000);
+  return fetch(url,{signal:c.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).finally(function(){clearTimeout(t);});
+}
+function pool(items,n,fn){
+  var out=[],i=0;
+  function worker(){if(i>=items.length)return Promise.resolve();var k=i++;return fn(items[k]).then(function(v){out[k]=v;},function(){out[k]=null;}).then(worker);}
+  var ws=[];for(var w=0;w<Math.min(n,items.length);w++)ws.push(worker());
+  return Promise.all(ws).then(function(){return out;});
+}
+function loadSchedule(){
+  return getJSON(CDN+'/staticData/scheduleLeagueV2_1.json',15000).then(function(s){
+    var byDate={};
+    ((s.leagueSchedule&&s.leagueSchedule.gameDates)||[]).forEach(function(gd){
+      var m=/(\d+)\/(\d+)\/(\d+)/.exec(gd.gameDate);if(!m)return;
+      var iso=m[3]+'-'+m[1].padStart(2,'0')+'-'+m[2].padStart(2,'0');
+      byDate[iso]=(gd.games||[]).filter(function(g){return /^00[24]/.test(g.gameId);});
+    });
+    return byDate;
+  });
+}
+function parse(pbp,g){
+  var A=(pbp.game&&pbp.game.actions)||[],home=g.homeTeam.teamTricode,away=g.awayTeam.teamTricode,list=[];
+  A.forEach(function(a,idx){
+    if(!(a.actionType==='2pt'||a.actionType==='3pt')||a.shotResult!=='Made')return;
+    var secs=parseClock(a.clock),d=a.shotDistance!=null?Math.round(a.shotDistance):null,pts=a.actionType==='3pt'?3:2;
+    var isHome=a.teamTricode===home,us=isHome?+a.scoreHome:+a.scoreAway,them=isHome?+a.scoreAway:+a.scoreHome,before=us-pts;
+    var tags=[];
+    if(d!=null&&d>=40)tags.push('HEAVE');else if(pts===3&&d!=null&&d>=30)tags.push('LOGO');
+    if(secs!=null&&secs<=1.0)tags.push('BUZZER');
+    if(a.period>=4&&secs!=null&&secs<=30&&before<=them&&us>them)tags.push('GO-AHEAD');
+    var ft=A.find(function(x){return x.actionType==='freethrow'&&x.personId===a.personId&&x.period===a.period&&x.clock===a.clock&&/1 of 1/.test(x.subType||'');});
+    if(ft)tags.push(pts===3?'4-PT PLAY':'AND-ONE');
+    if(!tags.length)return;
+    var lat=a.xLegacy!=null?-a.xLegacy/10:null,out=a.yLegacy!=null?a.yLegacy/10:null;
+    list.push({
+      id:g.gameId+'-'+a.actionNumber,gameId:g.gameId,n:a.playerNameI||a.playerName,pid:a.personId,t:a.teamTricode,o:isHome?away:home,
+      q:per(a.period),secs:secs,d:d,a:(lat!=null&&out!=null)?Math.atan2(lat,Math.max(out,-4))*180/Math.PI:0,
+      shot:(a.subType||'').replace(/^\w/,function(c){return c.toUpperCase();})+(a.descriptor?' · '+a.descriptor:''),
+      sc:(isHome?away+' '+a.scoreAway+'–'+a.scoreHome+' '+home:away+' '+a.scoreAway+'–'+a.scoreHome+' '+home),
+      k:g.arenaName||'',tags:tags,time:a.timeActual||String(idx).padStart(5,'0')
+    });
+  });
+  return list;
+}
+function loadDate(date){
+  var games=(S.schedule[date]||[]);
+  var liveP=date===today()?getJSON(CDN+'/liveData/scoreboard/todaysScoreboard_00.json').then(function(sb){return (sb.scoreboard&&sb.scoreboard.games)||[];},function(){return [];}):Promise.resolve(null);
+  return liveP.then(function(live){
+    var status={};(live||[]).forEach(function(x){status[x.gameId]=x.gameStatus;});
+    var started=games.filter(function(g){var st=status[g.gameId]!=null?status[g.gameId]:g.gameStatus;return st>=2;});
+    S.anyLive=started.some(function(g){return (status[g.gameId]!=null?status[g.gameId]:g.gameStatus)===2;});
+    return pool(started,6,function(g){return getJSON(CDN+'/liveData/playbyplay/playbyplay_'+g.gameId+'.json').then(function(p){return parse(p,g);});});
+  }).then(function(r){return [].concat.apply([],r.filter(Boolean));});
+}
+function latestDate(){
+  var t=today(),ds=Object.keys(S.schedule).filter(function(d){return d<=t&&S.schedule[d].length;}).sort();
+  if(!ds.length)return t;
+  var last=ds[ds.length-1];
+  if(last===t&&!S.schedule[t].some(function(g){return g.gameStatus>=2;})&&ds.length>1)return ds[ds.length-2];
+  return last;
+}
+function loadWeek(){
+  var ds=Object.keys(S.schedule).filter(function(d){return d<=S.date&&S.schedule[d].length;}).sort().slice(-7);
+  return pool(ds,2,function(d){return d===S.date?Promise.resolve(S.buckets):loadDate(d);}).then(function(r){return [].concat.apply([],r.filter(Boolean));});
+}
+
+/* ---------- Sample data (fictional) ---------- */
+var SAMPLE={
+  buckets:[
+    {n:'Kenji Alvarez',t:'BAY',o:'SUM',q:'Q2',secs:0.6,d:34,a:-8,shot:'Pull-up 3 · transition',k:'Bayside Arena',tags:['LOGO','BUZZER'],sc:'SUM 51–58 BAY',time:'1'},
+    {n:'Marcus Bell',t:'CAP',o:'IRN',q:'Q3',secs:212,d:2,a:30,shot:'Driving layup',k:'Capitol Center',tags:['AND-ONE'],sc:'IRN 72–75 CAP',time:'2'},
+    {n:'Theo Okonkwo',t:'LAK',o:'DEL',q:'Q3',secs:0.0,d:58,a:6,shot:'Heave from the far side',k:'Lakeshore Garden',tags:['HEAVE','BUZZER'],sc:'DEL 80–79 LAK',time:'3'},
+    {n:'Devin Price',t:'SUM',o:'BAY',q:'Q4',secs:4.2,d:27,a:-40,shot:'Step-back 3',k:'Bayside Arena',tags:['GO-AHEAD','4-PT PLAY'],sc:'SUM 109–107 BAY',time:'4'},
+    {n:'Rafa Moreno',t:'DEL',o:'LAK',q:'OT',secs:0.4,d:14,a:52,shot:'Turnaround fadeaway',k:'Lakeshore Garden',tags:['GO-AHEAD','BUZZER'],sc:'DEL 118–117 LAK',time:'5'},
+    {n:'Kenji Alvarez',t:'BAY',o:'SUM',q:'Q4',secs:1.0,d:31,a:12,shot:'Pull-up 3',k:'Bayside Arena',tags:['LOGO','GO-AHEAD','BUZZER'],sc:'SUM 109–110 BAY',time:'6'}
+  ].map(function(b,i){b.id='s'+i;return b;}),
+  leaders:[['Kenji Alvarez','BAY',10,6,1,3,37],['Devin Price','SUM',8,5,1,2,35],['Theo Okonkwo','LAK',6,2,2,1,61],['Rafa Moreno','DEL',5,1,2,2,33],['Marcus Bell','CAP',4,0,1,1,29]]
+    .map(function(r,i){return{rank:i+1,name:r[0],team:r[1],rare:r[2],logo:r[3],buzz:r[4],go:r[5],deep:r[6]};}),
+  teams:[['Bayside Gulls',24],['Summit Peaks',21],['Delta Pilots',17],['Lakeshore Herons',15],['Capitol Foxes',12],['Ironworks Forge',9]].map(function(t){return{name:t[0],n:t[1]};})
+};
+
+/* ---------- Shot chart ---------- */
+var arcsEl=document.getElementById('arcs'),spotsEl=document.getElementById('spots'),RIM={x:250,y:417.5};
+function pt(b){var r=Math.min(b.d||0,46)*10,a=Math.max(-88,Math.min(88,b.a||0))*Math.PI/180;
+  return{x:Math.max(8,Math.min(492,RIM.x+r*Math.sin(a))),y:Math.max(8,Math.min(462,RIM.y-r*Math.cos(a)))};}
+function drawCourt(){
+  arcsEl.textContent='';spotsEl.textContent='';
+  var bs=S.buckets.filter(function(b){return b.d!=null;});
+  bs.sort(function(a,b){return (a.id===S.sel)-(b.id===S.sel);});
+  bs.forEach(function(b){
+    var p=pt(b),sel=b.id===S.sel,fresh=b._fresh;
+    var mx=(p.x+RIM.x)/2,my=(p.y+RIM.y)/2,dx=RIM.x-p.x,dy=RIM.y-p.y,len=Math.hypot(dx,dy)||1,bow=Math.min(70,len*.28);
+    var cx=mx-dy/len*bow,cy=my+dx/len*bow;
+    if(len>12){
+      var path=document.createElementNS(NS,'path');
+      path.setAttribute('d','M'+p.x.toFixed(1)+' '+p.y.toFixed(1)+' Q '+cx.toFixed(1)+' '+cy.toFixed(1)+' '+RIM.x+' '+RIM.y);
+      path.setAttribute('class','arc'+(sel?' sel':fresh?' new':''));arcsEl.appendChild(path);
+    }
+    var c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',p.x.toFixed(1));c.setAttribute('cy',p.y.toFixed(1));c.setAttribute('r',sel?8:fresh?7:5.5);
+    c.setAttribute('class','spot'+(sel?' sel':fresh?' new':''));c.setAttribute('data-id',b.id);
+    var t=document.createElementNS(NS,'title');t.textContent=b.n+' · '+b.d+' ft · '+b.tags.join(', ');c.appendChild(t);
+    spotsEl.appendChild(c);
+  });
+  document.getElementById('count').textContent=S.buckets.length+' rare';
+  var s=S.buckets.find(function(b){return b.id===S.sel;});
+  document.getElementById('courtFoot').innerHTML=s?'<b>'+esc(s.n)+'</b> · '+fx(s.d)+' ft · '+esc(s.q)+' '+clockStr(s.secs)+' left · '+esc(s.tags.join(' + ')):'Tap a shot spot to see the bucket.';
+}
+
+/* ---------- Feed ---------- */
+function watchURL(b){return b.gameId?'https://www.nba.com/game/'+b.gameId+'/play-by-play':'https://www.nba.com/watch';}
+function clutch(b){return (b.tags.indexOf('BUZZER')>=0||b.tags.indexOf('GO-AHEAD')>=0?0:1000)+(b.q.indexOf('OT')===0?-50:b.q==='Q4'?0:100)+(b.secs==null?999:b.secs);}
+function sorted(){
+  var a=S.buckets.slice();
+  if(S.sort==='time')a.sort(function(x,y){return String(y.time).localeCompare(String(x.time));});
+  else if(S.sort==='d')a.sort(function(x,y){return (y.d||0)-(x.d||0);});
+  else a.sort(function(x,y){return clutch(x)-clutch(y);});
+  return a;
+}
+function card(b){
+  var badges='<span class="badges">'+b.tags.map(function(t,i){return '<span class="badge'+(i?' alt':'')+'">'+esc(t)+'</span>';}).join('')+'</span>';
+  var name=plink(b.n,b.pid);
+  return '<article class="card bk'+(b._fresh?' fresh':'')+'" data-id="'+esc(b.id)+'" tabindex="0" aria-selected="'+(b.id===S.sel)+'">'+
+    '<div class="dist num">'+fx(b.d)+'<small>FEET</small></div>'+
+    '<div><div class="who">'+name+' <span class="meta">· '+esc(b.t)+' vs '+esc(b.o)+'</span>'+badges+'</div>'+
+    '<div class="meta">'+esc(b.q)+' · '+clockStr(b.secs)+' left'+(b.shot?' · '+esc(b.shot):'')+(b.k?' · '+esc(b.k):'')+'</div>'+
+    '<div class="chips"><span class="chip">Score <b>'+esc(b.sc)+'</b></span><span class="chip">Clock <b>'+clockStr(b.secs)+'</b></span></div>'+
+    '<a class="watch" href="'+watchURL(b)+'" target="_blank" rel="noopener">▶ Watch clip</a></div></article>';
+}
+function renderFeed(){
+  var list=sorted(),limit=S.showAll?list.length:8,el=document.getElementById('feed');
+  var day=S.isToday?'tonight':'on '+fmtDate(S.date);
+  document.getElementById('feedTitle').textContent=S.anyLive?'Live rare bucket feed':'Rare bucket feed';
+  document.getElementById('courtTitle').textContent=(S.isToday?'Tonight’s':fmtDate(S.date))+' shot chart';
+  if(!list.length)el.innerHTML='<div class="card empty">No rare buckets '+esc(day)+'. The NBA season runs from late October to June; pick a game night in that window.</div>';
+  else el.innerHTML=list.slice(0,limit).map(card).join('')+(list.length>limit?'<button type="button" class="btn ghost more" id="moreBtn">Show all '+list.length+'</button>':'');
+  var D=list.slice().sort(function(a,b){return (b.d||0)-(a.d||0);})[0];
+  var H=list.filter(function(b){return b.secs!=null&&b.tags.indexOf('BUZZER')>=0;}).sort(function(a,b){return a.secs-b.secs;})[0];
+  document.getElementById('kDeep').textContent='Deepest make '+day;
+  document.getElementById('kTotal').textContent='Rare buckets '+day;
+  document.getElementById('deep').innerHTML=(D?fx(D.d):'—')+'<span> ft</span>';
+  document.getElementById('deep-who').textContent=D?D.n+' · '+D.t+' · '+D.q+' '+clockStr(D.secs):'—';
+  document.getElementById('horn').innerHTML=(H?H.secs.toFixed(1):'—')+'<span> s left</span>';
+  document.getElementById('horn-who').textContent=H?H.n+' · '+H.t+' · end of '+H.q:'No buzzer-beaters '+day;
+  document.getElementById('total').textContent=list.length;
+  var bz=list.filter(function(b){return b.tags.indexOf('BUZZER')>=0;}).length,lg=list.filter(function(b){return b.tags.indexOf('LOGO')>=0||b.tags.indexOf('HEAVE')>=0;}).length;
+  document.getElementById('total-sub').textContent=(S.anyLive?'Across all games in progress':'Across all games')+(lg?' · '+lg+' from 30+ ft':'')+(bz?' · '+bz+' at the horn':'');
+  drawCourt();
+  S.buckets.forEach(function(b){b._fresh=false;});
+}
+
+/* ---------- Leaders, chase, teams ---------- */
+function aggregate(all){
+  var P={},T={};
+  all.forEach(function(b){
+    var k=b.pid||b.n,p=P[k]||(P[k]={name:b.n,pid:b.pid,team:b.t,rare:0,logo:0,buzz:0,go:0,deep:0});
+    p.rare++;if(b.tags.indexOf('LOGO')>=0||b.tags.indexOf('HEAVE')>=0)p.logo++;if(b.tags.indexOf('BUZZER')>=0)p.buzz++;if(b.tags.indexOf('GO-AHEAD')>=0)p.go++;p.deep=Math.max(p.deep,b.d||0);
+    T[b.t]=(T[b.t]||0)+1;
+  });
+  var L=Object.keys(P).map(function(k){return P[k];}).sort(function(a,b){return b.rare-a.rare||b.deep-a.deep;}).slice(0,10).map(function(p,i){p.rank=i+1;return p;});
+  var TT=Object.keys(T).map(function(k){return{name:k,n:T[k]};}).sort(function(a,b){return b.n-a.n;});
+  return{L:L,T:TT};
+}
+function renderLeaders(L,label){
+  document.getElementById('leadersSub').textContent=label;
+  document.getElementById('leadersBody').innerHTML=L.length?L.map(function(l){
+    var nm=plink(l.name,l.pid);
+    return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td><td class="big-n num">'+l.rare+'</td><td class="n">'+l.logo+'</td><td class="n">'+l.buzz+'</td><td class="n">'+l.go+'</td><td class="n">'+l.deep+' ft</td></tr>';
+  }).join(''):'<tr><td colspan="8" class="empty">No rare buckets in this window yet.</td></tr>';
+}
+function renderChase(all){
+  var el=document.getElementById('chaseCard');
+  if(S.mode==='sample'){
+    el.innerHTML='<div><div class="who">Kenji Alvarez · Franchise record for logo threes in a season</div><div class="meta">6 logo threes through 7 games. Pace: 70.</div></div>'+
+      '<div class="bar" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="41" aria-label="Progress toward the franchise record"><i style="width:14.6%"></i></div>'+
+      '<div class="bar-lbl mono"><span>0</span><span>6 of 41 to tie</span><span>41</span></div>';
+    return;
+  }
+  var deep=all.slice().sort(function(a,b){return (b.d||0)-(a.d||0);})[0],heaves=all.filter(function(b){return b.tags.indexOf('HEAVE')>=0;}).length;
+  if(!deep){el.innerHTML='<div class="meta">The chase starts at tip-off.</div>';return;}
+  var pct=Math.min(100,deep.d/47*100);
+  el.innerHTML='<div><div class="who">'+esc(deep.n)+' · Deepest make of the last 7 game nights</div><div class="meta">'+deep.d+' ft, '+esc(deep.q)+' with '+clockStr(deep.secs)+' left vs '+esc(deep.o)+'. '+(deep.d>=47?'From beyond half court.':(47-deep.d)+' ft short of half court.')+' '+heaves+' heave'+(heaves===1?'':'s')+' made from 40+ ft this week.</div></div>'+
+    '<div class="bar" role="progressbar" aria-valuenow="'+deep.d+'" aria-valuemin="0" aria-valuemax="47" aria-label="Deepest make compared with half court"><i style="width:'+pct.toFixed(1)+'%"></i><span class="mk" style="left:'+(30/47*100).toFixed(1)+'%"></span></div>'+
+    '<div class="bar-lbl mono"><span>0</span><span>'+deep.d+' of 47 ft · logo range at 30</span><span>47</span></div>';
+}
+function renderTeams(T,label){
+  document.getElementById('teamsSub').textContent=label;
+  var max=Math.max.apply(null,[1].concat(T.map(function(t){return t.n;}))),show=T.slice(0,10);
+  document.getElementById('teamsCard').innerHTML=(show.length?show.map(function(t,i){
+    return '<div class="tm'+(i<2?' hot':'')+'"><span>'+esc(t.name)+'</span><div class="b"><i style="width:'+(t.n/max*100).toFixed(1)+'%"></i></div><span class="n">'+t.n+'</span></div>';
+  }).join(''):'<div class="meta">Team totals show up after the first game night.</div>')+
+  '<p class="note">Tap any player for his profile: every big night, rare bucket, badge and milestone.</p>';
+}
+
+/* ---------- Big nights: stat-line feats ---------- */
+var FEAT_W={'QUADRUPLE-DOUBLE':100,'60-POINT GAME':95,'5x5':85,'50-POINT GAME':75,'TRIPLE-DOUBLE':60,'20-20':55,'10+ THREES':50,'40-POINT GAME':45,'15+ ASSISTS':40,'20+ REBOUNDS':40,'5+ STEALS':32,'5+ BLOCKS':32,'PERFECT FROM THE FIELD':28};
+function feats(p){
+  var cats=[p.P,p.R,p.A,p.S,p.B],tens=cats.filter(function(v){return v>=10;}).length,f=[];
+  if(tens>=4)f.push('QUADRUPLE-DOUBLE');else if(tens===3)f.push('TRIPLE-DOUBLE');
+  if(p.P>=60)f.push('60-POINT GAME');else if(p.P>=50)f.push('50-POINT GAME');else if(p.P>=40)f.push('40-POINT GAME');
+  if(p.P>=20&&p.R>=20)f.push('20-20');
+  if(cats.every(function(v){return v>=5;}))f.push('5x5');
+  if(p.A>=15)f.push('15+ ASSISTS');
+  if(p.R>=20)f.push('20+ REBOUNDS');
+  if(p.S>=5)f.push('5+ STEALS');
+  if(p.B>=5)f.push('5+ BLOCKS');
+  if(p.tpm>=10)f.push('10+ THREES');
+  if(p.fga>=8&&p.fgm===p.fga)f.push('PERFECT FROM THE FIELD');
+  return f;
+}
+function isDD(p){return [p.P,p.R,p.A,p.S,p.B].filter(function(v){return v>=10;}).length===2;}
+function score(f){return f.reduce(function(s,k){return s+(FEAT_W[k]||0);},0);}
+function loadBoxes(date){
+  var games=(S.schedule[date]||[]).filter(function(g){return g.gameStatus>=2||date===today();});
+  return pool(games,6,function(g){
+    return getJSON(CDN+'/liveData/boxscore/boxscore_'+g.gameId+'.json').then(function(r){
+      var G=r.game,out=[];if(!G||G.gameStatus<2)return out;
+      [['homeTeam','awayTeam'],['awayTeam','homeTeam']].forEach(function(side){
+        var T=G[side[0]],O=G[side[1]];
+        (T.players||[]).forEach(function(pl){
+          var s=pl.statistics||{};if(pl.played!=='1')return;
+          out.push({n:pl.name,pid:pl.personId,t:T.teamTricode,o:O.teamTricode,gameId:G.gameId,live:G.gameStatus===2,
+            P:+s.points||0,R:+s.reboundsTotal||0,A:+s.assists||0,S:+s.steals||0,B:+s.blocks||0,tpm:+s.threePointersMade||0,fgm:+s.fieldGoalsMade||0,fga:+s.fieldGoalsAttempted||0});
+        });
+      });
+      return out;
+    });
+  }).then(function(r){return [].concat.apply([],r.filter(Boolean));});
+}
+function featCard(p){
+  var f=feats(p),hit=function(v){return v>=10?' class="hit"':'';};
+  var nm=plink(p.n,p.pid);
+  return '<article class="card ft"><div class="ft-top"><div><div class="who">'+nm+'</div><div class="meta">'+esc(p.t)+' vs '+esc(p.o)+(p.live?' · in progress':' · final')+'</div>'+
+    '<div class="badges" style="margin:8px 0 0">'+f.map(function(t,i){return '<span class="badge'+(i?' alt':'')+'">'+esc(t)+'</span>';}).join('')+'</div></div>'+
+    '<div class="pts num">'+p.P+'<small>PTS</small></div></div>'+
+    '<div class="line"><div'+hit(p.P)+'>'+p.P+'<small>PTS</small></div><div'+hit(p.R)+'>'+p.R+'<small>REB</small></div><div'+hit(p.A)+'>'+p.A+'<small>AST</small></div><div'+hit(p.S)+'>'+p.S+'<small>STL</small></div><div'+hit(p.B)+'>'+p.B+'<small>BLK</small></div></div>'+
+    '<div class="meta">'+p.fgm+'-'+p.fga+' FG · '+p.tpm+' threes'+(p.gameId?' · <a class="watch" style="margin:0" href="https://www.nba.com/game/'+p.gameId+'/box-score" target="_blank" rel="noopener">Box score</a>':'')+'</div></article>';
+}
+function renderGameFeats(lines){
+  var day=S.isToday?'tonight':'on '+fmtDate(S.date);
+  var big=lines.filter(function(p){return feats(p).length;}).sort(function(a,b){return score(feats(b))-score(feats(a))||b.P-a.P;});
+  var dds=lines.filter(function(p){return isDD(p)&&!feats(p).length;});
+  document.getElementById('gameSub').textContent=(S.mode==='sample'?'Sample data · ':'')+big.length+' big night'+(big.length===1?'':'s')+' '+day;
+  document.getElementById('featsGrid').innerHTML=big.length?big.map(featCard).join(''):'<div class="card empty">No triple-doubles, 40-point games or other big nights '+esc(day)+' yet.</div>';
+  var dd=document.getElementById('ddRow');
+  dd.hidden=!dds.length;
+  dd.innerHTML='<b>'+dds.length+' more double-double'+(dds.length===1?'':'s')+'</b> '+day+': '+dds.map(function(p){return esc(p.n)+' ('+p.P+'/'+[p.R,p.A,p.S,p.B].filter(function(v){return v>=10;})[0]+')';}).join(', ');
+}
+function bar(cur,max,mark){
+  var pct=Math.min(100,cur/max*100);
+  return '<div class="bar"><i style="width:'+pct.toFixed(1)+'%"></i>'+(mark?'<span class="mk" style="left:'+(mark/max*100).toFixed(1)+'%"></span>':'')+'</div>';
+}
+function renderSeason(rows,chase,label,note){
+  document.getElementById('seasonBody').innerHTML=rows.length?rows.map(function(r,i){
+    return '<tr><td class="rank n">'+(i+1)+'</td><td><b>'+plink(r.name,r.pid)+'</b></td><td class="n">'+esc(r.team)+'</td><td class="big-n num">'+r.td+'</td><td class="n">'+r.dd+'</td><td class="n">'+r.p30+'</td><td class="n">'+r.p40+'</td><td class="n">'+(r.streak==null?'—':r.streak)+'</td></tr>';
+  }).join(''):'<tr><td colspan="8" class="empty">No feats in this window yet.</td></tr>';
+  document.getElementById('seasonChase').innerHTML='<div class="sub mono" style="font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase">'+esc(label)+'</div>'+(chase.length?chase.map(function(c){
+    return '<div class="ms-item"><div class="ms-head"><span class="who">'+plink(c.name,c.pid)+'</span><span class="ms-need">'+esc(c.need)+'</span></div><div class="meta">'+esc(c.what)+'</div>'+bar(c.cur,c.max,c.mark)+'<div class="bar-lbl mono"><span>'+c.cur+'</span><span>'+esc(c.lbl)+'</span><span>'+c.max+'</span></div></div>';
+  }).join(''):'<div class="meta">Season chases show up once the full-season stats service is connected.</div>');
+  document.getElementById('seasonNote').textContent=note;
+}
+function renderCareer(watch,clubs,note){
+  document.getElementById('careerWatch').innerHTML='<div class="sub mono" style="font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase">Milestone watch</div>'+(watch.length?watch.map(function(w){
+    var need=w.goal-w.cur,eta=w.avg?Math.max(1,Math.ceil(need/w.avg)):null;
+    return '<div class="ms-item"><div class="ms-head"><span class="who">'+plink(w.name,w.pid)+' <span class="meta">· '+esc(w.team)+'</span></span><span class="ms-need">'+need.toLocaleString()+' to go'+(eta?' · ~'+eta+' game'+(eta===1?'':'s'):'')+'</span></div>'+
+      '<div class="meta">'+w.goal.toLocaleString()+' career '+esc(w.stat)+(w.avg?' · averaging '+w.avg+' this season':'')+'</div>'+
+      bar(w.cur-w.base,w.goal-w.base)+'<div class="bar-lbl mono"><span>'+w.base.toLocaleString()+'</span><span>'+w.cur.toLocaleString()+'</span><span>'+w.goal.toLocaleString()+'</span></div></div>';
+  }).join(''):'<div class="meta">Career milestones need career totals, which come from the RimBlaze stats service rather than the live game feed.</div>');
+  document.getElementById('clubBody').innerHTML=clubs.length?clubs.map(function(c){return '<tr><td><b>'+esc(c.club)+'</b></td><td class="n">'+c.n+'</td><td>'+(c.next&&c.next!=='—'?plink(c.next,c.nextPid):'—')+(c.nextNeed?' <span class="meta">· '+c.nextNeed.toLocaleString()+' to go</span>':'')+'</td></tr>';}).join(''):'<tr><td colspan="3" class="empty">Waiting on career totals.</td></tr>';
+  document.getElementById('careerNote').textContent=note;
+}
+function seasonFromLines(lines){
+  var P={};
+  lines.forEach(function(p){
+    var k=p.pid||p.n,r=P[k]||(P[k]={name:p.n,team:p.t,td:0,dd:0,p30:0,p40:0,streak:null});
+    var tens=[p.P,p.R,p.A,p.S,p.B].filter(function(v){return v>=10;}).length;
+    if(tens>=3)r.td++;if(tens>=2)r.dd++;if(p.P>=30)r.p30++;if(p.P>=40)r.p40++;
+  });
+  return Object.keys(P).map(function(k){return P[k];}).filter(function(r){return r.td||r.dd||r.p30;})
+    .sort(function(a,b){return b.td-a.td||b.p40-a.p40||b.dd-a.dd||b.p30-a.p30;}).slice(0,10);
+}
+var SAMPLE_BIG={
+  lines:[
+    {n:'Malik Osei',t:'BAY',o:'SUM',P:41,R:6,A:9,S:2,B:0,tpm:7,fgm:15,fga:27},
+    {n:'Theo Okonkwo',t:'LAK',o:'DEL',P:24,R:13,A:12,S:2,B:1,tpm:2,fgm:9,fga:17,live:true},
+    {n:'Marcus Bell',t:'CAP',o:'IRN',P:22,R:21,A:3,S:1,B:4,tpm:0,fgm:9,fga:14},
+    {n:'Andre Vasquez',t:'IRN',o:'CAP',P:19,R:5,A:16,S:3,B:0,tpm:3,fgm:7,fga:15},
+    {n:'Rafa Moreno',t:'DEL',o:'LAK',P:12,R:6,A:5,S:5,B:6,tpm:1,fgm:5,fga:11,live:true},
+    {n:'Devin Price',t:'SUM',o:'BAY',P:36,R:4,A:3,S:1,B:0,tpm:10,fgm:12,fga:21},
+    {n:'Owen Mbeki',t:'BAY',o:'SUM',P:18,R:7,A:1,S:0,B:2,tpm:0,fgm:8,fga:8},
+    {n:'Jalen Cross',t:'DEL',o:'LAK',P:14,R:10,A:2,S:1,B:1,tpm:0,fgm:6,fga:10,live:true},
+    {n:'Isaiah Grant',t:'IRN',o:'CAP',P:17,R:11,A:4,S:0,B:1,tpm:1,fgm:7,fga:12}
+  ],
+  season:[['Theo Okonkwo','LAK',3,6,1,0,6],['Andre Vasquez','IRN',1,5,1,0,5],['Kenji Alvarez','BAY',1,3,3,0,1],['Marcus Bell','CAP',0,7,0,0,7],['Devin Price','SUM',0,1,3,1,1]]
+    .map(function(r){return{name:r[0],team:r[1],td:r[2],dd:r[3],p30:r[4],p40:r[5],streak:r[6]};}),
+  chase:[
+    {name:'Theo Okonkwo',what:'Franchise record for triple-doubles in a season (22). 3 through 7 games.',cur:3,max:22,need:'Pace: 35',lbl:'3 of 22'},
+    {name:'Marcus Bell',what:'Consecutive double-doubles: every game so far. Franchise record is 29.',cur:7,max:29,need:'22 to tie',lbl:'7 straight'},
+    {name:'Devin Price',what:'Ten-three games this season. The franchise record for one season is 4.',cur:1,max:4,need:'3 to tie',lbl:'1 of 4'}
+  ],
+  career:[
+    {name:'Theo Okonkwo',team:'LAK',stat:'triple-doubles',cur:99,base:90,goal:100,avg:null},
+    {name:'Andre Vasquez',team:'IRN',stat:'threes',cur:1988,base:1900,goal:2000,avg:3.1},
+    {name:'Theo Okonkwo',team:'LAK',stat:'assists',cur:7961,base:7500,goal:8000,avg:10.2},
+    {name:'Jalen Cross',team:'DEL',stat:'points',cur:19874,base:19000,goal:20000,avg:24.6},
+    {name:'Marcus Bell',team:'CAP',stat:'rebounds',cur:9912,base:9500,goal:10000,avg:12.8}
+  ],
+  clubs:[{club:'20,000 points',n:4,next:'Jalen Cross'},{club:'10,000 rebounds',n:3,next:'Marcus Bell'},{club:'8,000 assists',n:2,next:'Theo Okonkwo'},{club:'2,000 threes',n:5,next:'Andre Vasquez'},{club:'100 triple-doubles',n:1,next:'Theo Okonkwo'}]
+};
+document.querySelectorAll('[role="tab"]').forEach(function(t){
+  t.addEventListener('click',function(){
+    document.querySelectorAll('[role="tab"]').forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});
+  });
+});
+
+/* ---------- Status ---------- */
+function setStatus(){
+  var dot=document.getElementById('liveDot'),txt=document.getElementById('liveText'),n=document.getElementById('notice');
+  if(S.mode==='sample'){
+    dot.className='dot on';txt.textContent='Live · Updating every few seconds';
+    n.innerHTML='<span class="tag warn">Sample data</span><span>Preview mode: this sandbox can’t reach NBA.com’s live data, so these players and teams are fictional. On rimblaze.com it loads every real game.</span>';
+  }else{
+    dot.className='dot'+(S.anyLive?' on':'');
+    txt.textContent=S.anyLive?'Live · Updating every 20 seconds':'Latest game night · '+fmtDate(S.date);
+    n.innerHTML='<span class="tag">NBA data</span><span>'+(S.anyLive?'Games in progress.':'No games in progress. Showing '+fmtDate(S.date)+'; pick any night in the feed.')+'</span>';
+  }
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('click',function(e){
+  if(e.target.closest('a'))return;
+  if(e.target.id==='moreBtn'){S.showAll=true;renderFeed();return;}
+  var sb=e.target.closest('[data-sort]');
+  if(sb){S.sort=sb.dataset.sort;document.querySelectorAll('[data-sort]').forEach(function(b){b.setAttribute('aria-pressed',b===sb);});renderFeed();return;}
+  var t=e.target.closest('#feed .bk, #spots .spot');
+  if(t){var id=t.getAttribute('data-id');S.sel=S.sel===id?null:id;renderFeed();}
+});
+document.addEventListener('keydown',function(e){
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('#feed .bk')){e.preventDefault();var id=e.target.dataset.id;S.sel=S.sel===id?null:id;renderFeed();}
+});
+var di=document.getElementById('dateInput');
+di.addEventListener('change',function(){
+  if(!di.value)return;
+  if(S.mode!=='live'){di.value=S.date||'';return;}
+  S.date=di.value;S.isToday=S.date===today();S.sel=null;S.showAll=false;
+  document.getElementById('feed').innerHTML='<div class="card empty">Loading rare buckets…</div>';
+  loadDate(S.date).then(function(b){S.buckets=b;},function(){S.buckets=[];}).then(function(){setStatus();renderFeed();});
+  loadBoxes(S.date).then(renderGameFeats,function(){renderGameFeats([]);});
+});
+document.getElementById('alert-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  document.getElementById('ok').textContent='Thanks. Alerts aren’t live yet; this preview doesn’t store emails.';
+});
+
+/* ---------- Live polling ---------- */
+function poll(){
+  if(document.hidden||S.mode!=='live'||!S.isToday)return;
+  loadDate(S.date).then(function(b){
+    var known={};S.buckets.forEach(function(x){known[x.id]=1;});
+    var added=false,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    b.forEach(function(x){if(!known[x.id]){x._fresh=!reduce;added=true;}});
+    S.buckets=b;setStatus();if(added)renderFeed();
+  }).catch(function(){});
+  loadBoxes(S.date).then(renderGameFeats).catch(function(){});
+}
+
+/* ---------- Sample mode drip ---------- */
+function sampleMode(){
+  S.mode='sample';S.date=null;S.isToday=true;S.anyLive=true;
+  var queue=SAMPLE.buckets.slice(3);S.buckets=SAMPLE.buckets.slice(0,3);
+  di.disabled=true;
+  setStatus();renderFeed();
+  renderLeaders(SAMPLE.leaders,'Sample data · season');renderTeams(SAMPLE.teams,'Sample data · season');renderChase([]);
+  renderGameFeats(SAMPLE_BIG.lines);
+  renderSeason(SAMPLE_BIG.season,SAMPLE_BIG.chase,'Season chase','Sample data. Players, teams and records here are fictional.');
+  renderCareer(SAMPLE_BIG.career,SAMPLE_BIG.clubs,'Sample data. Games-to-go estimates use the player’s average this season.');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  (function tick(){
+    if(!queue.length)return;
+    setTimeout(function(){var b=queue.shift();b._fresh=!reduce;S.buckets.push(b);renderFeed();tick();},4500);
+  })();
+}
+
+/* ---------- Boot ---------- */
+var PROD=/(^|\.)rimblaze\.com$/.test(location.hostname);
+function liveError(){
+  document.getElementById('liveDot').className='dot';
+  document.getElementById('liveText').textContent='Reconnecting to NBA.com…';
+  document.getElementById('notice').innerHTML='<span class="tag warn">Offline</span><span>We can’t reach NBA.com’s live data right now. Trying again in a minute.</span>';
+  document.getElementById('feed').innerHTML='<div class="card empty">Waiting for NBA.com’s live data. This page retries on its own.</div>';
+  setTimeout(start,60000);
+}
+function start(){
+loadSchedule().then(function(sch){
+  S.schedule=sch;S.date=latestDate();S.isToday=S.date===today();
+  return loadDate(S.date);
+}).then(function(b){
+  S.mode='live';S.buckets=b;
+  di.value=S.date;di.max=today();
+  setStatus();renderFeed();
+  renderLeaders([],'Loading last 7 game nights');renderTeams([],'Loading');
+  loadBoxes(S.date).then(renderGameFeats,function(){renderGameFeats([]);});
+  var nights=Object.keys(S.schedule).filter(function(d){return d<=S.date&&S.schedule[d].length;}).sort().slice(-7);
+  pool(nights,2,loadBoxes).then(function(r){
+    renderSeason(seasonFromLines([].concat.apply([],r.filter(Boolean))),[],'Season chase','Last 7 game nights from NBA.com box scores. Full-season totals and streaks come from the RimBlaze stats service.');
+  },function(){renderSeason([],[],'Season chase','Box scores are unavailable right now.');});
+  renderCareer([],[],'Loading career totals.');
+  getJSON('data/season.json').then(function(j){
+    S.haveSeason=true;
+    renderSeason(j.leaders||[],j.chase||[],'Season chase',j.season+' season · updated '+fmtDate(String(j.updated).slice(0,10))+'. Triple-doubles, double-doubles and 30/40-point games from NBA.com game logs; records compare seasons since '+j.since+'.');
+    if(j.rareLeaders&&j.rareLeaders.length)renderLeaders(j.rareLeaders.map(function(r,i){r.rank=i+1;return r;}),j.season+' season');
+    if(j.teamRare&&j.teamRare.length)renderTeams(j.teamRare,j.season+' season');
+  }).catch(function(){});
+  getJSON('data/career.json').then(function(j){
+    renderCareer(j.watch||[],j.clubs||[],'Active players. Games-to-go estimates use each player’s average this season · updated '+fmtDate(String(j.updated).slice(0,10))+'.');
+  },function(){renderCareer([],[],'Career totals load from data/career.json, which the nightly stats build writes.');});
+  loadWeek().then(function(all){var g=aggregate(all);if(!S.haveSeason){renderLeaders(g.L,'Last 7 game nights');renderTeams(g.T,'Last 7 game nights');}renderChase(all);},
+    function(){renderLeaders([],'Unavailable');renderTeams([],'Unavailable');renderChase([]);});
+  setInterval(poll,20000);
+}).catch(PROD?liveError:sampleMode);
+}
+start();
+})();
+</script>

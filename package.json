@@ -1,0 +1,11 @@
+{
+  "name": "rimblaze",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "stats": "node scripts/build-stats.mjs",
+    "stats:one": "node scripts/build-stats.mjs --skip-pages --players",
+    "serve": "npx --yes serve ."
+  }
+}
