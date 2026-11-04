@@ -1,8 +1,9 @@
 name: Nightly stats
 
+# stats.nba.com doesn't answer GitHub's cloud servers, so the nightly build runs on a
+# home computer instead (tools/run-nightly.ps1 + tools/setup-windows.ps1). This workflow
+# stays for manual runs, e.g. through a residential proxy later.
 on:
-  schedule:
-    - cron: '17 9 * * *'   # 4:17 a.m. Eastern (5:17 during daylight time), after the last West Coast final
   workflow_dispatch: {}
 
 permissions:
