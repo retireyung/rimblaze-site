@@ -20,7 +20,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { stats, cdn, rows, seasonFor, seasonList, wikidataBios } from './nba.mjs';
-import { feats, featScore, tens, rareBuckets, MILESTONES, nextMilestone, badges } from './feats.mjs';
+import { feats, featScore, tens, rareBuckets, isRare, WATCH_MIN, MILESTONES, nextMilestone, badges } from './feats.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data'), CACHE = path.join(DATA, 'cache');
@@ -77,7 +77,7 @@ async function seasonBuckets() {
         if (!pbp) throw new Error('no play-by-play yet');
         return rareBuckets(pbp.game.actions || [], g);
       });
-      list.forEach(b => out.push({ ...b, date }));
+      list.filter(b => isRare(b.tags)).forEach(b => out.push({ ...b, date })); // re-check cached games against today's rules
     } catch (e) { missed++; }
   }
   log(`rare buckets: ${out.length} from ${games.length - missed} of ${games.length} final games`);
@@ -204,7 +204,7 @@ async function main() {
     const s = p.seasons.find(x => x.season === SEASON);
     for (const key of Object.keys(MILESTONES)) {
       const curV = p.career[key] || 0, nm = nextMilestone(key, curV);
-      if (!nm || !s || !s.gp) continue;
+      if (!nm || !s || !s.gp || nm.goal < WATCH_MIN[key]) continue;
       const avg = (s[key] || 0) / s.gp; if (!avg) continue;
       const eta = Math.ceil(nm.need / avg);
       if (eta <= 12) watch.push({ pid: p.person.id, name: p.person.name, team: p.person.team?.abbr || '', stat: MILESTONES[key].label, cur: curV, base: nm.base, goal: nm.goal, avg: +avg.toFixed(1), eta });

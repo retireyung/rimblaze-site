@@ -31,6 +31,12 @@ export const featScore = f => f.reduce((s, k) => s + (FEAT_WEIGHT[k] || 0), 0);
 export function parseClock(c) { const m = /PT(\d+)M([\d.]+)S/.exec(c || ''); return m ? (+m[1]) * 60 + (+m[2]) : null; }
 export function period(p) { return p <= 4 ? 'Q' + p : (p === 5 ? 'OT' : 'OT' + (p - 4)); }
 
+// A plain and-one happens about four times a game, so it only counts when it's also clutch.
+export const isRare = tags => tags.length > 0 && !(tags.length === 1 && tags[0] === 'AND-ONE');
+
+// Milestone watch only shows numbers worth celebrating (the profile ladder still shows every rung).
+export const WATCH_MIN = { pts: 10000, reb: 5000, ast: 5000, tpm: 1000, stl: 1000, blk: 1000, td: 25 };
+
 export function rareBuckets(actions, game) {
   const home = game.homeTeam.teamTricode, away = game.awayTeam.teamTricode, out = [];
   actions.forEach(a => {
@@ -43,7 +49,7 @@ export function rareBuckets(actions, game) {
     if (a.period >= 4 && secs != null && secs <= 30 && us - pts <= them && us > them) tags.push('GO-AHEAD');
     const ft = actions.find(x => x.actionType === 'freethrow' && x.personId === a.personId && x.period === a.period && x.clock === a.clock && /1 of 1/.test(x.subType || ''));
     if (ft) tags.push(pts === 3 ? '4-PT PLAY' : 'AND-ONE');
-    if (!tags.length) return;
+    if (!isRare(tags)) return;
     const lat = a.xLegacy != null ? -a.xLegacy / 10 : null, outFt = a.yLegacy != null ? a.yLegacy / 10 : null;
     out.push({
       id: game.gameId + '-' + a.actionNumber, gameId: game.gameId, pid: a.personId, n: a.playerNameI || a.playerName,

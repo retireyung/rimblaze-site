@@ -252,7 +252,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
           <span class="rule"><b>HEAVE</b> make from 40+ ft</span>
           <span class="rule"><b>BUZZER</b> 1.0 s or less left</span>
           <span class="rule"><b>GO-AHEAD</b> final 30 s of Q4 or OT</span>
-          <span class="rule"><b>AND-ONE</b> / 4-PT play</span>
+          <span class="rule"><b>4-PT PLAY</b> · clutch <b>AND-ONE</b></span>
         </div>
         <div class="notice" id="notice"></div>
       </div>
@@ -473,7 +473,7 @@ function parse(pbp,g){
     if(a.period>=4&&secs!=null&&secs<=30&&before<=them&&us>them)tags.push('GO-AHEAD');
     var ft=A.find(function(x){return x.actionType==='freethrow'&&x.personId===a.personId&&x.period===a.period&&x.clock===a.clock&&/1 of 1/.test(x.subType||'');});
     if(ft)tags.push(pts===3?'4-PT PLAY':'AND-ONE');
-    if(!tags.length)return;
+    if(!tags.length||(tags.length===1&&tags[0]==='AND-ONE'))return; // plain and-ones are too common to count
     var lat=a.xLegacy!=null?-a.xLegacy/10:null,out=a.yLegacy!=null?a.yLegacy/10:null;
     list.push({
       id:g.gameId+'-'+a.actionNumber,gameId:g.gameId,n:a.playerNameI||a.playerName,pid:a.personId,t:a.teamTricode,o:isHome?away:home,
