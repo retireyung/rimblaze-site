@@ -56,7 +56,8 @@ export function rows(json, name) {
 // players to NBA.com through property P3647 (NBA.com player ID).
 const WD = 'https://query.wikidata.org/sparql';
 const WD_UA = 'RimBlazeBot/1.0 (https://rimblaze.com; stats build)';
-const SCHOOL_TYPES = 'wd:Q9826 wd:Q159334'; // high school, secondary school (prep schools are usually tagged with one of these)
+// High schools: anything tagged as a school (Q3914) that isn't a college or university.
+// Many US prep and private schools are tagged only as "school" or "private school".
 const COLLEGE_TYPES = 'wd:Q3918 wd:Q189004 wd:Q38723'; // university, college, higher education institution
 
 function bioQuery(ids) {
@@ -69,7 +70,8 @@ function bioQuery(ids) {
     OPTIONAL { ?item wdt:P17 ?country. }
   } UNION {
     BIND("hs" AS ?type) ?p p:P69 ?st. ?st ps:P69 ?item.
-    VALUES ?hsType { ${SCHOOL_TYPES} } ?item wdt:P31/wdt:P279* ?hsType.
+    ?item wdt:P31/wdt:P279* wd:Q3914.
+    FILTER NOT EXISTS { VALUES ?hiType { ${COLLEGE_TYPES} } ?item wdt:P31/wdt:P279* ?hiType. }
     OPTIONAL { ?st pq:P582 ?end. }
     OPTIONAL { ?item wdt:P131 ?city. OPTIONAL { ?city wdt:P131* ?state. ?state wdt:P31 wd:Q35657. } }
     OPTIONAL { ?item wdt:P17 ?country. }

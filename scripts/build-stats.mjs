@@ -149,7 +149,7 @@ async function main() {
   // hometown, high school and college from Wikidata (weekly; a failure just leaves those fields empty)
   let bios = new Map();
   try {
-    const raw = await cached('wikidata-bios.json', 7 * DAY, async () => [...(await wikidataBios(active.map(p => p.id))).entries()]);
+    const raw = await cached('wikidata-bios-v2.json', 7 * DAY, async () => [...(await wikidataBios(active.map(p => p.id))).entries()]);
     bios = new Map(raw);
     log(`wikidata bios: ${bios.size} players`);
   } catch (e) { log(`wikidata bios unavailable: ${e.message}`); }
@@ -289,10 +289,19 @@ function buildProfile(a, careerJ, infoJ, awardsJ, lines, buckets, rank, bio = {}
   profile.badges = badges(profile);
   return profile;
 }
+const TEAM_NAMES = {
+  ATL: 'Atlanta Hawks', BOS: 'Boston Celtics', BKN: 'Brooklyn Nets', CHA: 'Charlotte Hornets', CHI: 'Chicago Bulls', CLE: 'Cleveland Cavaliers',
+  DAL: 'Dallas Mavericks', DEN: 'Denver Nuggets', DET: 'Detroit Pistons', GSW: 'Golden State Warriors', HOU: 'Houston Rockets', IND: 'Indiana Pacers',
+  LAC: 'LA Clippers', LAL: 'Los Angeles Lakers', MEM: 'Memphis Grizzlies', MIA: 'Miami Heat', MIL: 'Milwaukee Bucks', MIN: 'Minnesota Timberwolves',
+  NOP: 'New Orleans Pelicans', NYK: 'New York Knicks', OKC: 'Oklahoma City Thunder', ORL: 'Orlando Magic', PHI: 'Philadelphia 76ers', PHX: 'Phoenix Suns',
+  POR: 'Portland Trail Blazers', SAC: 'Sacramento Kings', SAS: 'San Antonio Spurs', TOR: 'Toronto Raptors', UTA: 'Utah Jazz', WAS: 'Washington Wizards',
+  NJN: 'New Jersey Nets', SEA: 'Seattle SuperSonics', NOH: 'New Orleans Hornets', NOK: 'New Orleans/Oklahoma City Hornets', CHH: 'Charlotte Hornets',
+  VAN: 'Vancouver Grizzlies',
+};
 function teamSpans(seasons) {
   const out = [];
   seasons.forEach(s => s.team.split('/').forEach(t => { const y = +s.season.slice(0, 4); const last = out.find(o => o.team === t && o.to >= y - 1); if (last) last.to = y; else out.push({ team: t, from: y, to: y }); }));
-  return out;
+  return out.map(o => ({ ...o, team: TEAM_NAMES[o.team] || o.team }));
 }
 
 // ---------- pre-rendered pages ----------
