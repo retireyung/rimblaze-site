@@ -33,6 +33,14 @@ const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 
 async function readJSON(f, dflt = null) { try { return JSON.parse(await readFile(f, 'utf8')); } catch { return dflt; } }
 async function writeJSON(f, v) { await mkdir(path.dirname(f), { recursive: true }); await writeFile(f, JSON.stringify(v)); }
+// Writes a data file only when its contents (ignoring the "updated" stamp) actually changed,
+// so frequent runs don't create commits and redeploys for nothing.
+async function writeData(f, v) {
+  const old = await readJSON(f);
+  const strip = o => JSON.stringify({ ...o, updated: null });
+  if (old && strip(old) === strip(v)) return false;
+  await writeJSON(f, v); return true;
+}
 async function cached(file, maxAgeMs, fetcher) {
   const f = path.join(CACHE, file), hit = await readJSON(f);
   if (hit && (maxAgeMs === Infinity || Date.now() - hit._at < maxAgeMs)) return hit.v;
@@ -53,7 +61,7 @@ async function gameLogs(season) {
   const fetcher = async () => rows(await stats('leaguegamelog', {
     Counter: 0, Direction: 'ASC', LeagueID: '00', PlayerOrTeam: 'P', Season: season, SeasonType: 'Regular Season', Sorter: 'DATE',
   })).map(compactLog);
-  const list = season === SEASON ? await cached(`gamelog-${season}.json`, 6 * 36e5, fetcher) : await cached(`gamelog-${season}.json`, Infinity, fetcher);
+  const list = season === SEASON ? await cached(`gamelog-${season}.json`, 10 * 6e4, fetcher) : await cached(`gamelog-${season}.json`, Infinity, fetcher);
   return list.map(r => expand(r, season));
 }
 
@@ -155,15 +163,24 @@ async function main() {
   await writeJSON(path.join(DATA, 'buckets', SEASON + '.json'), buckets);
 
   // per player
-  const recentlyPlayed = new Set(cur.filter(l => Date.now() - new Date(l.date + 'T12:00:00Z') < 3 * DAY).map(l => l.pid));
+  // Refetch a player's career totals once each time a new game of his shows up in the game log.
+  const seenFile = path.join(CACHE, 'seen.json'), firstRun = !existsSync(seenFile);
+  const seen = await readJSON(seenFile, {});
+  const lastDate = new Map(); cur.forEach(l => { if (!lastDate.has(l.pid) || l.date > lastDate.get(l.pid)) lastDate.set(l.pid, l.date); });
+  for (const [pid, d] of lastDate) if (seen[pid]?.date !== d) seen[pid] = { date: d, at: firstRun ? 0 : Date.now() };
+  await writeJSON(seenFile, seen);
+  const careerFresh = async (id, fetcher) => {
+    const f = path.join(CACHE, `career/${id}.json`), hit = await readJSON(f);
+    if (hit && hit._at >= (seen[id]?.at || 0) && Date.now() - hit._at < 7 * DAY) return hit.v;
+    const v = await fetcher(); await writeJSON(f, { _at: Date.now(), v }); return v;
+  };
   const targets = ONLY.length ? active.filter(p => ONLY.includes(p.id)) : active;
   const profiles = [];
   let i = 0;
   for (const a of targets) {
     i++; if (i % 50 === 0) log(`players ${i}/${targets.length}`);
     try {
-      const fresh = recentlyPlayed.has(a.id) ? 6 * 36e5 : 7 * DAY;
-      const career = await cached(`career/${a.id}.json`, fresh, () => stats('playercareerstats', { PlayerID: a.id, PerMode: 'Totals', LeagueID: '00' }));
+      const career = await careerFresh(a.id, () => stats('playercareerstats', { PlayerID: a.id, PerMode: 'Totals', LeagueID: '00' }));
       const info = await cached(`info/${a.id}.json`, 7 * DAY, () => stats('commonplayerinfo', { PlayerID: a.id, LeagueID: '00' }));
       const awardsRaw = await cached(`awards/${a.id}.json`, 7 * DAY, () => stats('playerawards', { PlayerID: a.id }));
       profiles.push(buildProfile(a, career, info, awardsRaw, linesBy.get(a.id) || [], buckets.filter(b => b.pid === a.id), rank, bios.get(a.id)));
@@ -190,7 +207,7 @@ async function main() {
     rareBy.set(b.pid, r);
   });
   const teamRare = Object.entries(buckets.reduce((m, b) => (m[b.t] = (m[b.t] || 0) + 1, m), {})).map(([name, n]) => ({ name, n })).sort((a, b) => b.n - a.n);
-  await writeJSON(path.join(DATA, 'season.json'), {
+  await writeData(path.join(DATA, 'season.json'), {
     season: SEASON, updated: new Date().toISOString(), since: FIRST_LOG_SEASON,
     leaders: leaders.map(r => ({ pid: r.pid, name: r.name, team: r.team, td: r.td, dd: r.dd, p30: r.p30, p40: r.p40, streak: r.streak })),
     chase,
@@ -216,7 +233,7 @@ async function main() {
     const next = profiles.filter(p => (p.career[k] || 0) < v).sort((a, b) => (b.career[k] || 0) - (a.career[k] || 0))[0];
     return { club: v.toLocaleString() + ' ' + MILESTONES[k].label, n: inn.length, members: inn.map(p => p.person.name), next: next ? next.person.name : '—', nextPid: next?.person.id, nextNeed: next ? v - (next.career[k] || 0) : null };
   });
-  await writeJSON(path.join(DATA, 'career.json'), { updated: new Date().toISOString(), watch: watch.slice(0, 12), clubs });
+  await writeData(path.join(DATA, 'career.json'), { updated: new Date().toISOString(), watch: watch.slice(0, 12), clubs });
 
   if (!process.argv.includes('--skip-pages')) await renderPages(profiles);
   log(`done · ${profiles.length} player files`);
@@ -253,7 +270,7 @@ function buildProfile(a, careerJ, infoJ, awardsJ, lines, buckets, rank, bio = {}
   const months = [...new Set(curLines.map(l => l.date.slice(0, 7)))];
   const ddDates = lines.filter(l => tens(l) >= 2).map(l => l.date).sort();
   const profile = {
-    updated: new Date().toISOString(), season: SEASON, logsSince: FIRST_LOG_SEASON,
+    updated: lines.reduce((m, l) => l.date > m ? l.date : m, '') || null, season: SEASON, logsSince: FIRST_LOG_SEASON,
     person: {
       id: a.id, name: a.name, first: info.FIRST_NAME, last: info.LAST_NAME, number: info.JERSEY, position: info.POSITION, height: info.HEIGHT, weight: info.WEIGHT,
       birthDate: String(info.BIRTHDATE || '').slice(0, 10), country: info.COUNTRY, from: info.FROM_YEAR, to: info.TO_YEAR,

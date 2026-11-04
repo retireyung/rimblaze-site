@@ -25,7 +25,7 @@ try {
   git diff --cached --quiet
   if ($LASTEXITCODE -ne 0) {
     Step 'Save data'   { git -c user.name="rimblaze-bot" -c user.email="bot@rimblaze.com" commit -m "Nightly stats $(Get-Date -Format yyyy-MM-dd)" }
-    Step 'Upload data' { git push }
+    Step 'Upload data' { git push; if ($LASTEXITCODE -ne 0) { git pull --rebase --autostash; git push } }
   } else { Write-Host 'No data changes today.' }
   $ok = $true
   Write-Host "`nDone. rimblaze.com updates in a minute or two."

@@ -513,7 +513,7 @@ function renderIdentity(){
   var best=D.seasons.slice().sort(function(a,b){return b.pts/b.gp-a.pts/a.gp;})[0];
   var tdBest=D.seasons.slice().sort(function(a,b){return (b.td||0)-(a.td||0);})[0];
   $('pIntro').textContent=p.name+' has scored '+n(c.pts)+' points in '+n(c.gp)+' games'+(r.pts?', '+ord(r.pts)+' on the all-time list':'')+'. His best scoring season was '+best.season+' at '+per(best.pts,best.gp)+' points a game'+(tdBest&&tdBest.td?', and he has '+n(c.td)+' career triple-doubles, '+tdBest.td+' of them in '+tdBest.season:'')+'. He holds '+D.badges.length+' RimBlaze badges.';
-  $('notice').innerHTML=MODE==='sample'?'<span class="tag warn">Sample preview</span><span>This player and his numbers are fictional. On rimblaze.com every profile is built nightly from NBA.com.</span>':'<span class="tag">NBA data</span><span>Updated '+fmtDate((D.updated||'').slice(0,10))+'.</span>';
+  $('notice').innerHTML=MODE==='sample'?'<span class="tag warn">Sample preview</span><span>This player and his numbers are fictional. On rimblaze.com every profile is built nightly from NBA.com.</span>':'<span class="tag">NBA data</span><span>'+(D.updated?'Stats through his game on '+fmtDate(String(D.updated).slice(0,10))+'.':'No games yet this season.')+'</span>';
   $('followTitle').textContent='Follow '+parts[0]+'.';
   $('qaSub').textContent=p.name+' facts';
 }
