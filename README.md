@@ -6,7 +6,8 @@ Live NBA tracker for rare buckets (logo threes, buzzer-beaters, go-ahead daggers
 
 | Path | What it is |
 | --- | --- |
-| `index.html` | Homepage. Live feed and Big Nights (Game tab) read NBA.com's public live data in the browser every 20 seconds. Season and Career tabs read `data/season.json` and `data/career.json`. |
+| `index.html` | Homepage. The live feed and Big Nights (Game tab) read `data/live/`, which the home PC refreshes every 10 minutes (NBA.com doesn't let other websites read its live files from the browser). Season and Career tabs read `data/season.json` and `data/career.json`. |
+| `scripts/build-live.mjs` | The live snapshot: tonight's scores, rare buckets and box score lines, one file per game night. |
 | `player.html` | Player profile template. Opens any player with `player.html#player-<NBA person id>`; the nightly build also pre-renders `players/<name>-<id>/index.html` for search engines. |
 | `scripts/build-stats.mjs` | The stats service: the nightly build that writes everything under `data/` and `players/`. |
 | `scripts/feats.mjs` | The rules: what counts as a big night, a rare bucket, a badge and a milestone. The pages use the same thresholds. |
@@ -54,7 +55,7 @@ The first run downloads every season's game logs since 1996-97 (30 requests) and
 
 ## Things to know
 
-- **stats.nba.com blocks cloud servers, including GitHub's.** The nightly build therefore runs on a home Windows PC: `tools/run-nightly.ps1` pulls, builds and pushes, and `tools/setup-windows.ps1` schedules it with Task Scheduler every 30 minutes on game nights (7:30 p.m. to 1:30 a.m.) and at 4:17 a.m., through a hidden launcher (`tools/run-hidden.vbs`). Runs only commit when the stats actually changed, so quiet runs don't redeploy the site. Each run is logged to `data\cache\nightly.log`. `RB_GAP_MS=1200` slows the pace if NBA.com throttles you. The GitHub workflow is kept for manual runs only.
+- **stats.nba.com blocks cloud servers, including GitHub's.** The nightly build therefore runs on a home Windows PC: `tools/run-nightly.ps1` pulls, builds and pushes, and `tools/setup-windows.ps1` schedules it with Task Scheduler every 10 minutes from noon to 1:30 a.m. (live snapshot every run, full stats every 30 minutes) and at 4:17 a.m., through a hidden launcher (`tools/run-hidden.vbs`). Runs only commit when the stats actually changed, so quiet runs don't redeploy the site. Each run is logged to `data\cache\nightly.log`. `RB_GAP_MS=1200` slows the pace if NBA.com throttles you. The GitHub workflow is kept for manual runs only.
 - **Game-level feats start in 1996-97.** That's where NBA.com's game logs begin. It covers every active player's whole career, so profiles are complete; "most in a season" records in the chases are labeled "since 1996-97".
 - **Rare buckets start this season.** They come from play-by-play, which the build scans game by game going forward. Older seasons can be backfilled by pointing `seasonBuckets()` at past schedules.
 - **Hometown, high school and college come from Wikidata.** NBA.com has no hometown or high school field (its "last attended" field is used as a fallback when Wikidata lists no college). Wikidata links players through property P3647 (NBA.com player ID) and is refreshed weekly. Hometown is the player's place of birth; for the few players who grew up somewhere else, fix the Wikidata entry or add an override. A player missing from Wikidata simply shows no hometown or high school.

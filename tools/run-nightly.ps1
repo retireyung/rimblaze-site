@@ -1,5 +1,6 @@
-# RimBlaze nightly stats, run on your own Windows computer.
-# Pulls the latest code, runs the stats build, and pushes the new data to GitHub,
+# RimBlaze stats, run on your own Windows computer.
+# Pulls the latest code, saves the live game snapshot, runs the full stats build when due,
+# and pushes the new data to GitHub,
 # which redeploys rimblaze.com. Task Scheduler runs this every night; you can also
 # run it by hand:  powershell -ExecutionPolicy Bypass -File tools\run-nightly.ps1
 # A log of every run is kept in data\cache\nightly.log.
@@ -20,7 +21,14 @@ $ok = $false
 try {
   Write-Host "RimBlaze nightly run - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
   Step 'Get latest code' { git pull --rebase --autostash }
-  Step 'Build stats'     { node scripts/build-stats.mjs }
+  Step 'Live snapshot'   { node scripts/build-live.mjs }
+  # Full stats (profiles, season, career) at most every 25 minutes; the live snapshot runs every time.
+  $stamp = Join-Path $logDir 'last-full.txt'
+  $due = -not (Test-Path $stamp) -or ((Get-Date) - (Get-Item $stamp).LastWriteTime).TotalMinutes -ge 25
+  if ($due) {
+    Step 'Build stats' { node scripts/build-stats.mjs }
+    Set-Content -Path $stamp -Value (Get-Date -Format o)
+  } else { Write-Host 'Full stats ran less than 25 minutes ago; live snapshot only.' }
   git add -A
   git diff --cached --quiet
   if ($LASTEXITCODE -ne 0) {
