@@ -1,0 +1,40 @@
+name: Publish site
+
+# Publishes the repository root to GitHub Pages on every push to main.
+# A workflow is used instead of branch publishing because the home PC pushes a live
+# snapshot every 2 minutes during games, and branch publishing is capped at 10 builds an hour.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only the newest push matters; a newer one replaces a deploy that hasn't finished.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare files
+        run: |
+          mkdir -p _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_site' --exclude 'data/cache' \
+            --exclude 'node_modules' --exclude 'tools' --exclude 'scripts' --exclude 'templates' ./ _site/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

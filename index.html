@@ -477,7 +477,7 @@ function pool(items,n,fn){
   return Promise.all(ws).then(function(){return out;});
 }
 // NBA.com doesn't let other websites read its live files, so the stats build on a home
-// computer saves a copy of each game night to data/live/ every 10 minutes during games.
+// computer saves a copy of each game night to data/live/ every 2 minutes during games.
 var DAYS={},IDX=null;
 function bust(u,fresh){return fresh?u+(u.indexOf('?')<0?'?':'&')+'t='+Date.now():u;}
 function loadIndex(){return getJSON(bust('data/live/index.json',true)).then(function(j){IDX=j;return j;});}
@@ -761,7 +761,7 @@ function setStatus(){
   }else{
     dot.className='dot'+(S.anyLive?' on':'');
     var upd=S.dayUpdated?new Date(S.dayUpdated).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:TZ}):null;
-    txt.textContent=S.anyLive?'Live · Updates every 10 minutes':'Latest game night · '+fmtDate(S.date);
+    txt.textContent=S.anyLive?'Live · Updates every 2 minutes':'Latest game night · '+fmtDate(S.date);
     n.innerHTML='<span class="tag">NBA data</span><span>'+(S.anyLive?'Games in progress'+(upd?'. Last update '+upd+' ET':'')+'.':'No games in progress. Showing '+fmtDate(S.date)+'; pick any night in the feed.')+'</span>';
   }
 }

@@ -56,7 +56,7 @@ function nightPage(day, sum, prev, next, slugs) {
   ];
   const body = `<div class="crumbs"><a href="/">RimBlaze</a> / <a href="/nights/">Game nights</a> / ${esc(short)}</div>
 <h1>NBA big nights: <em>${esc(long)}</em></h1>
-<p class="lead">${esc(`${pl(sum.games, 'game')}, ${pl(sum.td, 'triple-double')}, ${pl(sum.p40, '40-point game')} and ${pl(sum.rare, 'rare bucket')}.${topLine}`)}${day.anyLive ? ' Games are still in progress; this page updates every 10 minutes.' : ''}</p>
+<p class="lead">${esc(`${pl(sum.games, 'game')}, ${pl(sum.td, 'triple-double')}, ${pl(sum.p40, '40-point game')} and ${pl(sum.rare, 'rare bucket')}.${topLine}`)}${day.anyLive ? ' Games are still in progress; this page updates every 2 minutes.' : ''}</p>
 <div class="strip"><div><span class="k">Big nights</span><span class="v">${sum.big.length}</span><span class="s">Triple-doubles, 40-point games, 20-20s and more</span></div>
 <div><span class="k">Triple-doubles</span><span class="v">${sum.td}</span><span class="s">${sum.dd.length + sum.big.filter(l => tens(l) === 2).length} more double-doubles</span></div>
 <div><span class="k">Rare buckets</span><span class="v">${sum.rare}</span><span class="s">Logo threes, buzzer-beaters, game-winners</span></div>
