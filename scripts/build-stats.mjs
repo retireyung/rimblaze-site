@@ -20,6 +20,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { stats, cdn, rows, seasonFor, seasonList, wikidataBios } from './nba.mjs';
+import { renderSite } from './pages.mjs';
 import { feats, featScore, tens, rareBuckets, isRare, WATCH_MIN, MILESTONES, nextMilestone, badges } from './feats.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -260,11 +261,12 @@ async function main() {
         from: p?.person.from || null, to: p?.person.to || null, slug: p ? slugify(p.person.name) + '-' + p.person.id : null };
     }),
   }));
-  await writeData(path.join(DATA, 'alltime.json'), { updated: new Date().toISOString(), top: HIST_TOP, boards });
+  const alltime = { updated: new Date().toISOString(), top: HIST_TOP, boards };
+  await writeData(path.join(DATA, 'alltime.json'), alltime);
 
   await writeData(path.join(DATA, 'career.json'), { updated: new Date().toISOString(), watch: watch.slice(0, 12), clubs });
 
-  if (!process.argv.includes('--skip-pages')) await renderPages(profiles);
+  if (!process.argv.includes('--skip-pages')) await renderSite({ root: ROOT, profiles, alltime, slugify, log });
   log(`done · ${profiles.length} player files`);
 }
 
@@ -340,28 +342,6 @@ function teamSpans(seasons) {
   const out = [];
   seasons.forEach(s => s.team.split('/').forEach(t => { const y = +s.season.slice(0, 4); const last = out.find(o => o.team === t && o.to >= y - 1); if (last) last.to = y; else out.push({ team: t, from: y, to: y }); }));
   return out.map(o => ({ ...o, team: TEAM_NAMES[o.team] || o.team }));
-}
-
-// ---------- pre-rendered pages ----------
-async function renderPages(profiles) {
-  const tplFile = path.join(ROOT, 'player.html');
-  if (!existsSync(tplFile)) { log('player.html not found, skipping pages'); return; }
-  const tpl = await readFile(tplFile, 'utf8');
-  for (const p of profiles) {
-    const n = p.person.name, c = p.career, desc = `${n} has ${c.pts.toLocaleString()} career points, ${c.td} triple-doubles and ${p.badges.length} RimBlaze badges. Every season, big night, rare bucket and milestone.`;
-    const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
-    const html = tpl
-      .replace(/<title>[^<]*<\/title>/, `<title>${esc(n)} Stats, Big Nights &amp; Milestones | RimBlaze</title>`)
-      .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(desc)}">`)
-      .replace(/<script type="application\/json" id="rb-sample">[\s\S]*?<\/script>/, '')
-      .replace('<!--RB-DATA-->', `<base href="/"><link rel="canonical" href="https://rimblaze.com/players/${slugify(n)}-${p.person.id}/"><meta name="rb-prod" content="1"><script type="application/json" id="rb-data">${JSON.stringify(p).replace(/</g, '\\u003c')}</script>`);
-    await mkdir(path.join(ROOT, 'players', slugify(n) + '-' + p.person.id), { recursive: true });
-    await writeFile(path.join(ROOT, 'players', slugify(n) + '-' + p.person.id, 'index.html'), html);
-  }
-  log(`pages: ${profiles.length}`);
-  const today = new Date().toISOString().slice(0, 10);
-  const urls = ['https://rimblaze.com/', 'https://rimblaze.com/all-time/', ...profiles.map(p => `https://rimblaze.com/players/${slugify(p.person.name)}-${p.person.id}/`)];
-  await writeFile(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

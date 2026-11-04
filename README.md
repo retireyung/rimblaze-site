@@ -10,6 +10,9 @@ Live NBA tracker for rare buckets (logo threes, buzzer-beaters, go-ahead daggers
 | `scripts/build-live.mjs` | The live snapshot: tonight's scores, rare buckets and box score lines, one file per game night. |
 | `player.html` | Player profile template. Opens any player with `player.html#player-<NBA person id>`; the nightly build also pre-renders `players/<name>-<id>/index.html` for search engines. |
 | `scripts/build-stats.mjs` | The stats service: the nightly build that writes everything under `data/` and `players/`. |
+| `scripts/pages.mjs` | Builds the search-friendly pages: every profile, six all-time boards (`/all-time/`, `/all-time/rebounds/`, …), the players A–Z directory and `sitemap.xml`, each with its own title, description, share tags and schema.org structured data. |
+| `scripts/prerender.mjs` | Runs each page's own script at build time and writes the result into the HTML, so search engines and link previews see the full content without JavaScript. |
+| `templates/all-time.html` | Template for the all-time boards. |
 | `scripts/feats.mjs` | The rules: what counts as a big night, a rare bucket, a badge and a milestone. The pages use the same thresholds. |
 | `scripts/nba.mjs` | Throttled, retrying client for stats.nba.com and cdn.nba.com. |
 | `.github/workflows/nightly-stats.yml` | Runs the build every night at 4:17 a.m. Eastern and commits the data. |

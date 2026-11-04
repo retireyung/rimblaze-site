@@ -77,8 +77,10 @@ nav a:hover,nav a[aria-current="page"]{color:var(--text)}
 section{padding-block:30px 44px}
 .bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:var(--surface)}
-.seg button{border:0;background:transparent;padding:9px 12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;color:var(--muted)}
-.seg button[aria-pressed="true"]{background:var(--leather);color:#fff}
+.seg a{padding:9px 12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;color:var(--muted)}
+.seg a[aria-current="page"]{background:var(--leather);color:#fff}
+.seg a:hover{color:var(--text)}
+.seg a[aria-current="page"]:hover{color:#fff}
 .tools{display:flex;gap:8px;flex-wrap:wrap}
 .tools input,.tools select{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:3px;background:var(--surface);color:var(--text);min-width:0}
 .tools input{width:220px;max-width:100%}
@@ -124,8 +126,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 <div class="wrap">
   <div class="hero">
     <div class="crumbs mono"><a href="../">RimBlaze</a> / All-time</div>
-    <h1>The all-time list. <em>Top 250, six ways.</em></h1>
-    <p class="lead">The NBA's career leaders in points, rebounds, assists, threes, steals and blocks. Open any player for his full profile, and see how close today's stars are to passing the next legend.</p>
+    <h1 id="h1">The all-time list. <em>Top 250, six ways.</em></h1>
+    <p class="lead" id="lead">The NBA's career leaders in points, rebounds, assists, threes, steals and blocks. Open any player for his full profile, and see how close today's stars are to passing the next legend.</p>
     <div class="notice" id="notice"></div>
   </div>
   <div class="sum" id="sum"></div>
@@ -134,7 +136,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 <section>
   <div class="wrap">
     <div class="bar">
-      <div class="seg" role="group" aria-label="Stat" id="boards"></div>
+      <nav class="seg" aria-label="All-time boards" id="boards"></nav>
       <div class="tools">
         <label for="q" class="sr">Filter by name</label>
         <input id="q" type="search" placeholder="Filter by name" autocomplete="off">
@@ -170,6 +172,9 @@ function n(v){return v==null?'—':Number(v).toLocaleString('en-US');}
 function ord(k){var s=['th','st','nd','rd'],v=k%100;return k+(s[(v-20)%10]||s[v]||s[0]);}
 var PROD=/(^|\.)rimblaze\.com$/.test(location.hostname);
 var KEYS=['pts','reb','ast','tpm','stl','blk'];
+var SLUG={pts:'',reb:'rebounds/',ast:'assists/',tpm:'threes/',stl:'steals/',blk:'blocks/'};
+var WORD={pts:'scoring',reb:'rebounding',ast:'assist',tpm:'3-point',stl:'steals',blk:'blocks'};
+var ROOT=PROD?'/':'../';
 var ST={key:'pts',q:'',status:'all',all:false},DATA=null;
 
 /* Fictional sample for previews off rimblaze.com. */
@@ -185,7 +190,7 @@ var SAMPLE_PROFILE='https://claude.ai/artifact/Vn5FYt4sQJQvHCGnUZXFmq';
 
 function board(){return DATA.boards.find(function(b){return b.key===ST.key;})||DATA.boards[0];}
 function plink(r){
-  if(r.slug)return '<a class="pn" href="../players/'+r.slug+'/">'+esc(r.name)+'</a>';
+  if(r.slug)return '<a class="pn" href="'+ROOT+'players/'+r.slug+'/">'+esc(r.name)+'</a>';
   if(r.sample)return '<a class="pn" href="'+SAMPLE_PROFILE+'" target="_blank" rel="noopener">'+esc(r.name)+'</a>';
   return '<span class="pn">'+esc(r.name)+'</span>';
 }
@@ -196,7 +201,10 @@ function climb(r,rows){
   return '<span class="climb"><b>'+n(above.v-r.v+1)+'</b> to pass '+esc(above.name)+' for #'+above.rank+'</span>';
 }
 function renderBoards(){
-  $('boards').innerHTML=DATA.boards.map(function(b){return '<button type="button" data-key="'+b.key+'" aria-pressed="'+(b.key===ST.key)+'">'+esc(b.label)+'</button>';}).join('');
+  $('boards').innerHTML=DATA.boards.map(function(b){return '<a href="/all-time/'+SLUG[b.key]+'" data-key="'+b.key+'"'+(b.key===ST.key?' aria-current="page"':'')+'>'+esc(b.label)+'</a>';}).join('');
+  var b=board(),w=WORD[b.key];
+  $('h1').innerHTML='NBA all-time <em>'+w+' leaders.</em>';
+  $('lead').textContent='The top '+(DATA.top||250)+' in career '+b.label.toLowerCase()+' in NBA history'+(b.rows[0]?', led by '+b.rows[0].name+' with '+n(b.rows[0].v)+'.':'.')+' Every player links to his full profile, and active players show how far they are from passing the next legend.';
 }
 function renderSum(){
   var b=board(),rows=b.rows,lead=rows[0],act=rows.filter(function(r){return r.active;});
@@ -212,7 +220,7 @@ function render(){
   var b=board(),q=ST.q.toLowerCase();
   $('thTot').textContent=b.label;
   var list=b.rows.filter(function(r){return (!q||r.name.toLowerCase().indexOf(q)>=0)&&(ST.status==='all'||(ST.status==='active')===r.active);});
-  var lim=ST.all||q||ST.status!=='all'?list.length:50;
+  var lim=list.length;
   $('showing').textContent=list.length===b.rows.length?'Top '+b.rows.length+' in '+b.label.toLowerCase():list.length+' of '+b.rows.length+' players';
   $('rows').innerHTML=list.length?list.slice(0,lim).map(function(r){
     return '<tr class="'+(r.rank<=3?'top3 ':'')+(r.active?'act':'')+'"><td class="rk">'+r.rank+'</td><td>'+plink(r)+(r.active?'<span class="chip">ACTIVE</span>':'')+'</td><td class="tot">'+n(r.v)+'</td><td class="n">'+(r.gp?(r.v/r.gp).toFixed(1):'—')+'</td><td class="yrs">'+(r.from?esc(r.from)+'–'+(r.active?'now':esc(r.to)):'—')+'</td><td>'+climb(r,b.rows)+'</td></tr>';
@@ -221,9 +229,9 @@ function render(){
   $('more').textContent='Show all '+list.length;
   renderSum();
 }
-function fromHash(){var h=location.hash.replace('#','');if(KEYS.indexOf(h)>=0)ST.key=h;}
+function fromHash(){var d=((document.documentElement||{}).dataset||{}).board,h=location.hash.replace('#','');if(KEYS.indexOf(h)>=0)ST.key=h;else if(KEYS.indexOf(d)>=0)ST.key=d;}
 
-$('boards').addEventListener('click',function(e){var b=e.target.closest('[data-key]');if(!b)return;ST.key=b.dataset.key;ST.all=false;try{history.replaceState(null,'','#'+ST.key);}catch(err){}renderBoards();render();});
+$('boards').addEventListener('click',function(e){var b=e.target.closest('[data-key]');if(!b)return;e.preventDefault();ST.key=b.dataset.key;try{if(PROD)history.replaceState(null,'','/all-time/'+SLUG[ST.key]);else history.replaceState(null,'','#'+ST.key);}catch(err){}renderBoards();render();});
 $('q').addEventListener('input',function(){ST.q=this.value.trim();render();});
 $('status').addEventListener('change',function(){ST.status=this.value;render();});
 $('more').addEventListener('click',function(){ST.all=true;render();});
@@ -234,7 +242,7 @@ function boot(d,sample){
   $('notice').innerHTML=sample?'<span class="tag warn">Sample preview</span><span>These players are fictional. On rimblaze.com every board is NBA.com’s real top 250.</span>':
     '<span class="tag">NBA data</span><span>Updated '+new Date(d.updated).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'.</span>';
 }
-fetch('../data/alltime.json').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){boot(d,false);},function(){
+fetch(ROOT+'data/alltime.json').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){boot(d,false);},function(){
   if(PROD){$('rows').innerHTML='<tr><td colspan="6" class="empty">The all-time boards are being built. Check back in a few minutes.</td></tr>';return;}
   boot(SAMPLE,true);
 });

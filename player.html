@@ -301,7 +301,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <main id="top">
 <div class="wrap">
-  <div class="crumbs mono" aria-label="Breadcrumb"><a href="index.html">RimBlaze</a> / <a href="all-time/">Players</a> / <span id="crumbName">—</span></div>
+  <div class="crumbs mono" aria-label="Breadcrumb"><a href="index.html">RimBlaze</a> / <a href="players/">Players</a> / <span id="crumbName">—</span></div>
   <div class="p-hero">
     <div class="p-grid">
       <div>
@@ -362,7 +362,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <section id="career" style="padding-top:8px">
   <div class="wrap">
-    <div class="sec-head"><h2>Career arc</h2>
+    <div class="sec-head"><h2 id="arcTitle">Career arc</h2>
       <div class="seg" role="group" aria-label="Chart stat"><button type="button" data-arc="ppg" aria-pressed="true">PPG</button><button type="button" data-arc="rpg" aria-pressed="false">RPG</button><button type="button" data-arc="apg" aria-pressed="false">APG</button><button type="button" data-arc="td" aria-pressed="false">Triple-dbl</button><button type="button" data-arc="rare" aria-pressed="false">Rare</button></div>
     </div>
     <div class="card arc-card">
@@ -374,14 +374,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <section id="milestones" style="padding-top:8px">
   <div class="wrap">
-    <div class="sec-head"><h2>Milestones</h2><span class="sub mono" id="msSub">Career points</span></div>
+    <div class="sec-head"><h2 id="msTitle">Milestones</h2><span class="sub mono" id="msSub">Career points</span></div>
     <div class="card ladder" id="ladder"></div>
   </div>
 </section>
 
 <section id="records" style="padding-top:8px">
   <div class="wrap">
-    <div class="sec-head"><h2>Personal records</h2><span class="sub mono" id="recSub">Career highs</span></div>
+    <div class="sec-head"><h2 id="recTitle">Personal records</h2><span class="sub mono" id="recSub">Career highs</span></div>
     <div class="highs" id="highs"></div>
     <div class="records" style="margin-top:18px">
       <div><div class="rec-head"><h3>Biggest nights</h3><span class="meta">Ranked by rarity</span></div><div class="nlist" id="recNights"></div></div>
@@ -392,7 +392,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <section id="seasons" style="padding-top:8px">
   <div class="wrap">
-    <div class="sec-head"><h2>Year by year</h2><span class="sub mono">Regular season · tap a row</span></div>
+    <div class="sec-head"><h2 id="ybyTitle">Year by year</h2><span class="sub mono">Regular season · tap a row</span></div>
     <div class="card tbl">
       <table>
         <thead><tr><th>Season</th><th>Team</th><th>GP</th><th>PTS</th><th>PPG</th><th>RPG</th><th>APG</th><th>FG%</th><th>3P%</th><th>FT%</th><th>3PM</th><th>TD</th><th>DD</th><th>Rare</th></tr></thead>
@@ -405,7 +405,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 <section id="splits" style="padding-top:8px">
   <div class="wrap">
     <div class="two">
-      <div><div class="sec-head"><h2>Splits</h2><span class="sub mono" id="splitsSub"></span></div><div class="card splits" id="splitsCard"></div></div>
+      <div><div class="sec-head"><h2 id="splitsTitle">Splits</h2><span class="sub mono" id="splitsSub"></span></div><div class="card splits" id="splitsCard"></div></div>
       <div><div class="sec-head"><h2>How he scores</h2><span class="sub mono" id="scoreSub"></span></div><div class="card splits" id="scoreCard"></div></div>
     </div>
   </div>
@@ -492,7 +492,7 @@ function renderIdentity(){
   $('pName').innerHTML=esc(parts.join(' '))+' <em>'+esc(lastN)+'</em>';
   $('pNick').textContent=(p.team&&p.team.name)||'';
   var r=c.ranks||{};
-  $('kicker').innerHTML='<span class="tag">'+(p.active?'Active':'Retired')+'</span>'+(p.number?'<span class="tag">#'+esc(p.number)+'</span>':'')+(p.position?'<span class="tag">'+esc(p.position)+'</span>':'')+'<span class="tag">'+esc(p.from)+'–'+(p.active?'present':esc(p.to))+'</span>'+(r.pts?'<span class="tag warn">#'+r.pts+' all-time in points</span>':'');
+  $('kicker').innerHTML='<span class="tag">'+(p.active?'Active':'Retired')+'</span>'+(p.number?'<span class="tag">#'+esc(p.number)+'</span>':'')+(p.position?'<span class="tag">'+esc(p.position)+'</span>':'')+'<span class="tag">'+esc(p.from)+'–'+(p.active?'present':esc(p.to))+'</span>'+(r.pts?'<a class="tag warn" href="all-time/">#'+r.pts+' all-time in points</a>':'');
   var teams=(p.teams||[]).map(function(t){return '<span class="team-line"><b>'+esc(t.team)+'</b> '+t.from+'–'+(p.active&&t.to>=(+D.season.slice(0,4))?'present':t.to)+'</span>';}).join('');
   var dr=p.draft?(p.draft.year+' · round '+p.draft.round+', pick '+p.draft.pick):'Undrafted';
   var hs=(p.highSchools||[]).map(function(h){return '<span class="team-line"><b>'+esc(h.name)+'</b>'+(h.place?' '+esc(h.place):'')+'</span>';}).join('');
@@ -716,7 +716,16 @@ function renderQA(){
 }
 
 /* ---------- Render all ---------- */
+function renderHeadings(){
+  var nm=D.person.name;
+  $('arcTitle').textContent=nm+' career arc';
+  $('msTitle').textContent=nm+' milestones';
+  $('recTitle').textContent=nm+' career highs';
+  $('ybyTitle').textContent=nm+' stats by season';
+  $('splitsTitle').textContent=nm+' splits';
+}
 function render(){
+  renderHeadings();
   renderIdentity();renderSeasonPick();renderCourt();renderStrip();renderVault();renderArc();renderMilestones();renderRecords();renderYby();renderSplits();renderNights();renderQA();
 }
 function pickSeason(s){ST.season=s;ST.sel=null;$('seasonSel').value=s;renderCourt();renderStrip();renderArc();renderYby();}
