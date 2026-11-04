@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RimBlaze</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Live NBA tracker for rare buckets: logo threes, buzzer-beaters, go-ahead daggers, and-ones and half-court heaves, plus triple-doubles, 50-point games and career milestones.">
@@ -14,6 +18,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
 /* Layout: HomeRuns' sibling. Big headline beside a live half-court shot chart, then the feed with a stat stack, leaders, the chase, team totals and alerts. */
 :root{
   --bg:#F5F2EE; --surface:#FFFFFF; --surface-2:#EEE8E1; --line:#DDD3C8;
@@ -229,7 +236,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
       Rim<b>Blaze</b>
     </a>
     <nav aria-label="Primary">
-      <a href="#live">Live</a><a href="#nights">Big nights</a><a href="#leaders">Leaders</a><a href="#chase">Chase</a><a href="#teams">Teams</a><a href="#alerts">Alerts</a>
+      <a href="#live">Live</a><a href="#nights">Big nights</a><a href="#leaders">Leaders</a><a href="#chase">Chase</a><a href="#teams">Teams</a><a href="all-time/">All-time</a><a href="#alerts">Alerts</a>
     </nav>
     <a href="#alerts" class="btn">Get alerts</a>
   </div>
@@ -414,7 +421,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <footer>
   <div class="wrap">
-    <span>© 2026 RimBlaze. Play-by-play from NBA.com live data; clips open on NBA.com. Not affiliated with the National Basketball Association.</span>
+    <span>© 2026 RimBlaze. <a href="all-time/" style="text-decoration:underline">All-time leaders</a>. Play-by-play from NBA.com live data; clips open on NBA.com. Not affiliated with the National Basketball Association.</span>
     <span class="mono">rimblaze.com</span>
   </div>
 </footer>

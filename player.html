@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RimBlaze Player Profile</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Every season, big night, rare bucket, badge and milestone for an NBA player.">
@@ -9,6 +13,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
 /* Layout: identity and career totals beside the season's rare-bucket shot chart, then the season strip, the Player's Vault, career arc, milestones, records, year by year, splits and every big night. */
 :root{
   --bg:#F5F2EE; --surface:#FFFFFF; --surface-2:#EEE8E1; --line:#DDD3C8;
@@ -282,7 +289,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
       Rim<b>Blaze</b>
     </a>
     <nav aria-label="On this page">
-      <a href="#vault">Vault</a><a href="#career">Career</a><a href="#milestones">Milestones</a><a href="#records">Records</a><a href="#seasons">Seasons</a><a href="#splits">Splits</a><a href="#nights">Big nights</a>
+      <a href="#vault">Vault</a><a href="#career">Career</a><a href="#milestones">Milestones</a><a href="#records">Records</a><a href="#seasons">Seasons</a><a href="#splits">Splits</a><a href="#nights">Big nights</a><a href="all-time/">All-time</a>
     </nav>
     <div class="search">
       <label for="q" class="sr">Find a player</label>
@@ -294,7 +301,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <main id="top">
 <div class="wrap">
-  <div class="crumbs mono" aria-label="Breadcrumb"><a href="index.html">RimBlaze</a> / Players / <span id="crumbName">—</span></div>
+  <div class="crumbs mono" aria-label="Breadcrumb"><a href="index.html">RimBlaze</a> / <a href="all-time/">Players</a> / <span id="crumbName">—</span></div>
   <div class="p-hero">
     <div class="p-grid">
       <div>

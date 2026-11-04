@@ -247,6 +247,21 @@ async function main() {
     const next = activeProfiles.filter(p => (p.career[k] || 0) < v).sort((a, b) => (b.career[k] || 0) - (a.career[k] || 0))[0];
     return { club: v.toLocaleString() + ' ' + MILESTONES[k].label, n: inn.length, members: inn.map(p => p.person.name), next: next ? next.person.name : '—', nextPid: next?.person.id, nextNeed: next ? v - (next.career[k] || 0) : null };
   });
+  // all-time leaderboards: top 250 in six stats, linked to profiles where we have them
+  const profById = new Map(profiles.map(p => [p.person.id, p]));
+  const boards = [['pts', 'PTSLeaders', 'PTS', 'Points'], ['reb', 'REBLeaders', 'REB', 'Rebounds'], ['ast', 'ASTLeaders', 'AST', 'Assists'],
+    ['tpm', 'FG3MLeaders', 'FG3M', 'Threes'], ['stl', 'STLLeaders', 'STL', 'Steals'], ['blk', 'BLKLeaders', 'BLK', 'Blocks']].map(([key, set, col, label]) => ({
+    key, label,
+    rows: rows(grids, set).filter(r => r[col + '_RANK'] <= HIST_TOP).sort((x, y) => x[col + '_RANK'] - y[col + '_RANK']).map(r => {
+      const p = profById.get(r.PLAYER_ID), isActive = activeIds.has(r.PLAYER_ID);
+      // live total for active players (the grid is a day old), and games for per-game averages
+      const v = isActive && p ? Math.max(r[col], p.career[key] || 0) : r[col];
+      return { rank: r[col + '_RANK'], id: r.PLAYER_ID, name: r.PLAYER_NAME, v, active: isActive, gp: p?.career.gp || null,
+        from: p?.person.from || null, to: p?.person.to || null, slug: p ? slugify(p.person.name) + '-' + p.person.id : null };
+    }),
+  }));
+  await writeData(path.join(DATA, 'alltime.json'), { updated: new Date().toISOString(), top: HIST_TOP, boards });
+
   await writeData(path.join(DATA, 'career.json'), { updated: new Date().toISOString(), watch: watch.slice(0, 12), clubs });
 
   if (!process.argv.includes('--skip-pages')) await renderPages(profiles);
@@ -345,7 +360,7 @@ async function renderPages(profiles) {
   }
   log(`pages: ${profiles.length}`);
   const today = new Date().toISOString().slice(0, 10);
-  const urls = ['https://rimblaze.com/', ...profiles.map(p => `https://rimblaze.com/players/${slugify(p.person.name)}-${p.person.id}/`)];
+  const urls = ['https://rimblaze.com/', 'https://rimblaze.com/all-time/', ...profiles.map(p => `https://rimblaze.com/players/${slugify(p.person.name)}-${p.person.id}/`)];
   await writeFile(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 }
 
