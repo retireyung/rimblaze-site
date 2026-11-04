@@ -33,7 +33,8 @@ try {
   git diff --cached --quiet
   if ($LASTEXITCODE -ne 0) {
     Step 'Save data'   { git -c user.name="rimblaze-bot" -c user.email="bot@rimblaze.com" commit -m "Nightly stats $(Get-Date -Format yyyy-MM-dd)" }
-    Step 'Upload data' { git push; if ($LASTEXITCODE -ne 0) { git pull --rebase --autostash; git push } }
+    # If GitHub has newer changes, rebase onto them; on a clash in a generated file, tonight's build wins.
+    Step 'Upload data' { git push; if ($LASTEXITCODE -ne 0) { git pull --rebase --autostash -X theirs; if ($LASTEXITCODE -ne 0) { git rebase --abort; git pull --no-rebase -X ours --no-edit }; git push } }
   } else { Write-Host 'No data changes today.' }
   $ok = $true
   Write-Host "`nDone. rimblaze.com updates in a minute or two."

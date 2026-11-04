@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en" data-board="reb">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RimBlaze All-Time Leaders</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="The NBA's top 250 all-time in points, rebounds, assists, threes, steals and blocks, with a profile for every player and how far today's stars are from passing the next legend.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://rimblaze.com/all-time/rebounds/">
+<meta property="og:site_name" content="RimBlaze">
+<meta property="og:title" content="NBA all-time leaders: top 250 in six stats | RimBlaze">
+<meta name="theme-color" content="#18202F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: headline and a four-figure summary, then one long board with six stat tabs, a name filter and the climb for active players. */
+:root{
+  --bg:#F5F2EE; --surface:#FFFFFF; --surface-2:#EEE8E1; --line:#DDD3C8;
+  --text:#1C1612; --muted:#6B5D51; --leather:#D9480F; --court:#18202F; --gold:#B8860B;
+  --shadow:0 1px 0 rgba(28,22,18,.04), 0 10px 30px -18px rgba(28,22,18,.35);
+  --display:Archivo,Impact,"Arial Narrow",sans-serif; --body:Inter,system-ui,-apple-system,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E0C0A; --surface:#191512; --surface-2:#241E19; --line:#382E26;
+    --text:#F2ECE5; --muted:#A99A8C; --leather:#FF7A3D; --court:#141A27; --gold:#FFC23D;
+    --shadow:0 12px 34px -20px rgba(0,0,0,.8); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E0C0A; --surface:#191512; --surface-2:#241E19; --line:#382E26;
+  --text:#F2ECE5; --muted:#A99A8C; --leather:#FF7A3D; --court:#141A27; --gold:#FFC23D;
+  --shadow:0 12px 34px -20px rgba(0,0,0,.8); color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+a{color:inherit;text-decoration:none}
+h1,h2{font-family:var(--display);font-stretch:80%;font-weight:800;letter-spacing:-.01em;line-height:1.02;margin:0;text-transform:uppercase;text-wrap:balance}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--leather);outline-offset:3px}
+.sr{position:absolute;left:-9999px}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-stretch:78%;font-weight:900;font-size:24px;text-transform:uppercase}
+.logo svg{width:28px;height:28px;flex:none}
+.logo b{color:var(--leather);font-weight:900}
+nav{display:none;gap:26px;font-size:14px;font-weight:500;color:var(--muted)}
+nav a:hover,nav a[aria-current="page"]{color:var(--text)}
+@media(min-width:820px){nav{display:flex}}
+.btn{display:inline-flex;align-items:center;border:0;cursor:pointer;font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:11px 16px;border-radius:3px;background:var(--leather);color:#fff;white-space:nowrap}
+
+.hero{padding:30px 0 6px}
+.crumbs{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.crumbs a:hover{color:var(--text)}
+.hero h1{font-size:clamp(2.6rem,9vw,5.6rem);max-width:13ch;margin-top:14px}
+.hero h1 em{font-style:normal;color:var(--leather)}
+.lead{max-width:58ch;color:var(--muted);font-size:17px;margin:16px 0 0}
+.notice{margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:3px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+.tag.warn{border-color:var(--leather);color:var(--leather)}
+
+.sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:24px}
+.sum div{background:var(--surface);padding:14px 16px;display:grid;gap:4px;min-width:0}
+.sum .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.sum .v{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:34px;line-height:1}
+.sum .s{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.sum div:first-child .v{color:var(--leather)}
+@media(max-width:760px){.sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+section{padding-block:30px 44px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:var(--surface)}
+.seg a{padding:9px 12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;color:var(--muted)}
+.seg a[aria-current="page"]{background:var(--leather);color:#fff}
+.seg a:hover{color:var(--text)}
+.seg a[aria-current="page"]:hover{color:#fff}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tools input,.tools select{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:3px;background:var(--surface);color:var(--text);min-width:0}
+.tools input{width:220px;max-width:100%}
+.showing{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:680px}
+th,td{padding:11px 14px;text-align:left;font-size:14px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+tr:last-child td{border-bottom:0}
+td.rk{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:22px;color:var(--muted);width:56px}
+tr.top3 td.rk{color:var(--leather)}
+td.tot{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:22px;font-variant-numeric:tabular-nums}
+td.n{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+td.yrs{color:var(--muted);font-size:13px;white-space:nowrap}
+.pn{font-weight:600}
+a.pn:hover{text-decoration:underline;text-underline-offset:3px}
+.chip{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:2px 6px;border-radius:3px;background:var(--leather);color:#fff;margin-left:6px;vertical-align:2px}
+tr.act td{background:color-mix(in srgb,var(--leather) 6%,var(--surface))}
+.climb{font-size:12.5px;color:var(--muted)}
+.climb b{color:var(--text);font-weight:600}
+.empty{padding:22px;color:var(--muted)}
+.more{margin-top:12px}
+.note{font-size:12.5px;color:var(--muted);margin-top:14px;max-width:80ch}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:26px 34px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a href="/" class="logo" aria-label="RimBlaze home">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4.5 21C1.5 14 4 7.5 9 3.5c-.6 3.4.8 5.6 2.8 6.6-.4-3.8 1.6-7.4 5.2-9.1-.6 3.3 1 5.6 3.4 6.9C17 6.2 10.8 9.4 8.6 15.6 7.6 18.2 6.4 20 4.5 21Z" fill="#FFC23D"/><circle cx="19" cy="19" r="11.5" fill="#D9480F" stroke="#1C1612" stroke-width="1.5"/><path d="M7.5 19h23M19 7.5v23M11 10.6c3.4 3.8 3.4 13 0 16.8M27 10.6c-3.4 3.8-3.4 13 0 16.8" stroke="#1C1612" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Rim<b>Blaze</b>
+    </a>
+    <nav aria-label="Primary"><a href="/#live">Live</a><a href="/#nights">Big nights</a><a href="/#leaders">Leaders</a><a href="./" aria-current="page">All-time</a></nav>
+    <a href="/#alerts" class="btn">Get alerts</a>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <div class="hero">
+    <div class="crumbs mono"><a href="/">RimBlaze</a> / All-time</div>
+    <h1 id="h1">The all-time list. <em>Top 250, six ways.</em></h1>
+    <p class="lead" id="lead">The NBA's career leaders in points, rebounds, assists, threes, steals and blocks. Open any player for his full profile, and see how close today's stars are to passing the next legend.</p>
+    <div class="notice" id="notice"></div>
+  </div>
+  <div class="sum" id="sum"></div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="bar">
+      <nav class="seg" aria-label="All-time boards" id="boards"></nav>
+      <div class="tools">
+        <label for="q" class="sr">Filter by name</label>
+        <input id="q" type="search" placeholder="Filter by name" autocomplete="off">
+        <label for="status" class="sr">Show</label>
+        <select id="status"><option value="all">Everyone</option><option value="active">Active players</option><option value="retired">Retired players</option></select>
+      </div>
+    </div>
+    <div class="showing" id="showing"></div>
+    <div class="card tbl">
+      <table>
+        <thead><tr><th>#</th><th>Player</th><th id="thTot">Points</th><th>Per game</th><th>Career</th><th>The climb</th></tr></thead>
+        <tbody id="rows"><tr><td colspan="6" class="empty">Loading the all-time leaders…</td></tr></tbody>
+      </table>
+    </div>
+    <button type="button" class="btn more" id="more" hidden>Show all 250</button>
+    <p class="note">Regular season only, from NBA.com. Steals and blocks have been counted since 1973-74 and threes since 1979-80, so those boards start there. Active players' totals update after every game.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 RimBlaze. Stats from NBA.com. Not affiliated with the National Basketball Association.</span>
+    <span class="mono">rimblaze.com</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function n(v){return v==null?'—':Number(v).toLocaleString('en-US');}
+function ord(k){var s=['th','st','nd','rd'],v=k%100;return k+(s[(v-20)%10]||s[v]||s[0]);}
+var PROD=/(^|\.)rimblaze\.com$/.test(location.hostname);
+var KEYS=['pts','reb','ast','tpm','stl','blk'];
+var SLUG={pts:'',reb:'rebounds/',ast:'assists/',tpm:'threes/',stl:'steals/',blk:'blocks/'};
+var WORD={pts:'scoring',reb:'rebounding',ast:'assist',tpm:'3-point',stl:'steals',blk:'blocks'};
+var ROOT=PROD?'/':'../';
+var ST={key:'pts',q:'',status:'all',all:false},DATA=null;
+
+/* Fictional sample for previews off rimblaze.com. */
+var SAMPLE={top:250,boards:[
+  {key:'pts',label:'Points',rows:[[1,'Marcus Hale',41892,1540,1996,2017,0],[2,'Dante Okafor',38611,1488,1979,1998,0],[3,'Rafael Moore',37104,1402,1998,2019,0],[4,'Jonah Pierce',35950,1381,2008,2026,1],[5,'Elias Grant',33643,1307,1984,2003,0],[6,'Theo Brandt',32012,1250,1960,1978,0],[7,'Andre Lyle',31419,1236,2010,2026,1],[8,'Victor Sloan',30880,1188,1988,2005,0],[60,'Ray Castillo',16401,906,1990,2004,0],[61,'Kenji Alvarez',16183,630,2017,2026,1],[62,'Sam Whitaker',16120,1080,1970,1983,0]]},
+  {key:'reb',label:'Rebounds',rows:[[1,'Theo Brandt',21402,1250,1960,1978,0],[2,'Dante Okafor',17610,1488,1979,1998,0],[3,'Marcus Hale',15020,1540,1996,2017,0],[4,'Jonah Pierce',12988,1381,2008,2026,1]]},
+  {key:'ast',label:'Assists',rows:[[1,'Victor Sloan',15200,1188,1988,2005,0],[2,'Andre Lyle',12011,1236,2010,2026,1],[3,'Elias Grant',11400,1307,1984,2003,0]]},
+  {key:'tpm',label:'Threes',rows:[[1,'Andre Lyle',4120,1236,2010,2026,1],[2,'Rafael Moore',2973,1402,1998,2019,0],[18,'Kenji Alvarez',2532,630,2017,2026,1]]},
+  {key:'stl',label:'Steals',rows:[[1,'Victor Sloan',3011,1188,1988,2005,0],[2,'Elias Grant',2600,1307,1984,2003,0]]},
+  {key:'blk',label:'Blocks',rows:[[1,'Dante Okafor',3400,1488,1979,1998,0],[2,'Theo Brandt',3100,1250,1960,1978,0]]}
+].map(function(b){return{key:b.key,label:b.label,rows:b.rows.map(function(r){return{rank:r[0],id:null,name:r[1],v:r[2],gp:r[3],from:r[4],to:r[5],active:!!r[6],slug:null,sample:r[1]==='Kenji Alvarez'};})};})};
+var SAMPLE_PROFILE='https://claude.ai/artifact/Vn5FYt4sQJQvHCGnUZXFmq';
+
+function board(){return DATA.boards.find(function(b){return b.key===ST.key;})||DATA.boards[0];}
+function plink(r){
+  if(r.slug)return '<a class="pn" href="'+ROOT+'players/'+r.slug+'/">'+esc(r.name)+'</a>';
+  if(r.sample)return '<a class="pn" href="'+SAMPLE_PROFILE+'" target="_blank" rel="noopener">'+esc(r.name)+'</a>';
+  return '<span class="pn">'+esc(r.name)+'</span>';
+}
+function climb(r,rows){
+  if(!r.active)return '';
+  var above=rows.filter(function(x){return x.v>r.v;}).sort(function(a,b){return a.v-b.v;})[0];
+  if(!above)return '<span class="climb"><b>No. 1</b> and counting</span>';
+  return '<span class="climb"><b>'+n(above.v-r.v+1)+'</b> to pass '+esc(above.name)+' for #'+above.rank+'</span>';
+}
+function renderBoards(){
+  $('boards').innerHTML=DATA.boards.map(function(b){return '<a href="/all-time/'+SLUG[b.key]+'" data-key="'+b.key+'"'+(b.key===ST.key?' aria-current="page"':'')+'>'+esc(b.label)+'</a>';}).join('');
+  var b=board(),w=WORD[b.key];
+  $('h1').innerHTML='NBA all-time <em>'+w+' leaders.</em>';
+  $('lead').textContent='The top '+(DATA.top||250)+' in career '+b.label.toLowerCase()+' in NBA history'+(b.rows[0]?', led by '+b.rows[0].name+' with '+n(b.rows[0].v)+'.':'.')+' Every player links to his full profile, and active players show how far they are from passing the next legend.';
+}
+function renderSum(){
+  var b=board(),rows=b.rows,lead=rows[0],act=rows.filter(function(r){return r.active;});
+  var closest=act.map(function(r){var a=rows.filter(function(x){return x.v>r.v;}).sort(function(x,y){return x.v-y.v;})[0];return a?{r:r,a:a,gap:a.v-r.v+1}:null;}).filter(Boolean).sort(function(x,y){return x.gap-y.gap;})[0];
+  var bestActive=act[0],cut=rows[rows.length-1],lbl=b.label.toLowerCase();
+  $('sum').innerHTML=
+    '<div><span class="k">All-time leader</span><span class="v">'+(lead?n(lead.v):'—')+'</span><span class="s">'+(lead?esc(lead.name)+' · '+lbl:'')+'</span></div>'+
+    '<div><span class="k">Top active player</span><span class="v">'+(bestActive?'#'+bestActive.rank:'—')+'</span><span class="s">'+(bestActive?esc(bestActive.name)+' · '+n(bestActive.v)+' '+lbl:'No active players')+'</span></div>'+
+    '<div><span class="k">Closest climb</span><span class="v">'+(closest?n(closest.gap):'—')+'</span><span class="s">'+(closest?esc(closest.r.name)+' to pass '+esc(closest.a.name)+' for #'+closest.a.rank:'')+'</span></div>'+
+    '<div><span class="k">Active in the top '+(DATA.top||250)+'</span><span class="v">'+act.length+'</span><span class="s">'+(cut?'Cutoff: '+n(cut.v)+' '+lbl:'')+'</span></div>';
+}
+function render(){
+  var b=board(),q=ST.q.toLowerCase();
+  $('thTot').textContent=b.label;
+  var list=b.rows.filter(function(r){return (!q||r.name.toLowerCase().indexOf(q)>=0)&&(ST.status==='all'||(ST.status==='active')===r.active);});
+  var lim=list.length;
+  $('showing').textContent=list.length===b.rows.length?'Top '+b.rows.length+' in '+b.label.toLowerCase():list.length+' of '+b.rows.length+' players';
+  $('rows').innerHTML=list.length?list.slice(0,lim).map(function(r){
+    return '<tr class="'+(r.rank<=3?'top3 ':'')+(r.active?'act':'')+'"><td class="rk">'+r.rank+'</td><td>'+plink(r)+(r.active?'<span class="chip">ACTIVE</span>':'')+'</td><td class="tot">'+n(r.v)+'</td><td class="n">'+(r.gp?(r.v/r.gp).toFixed(1):'—')+'</td><td class="yrs">'+(r.from?esc(r.from)+'–'+(r.active?'now':esc(r.to)):'—')+'</td><td>'+climb(r,b.rows)+'</td></tr>';
+  }).join(''):'<tr><td colspan="6" class="empty">'+(b.rows.length?'No player on this board matches “'+esc(ST.q)+'”.':'This board isn’t available yet.')+'</td></tr>';
+  $('more').hidden=list.length<=lim;
+  $('more').textContent='Show all '+list.length;
+  renderSum();
+}
+function fromHash(){var d=((document.documentElement||{}).dataset||{}).board,h=location.hash.replace('#','');if(KEYS.indexOf(h)>=0)ST.key=h;else if(KEYS.indexOf(d)>=0)ST.key=d;}
+
+$('boards').addEventListener('click',function(e){var b=e.target.closest('[data-key]');if(!b)return;e.preventDefault();ST.key=b.dataset.key;try{if(PROD)history.replaceState(null,'','/all-time/'+SLUG[ST.key]);else history.replaceState(null,'','#'+ST.key);}catch(err){}renderBoards();render();});
+$('q').addEventListener('input',function(){ST.q=this.value.trim();render();});
+$('status').addEventListener('change',function(){ST.status=this.value;render();});
+$('more').addEventListener('click',function(){ST.all=true;render();});
+window.addEventListener('hashchange',function(){if(!DATA)return;fromHash();renderBoards();render();});
+
+function boot(d,sample){
+  DATA=d;fromHash();renderBoards();render();
+  $('notice').innerHTML=sample?'<span class="tag warn">Sample preview</span><span>These players are fictional. On rimblaze.com every board is NBA.com’s real top 250.</span>':
+    '<span class="tag">NBA data</span><span>Updated '+new Date(d.updated).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'.</span>';
+}
+fetch(ROOT+'data/alltime.json').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){boot(d,false);},function(){
+  if(PROD){$('rows').innerHTML='<tr><td colspan="6" class="empty">The all-time boards are being built. Check back in a few minutes.</td></tr>';return;}
+  boot(SAMPLE,true);
+});
+})();
+</script>
