@@ -185,6 +185,8 @@ td.big-n{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:2
 .bar .mk{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--text);opacity:.6}
 .bar-lbl{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
 .ch-item{display:grid;gap:8px;padding-bottom:4px}
+.jump{display:inline-block;margin-top:8px;text-decoration:underline;text-underline-offset:3px}
+.jump:hover{color:var(--text)}
 .ch-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .ch-need{font-size:12px;color:var(--leather);font-weight:600}
 .ch-group{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
@@ -392,7 +394,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <section id="leaders" style="padding-top:8px">
   <div class="wrap">
-    <div class="sec-head"><h2>Rare bucket leaders</h2>
+    <div class="sec-head"><div><h2>Rare bucket leaders</h2><a class="sub mono jump" id="feedJump" href="#live" hidden>Last night’s rare buckets ↓</a></div>
       <div class="tools"><span class="sub mono" id="leadersSub">Loading</span>
         <div class="seg" role="group" aria-label="Rare bucket leaders range" id="leadersRange" hidden>
           <button type="button" data-range="season" aria-pressed="true">Season</button>
@@ -778,7 +780,22 @@ document.querySelectorAll('[role="tab"]').forEach(function(t){
 });
 
 /* ---------- Status ---------- */
+// While games are live the feed sits right under the shot chart. The rest of the time the season
+// leaders lead, with a jump link down to the latest night's feed.
+function arrangeSections(){
+  var live=document.getElementById('live'),leaders=document.getElementById('leaders'),chase=document.getElementById('chase');
+  var leadersFirst=S.mode==='live'&&!S.anyLive;
+  if(leadersFirst&&live.previousElementSibling!==leaders){live.parentNode.insertBefore(leaders,live);}
+  if(!leadersFirst&&leaders.nextElementSibling!==chase){chase.parentNode.insertBefore(leaders,chase);}
+  live.style.paddingTop=leadersFirst?'8px':'';
+  leaders.style.paddingTop=leadersFirst?'28px':'8px';
+  var j=document.getElementById('feedJump');
+  j.hidden=!leadersFirst;
+  if(leadersFirst&&S.date)j.textContent=(S.date===yesterday()?'Last night’s':(S.date===today()?'Tonight’s':fmtDate(S.date)+'’s'))+' rare buckets ↓';
+}
+function yesterday(){var d=new Date(today()+'T12:00:00');d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);}
 function setStatus(){
+  arrangeSections();
   var dot=document.getElementById('liveDot'),txt=document.getElementById('liveText'),n=document.getElementById('notice');
   if(S.mode==='sample'){
     dot.className='dot on';txt.textContent='Live · Updating every few seconds';
@@ -807,7 +824,7 @@ var di=document.getElementById('dateInput');
 di.addEventListener('change',function(){
   if(!di.value)return;
   if(S.mode!=='live'){di.value=S.date||'';return;}
-  S.date=di.value;S.isToday=S.date===today();S.sel=null;S.showAll=false;
+  S.date=di.value;S.isToday=S.date===today();S.sel=null;S.showAll=false;S.userPicked=true;
   document.getElementById('feed').innerHTML='<div class="card empty">Loading rare buckets…</div>';
   loadDate(S.date).then(function(b){S.buckets=b;},function(){S.buckets=[];}).then(function(){setStatus();renderFeed();});
   loadBoxes(S.date).then(renderGameFeats,function(){renderGameFeats([]);});
@@ -819,7 +836,17 @@ document.getElementById('alert-form').addEventListener('submit',function(e){
 
 /* ---------- Live polling ---------- */
 function poll(){
-  if(document.hidden||S.mode!=='live'||!S.isToday)return;
+  if(document.hidden||S.mode!=='live')return;
+  if(!S.isToday){
+    // Showing a past night: once tonight's games start, switch to them (unless the visitor picked a date).
+    if(S.userPicked)return;
+    loadIndex().then(function(j){
+      if(j.latest!==today())return;
+      S.date=today();S.isToday=true;S.sel=null;S.showAll=false;di.value=S.date;
+      return loadDate(S.date,true).then(function(b){S.buckets=b;setStatus();renderFeed();return loadBoxes(S.date,true).then(renderGameFeats);});
+    }).catch(function(){});
+    return;
+  }
   loadDate(S.date,true).then(function(b){
     var known={};S.buckets.forEach(function(x){known[x.id]=1;});
     var added=false,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
