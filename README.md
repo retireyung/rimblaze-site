@@ -51,6 +51,17 @@ npx serve .                                      # look at the site locally
 
 The first run downloads every season's game logs since 1996-97 (30 requests) and every active player's career totals, bio and awards (about 1,500 requests). At the built-in pace of one request every 0.7 s that takes 20 to 30 minutes. Everything that can't change is cached in `data/cache/`, so later nightly runs only fetch the current season and players who just played, which takes a few minutes.
 
+## Historical rare buckets (one-time backfill)
+
+`scripts/backfill-buckets.mjs` fills in `data/buckets/<season>.json` for every season from 1996-97 to last season, using the same rules as live games, so the homepage's **Since tracking began** leaders cover NBA.com's whole play-by-play era. Run it once on the home PC:
+
+```bash
+node scripts/backfill-buckets.mjs --dry --season 2024-25 --limit 5   # quick check, writes nothing
+node scripts/backfill-buckets.mjs                                    # all seasons, newest first (about 8-14 hours)
+```
+
+It can be stopped and restarted at any time (finished games are cached in `data/cache/hist/`), and a season's file appears only once all its games are done. The scheduled runs commit each finished season, and the next stats build adds it to the leaders. Older play-by-play is less precise: before about 2019 many clocks have whole seconds only, so on those games BUZZER counts only shots at 0:00, and some of the earliest seasons lack shot distances.
+
 ## What the build writes
 
 - `data/season.json`: season feat leaders (triple-doubles, double-doubles, 30- and 40-point games, active double-double streak), three season chases measured against the best single season since 1996-97, rare bucket leaders and team totals.
