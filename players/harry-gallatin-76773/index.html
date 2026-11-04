@@ -135,10 +135,12 @@ select{font-family:var(--mono);font-size:12px;padding:7px 8px;border:1px solid v
 .team-line{display:block;font-weight:500}
 .team-line b{font-weight:600}
 @media(max-width:520px){.bio{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.totals{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
-.totals .big .v{font-size:58px}
-.totals .big.hero-num .v{color:var(--leather);font-size:78px}
-@media(max-width:620px){.totals{grid-template-columns:repeat(2,minmax(0,1fr))}.totals .big.hero-num{grid-column:1/-1}}
+.totals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.totals .big{container-type:inline-size}
+.totals .big .v{font-size:min(58px,30cqi);white-space:nowrap}
+/* Career points gets the full row so five-digit totals (43,537) never get cut off */
+.totals .big.hero-num{grid-column:1/-1}
+.totals .big.hero-num .v{color:var(--leather);font-size:min(78px,19cqi)}
 
 /* court card */
 .court-card{background:var(--court);border-radius:6px;padding:14px 14px 10px;color:var(--on-court);box-shadow:var(--shadow);overflow:hidden}
