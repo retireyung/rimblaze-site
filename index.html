@@ -478,20 +478,12 @@ function pool(items,n,fn){
 }
 // NBA.com doesn't let other websites read its live files, so the stats build on a home
 // computer saves a copy of each game night to data/live/ every 10 minutes during games.
-// The live stats server (live.homeruns.com) refreshes the same snapshot every 45 seconds; the
-// homepage reads it first and falls back to the site's own copy if the server can't be reached.
 var DAYS={},IDX=null;
-var LIVE_SERVER='https://live.homeruns.com/rimblaze/live/', LIVE_LOCAL='data/live/', liveDown=0;
 function bust(u,fresh){return fresh?u+(u.indexOf('?')<0?'?':'&')+'t='+Date.now():u;}
-function liveJSON(file,fresh){
-  var local=function(){return getJSON(bust(LIVE_LOCAL+file,fresh));};
-  if(Date.now()<liveDown)return local();
-  return getJSON(bust(LIVE_SERVER+file,fresh),5000).then(null,function(){liveDown=Date.now()+60000;return local();});
-}
-function loadIndex(){return liveJSON('index.json',true).then(function(j){IDX=j;return j;});}
+function loadIndex(){return getJSON(bust('data/live/index.json',true)).then(function(j){IDX=j;return j;});}
 function loadDay(date,fresh){
   if(!fresh&&DAYS[date])return Promise.resolve(DAYS[date]);
-  return liveJSON(date+'.json',fresh||date===today()).then(function(j){DAYS[date]=j;return j;},function(){return {date:date,games:[],buckets:[],lines:[],anyLive:false};});
+  return getJSON(bust('data/live/'+date+'.json',fresh||date===today())).then(function(j){DAYS[date]=j;return j;},function(){return {date:date,games:[],buckets:[],lines:[],anyLive:false};});
 }
 function loadDate(date,fresh){
   return loadDay(date,fresh).then(function(j){S.anyLive=!!j.anyLive;S.dayUpdated=j.updated||null;S.games=j.games||[];return (j.buckets||[]).map(function(b){return Object.assign({},b);});});
@@ -769,7 +761,7 @@ function setStatus(){
   }else{
     dot.className='dot'+(S.anyLive?' on':'');
     var upd=S.dayUpdated?new Date(S.dayUpdated).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:TZ}):null;
-    txt.textContent=S.anyLive?(Date.now()<liveDown?'Live · Updates every 10 minutes':'Live · Updates every minute'):'Latest game night · '+fmtDate(S.date);
+    txt.textContent=S.anyLive?'Live · Updates every 10 minutes':'Latest game night · '+fmtDate(S.date);
     n.innerHTML='<span class="tag">NBA data</span><span>'+(S.anyLive?'Games in progress'+(upd?'. Last update '+upd+' ET':'')+'.':'No games in progress. Showing '+fmtDate(S.date)+'; pick any night in the feed.')+'</span>';
   }
 }

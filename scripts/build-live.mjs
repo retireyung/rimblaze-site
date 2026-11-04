@@ -20,8 +20,7 @@ import { rareBuckets } from './feats.mjs';
 import { renderNights } from './nights.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-// RB_LIVE_DIR lets the live stats server keep its snapshot outside the git checkout.
-const DATA = path.join(ROOT, 'data'), LIVE = process.env.RB_LIVE_DIR || path.join(DATA, 'live'), CACHE = path.join(DATA, 'cache', 'live');
+const DATA = path.join(ROOT, 'data'), LIVE = path.join(DATA, 'live'), CACHE = path.join(DATA, 'cache', 'live');
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 const readJSON = async (f, d = null) => { try { return JSON.parse(await readFile(f, 'utf8')); } catch { return d; } };
 const writeJSON = async (f, v) => { await mkdir(path.dirname(f), { recursive: true }); await writeFile(f, JSON.stringify(v)); };
