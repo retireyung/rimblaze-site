@@ -59,19 +59,28 @@ async function gameLogs(season) {
 
 // ---------- 2. Rare buckets from play-by-play ----------
 async function seasonBuckets() {
-  const sched = await cdn('staticData/scheduleLeagueV2_1.json');
+  let sched = null;
+  for (const f of ['staticData/scheduleLeagueV2_1.json', 'staticData/scheduleLeagueV2.json']) {
+    try { sched = await cdn(f); if (sched?.leagueSchedule) break; } catch (e) { log(`schedule ${f}: ${e.message.split(' failed: ').pop()}`); }
+  }
+  if (!sched?.leagueSchedule) throw new Error('NBA.com schedule unavailable');
   const games = (sched?.leagueSchedule?.gameDates || []).flatMap(gd => (gd.games || []).map(g => ({ ...g, date: gd.gameDate })))
     .filter(g => /^002/.test(g.gameId) && g.gameStatus === 3);
   const out = [];
+  let missed = 0;
   for (const g of games) {
     const m = /(\d+)\/(\d+)\/(\d+)/.exec(g.date), date = `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}`;
-    const list = await cached(`buckets/${g.gameId}.json`, Infinity, async () => {
-      const pbp = await cdn(`liveData/playbyplay/playbyplay_${g.gameId}.json`);
-      return pbp ? rareBuckets(pbp.game.actions || [], g) : [];
-    });
-    list.forEach(b => out.push({ ...b, date }));
+    try {
+      // Only a successful download is cached, so a game that failed tonight is retried tomorrow.
+      const list = await cached(`buckets/${g.gameId}.json`, Infinity, async () => {
+        const pbp = await cdn(`liveData/playbyplay/playbyplay_${g.gameId}.json`);
+        if (!pbp) throw new Error('no play-by-play yet');
+        return rareBuckets(pbp.game.actions || [], g);
+      });
+      list.forEach(b => out.push({ ...b, date }));
+    } catch (e) { missed++; }
   }
-  log(`rare buckets: ${out.length} from ${games.length} final games`);
+  log(`rare buckets: ${out.length} from ${games.length - missed} of ${games.length} final games`);
   return out;
 }
 
@@ -140,7 +149,9 @@ async function main() {
   // rare buckets
   const fullName = new Map(active.map(p => [p.id, p.name]));
   cur.forEach(l => { if (!fullName.has(l.pid)) fullName.set(l.pid, l.n); });
-  const buckets = (await seasonBuckets()).map(b => ({ ...b, n: fullName.get(b.pid) || b.n }));
+  let rawBuckets = [];
+  try { rawBuckets = await seasonBuckets(); } catch (e) { log(`rare buckets skipped tonight: ${e.message}`); }
+  const buckets = rawBuckets.map(b => ({ ...b, n: fullName.get(b.pid) || b.n }));
   await writeJSON(path.join(DATA, 'buckets', SEASON + '.json'), buckets);
 
   // per player

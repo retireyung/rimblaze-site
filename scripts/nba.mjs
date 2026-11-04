@@ -39,7 +39,8 @@ export function stats(endpoint, params) {
   const q = new URLSearchParams(params).toString();
   return get(STATS + endpoint + '?' + q, { headers: HEADERS });
 }
-export const cdn = path => get(CDN + path, { headers: { 'User-Agent': HEADERS['User-Agent'] } });
+const CDN_HEADERS = { 'User-Agent': HEADERS['User-Agent'], 'Accept': HEADERS.Accept, 'Accept-Language': HEADERS['Accept-Language'], 'Origin': HEADERS.Origin, 'Referer': HEADERS.Referer };
+export const cdn = path => get(CDN + path, { headers: CDN_HEADERS, tries: 2 });
 
 // stats.nba.com returns {resultSets:[{name, headers, rowSet}]} (or resultSet). Turn a set into objects.
 export function rows(json, name) {

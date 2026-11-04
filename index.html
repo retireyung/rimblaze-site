@@ -451,7 +451,7 @@ function pool(items,n,fn){
   return Promise.all(ws).then(function(){return out;});
 }
 function loadSchedule(){
-  return getJSON(CDN+'/staticData/scheduleLeagueV2_1.json',15000).then(function(s){
+  return getJSON(CDN+'/staticData/scheduleLeagueV2_1.json',15000).catch(function(){return getJSON(CDN+'/staticData/scheduleLeagueV2.json',15000);}).then(function(s){
     var byDate={};
     ((s.leagueSchedule&&s.leagueSchedule.gameDates)||[]).forEach(function(gd){
       var m=/(\d+)\/(\d+)\/(\d+)/.exec(gd.gameDate);if(!m)return;
