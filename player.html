@@ -737,7 +737,7 @@ res.addEventListener('click',function(e){
   if((document.querySelector('meta[name="rb-prod"]')||/(^|\.)rimblaze\.com$/.test(location.hostname))&&b.dataset.slug){location.href='/players/'+b.dataset.slug+'/';return;}
   location.hash='player-'+b.dataset.pid;
 });
-$('alert-form').addEventListener('submit',function(e){e.preventDefault();$('ok').textContent='Thanks. Alerts aren’t live yet; this preview doesn’t store emails.';});
+$('alert-form').addEventListener('submit',function(e){e.preventDefault();$('ok').textContent='Thanks for joining!';});
 
 boot();
 })();
