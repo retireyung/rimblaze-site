@@ -21,6 +21,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { stats, cdn, rows, seasonFor, seasonList, wikidataBios } from './nba.mjs';
 import { renderSite } from './pages.mjs';
+import { TEAM_NAMES } from './teams.mjs';
 import { feats, featScore, tens, rareBuckets, isRare, WATCH_MIN, MILESTONES, nextMilestone, badges } from './feats.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -95,20 +96,37 @@ async function seasonBuckets() {
 }
 
 // ---------- 3. Helpers over game lines ----------
+// Season chases: counted feats and streaks, measured against the best single season since 1996-97.
+const CHASES = [
+  { key: 'td', label: 'Triple-doubles', test: l => tens(l) >= 3 },
+  { key: 'p50', label: '50-point games', test: l => l.P >= 50 },
+  { key: 'p40', label: '40-point games', test: l => l.P >= 40 },
+  { key: 'p30', label: '30-point games', test: l => l.P >= 30 },
+  { key: 'r20', label: '20-rebound games', test: l => l.R >= 20 },
+  { key: 'a15', label: '15-assist games', test: l => l.A >= 15 },
+  { key: 't8', label: 'Games with 8+ threes', test: l => l.tpm >= 8 },
+  { key: 'b5', label: 'Games with 5+ blocks', test: l => l.B >= 5 },
+  { key: 'dds', label: 'Double-double streak', streak: true, test: l => tens(l) >= 2 },
+  { key: 'p30s', label: '30-point streak', streak: true, test: l => l.P >= 30 },
+];
 function seasonFeatTotals(lines) {
   const P = new Map();
   const byPlayer = new Map();
   lines.forEach(l => { if (!byPlayer.has(l.pid)) byPlayer.set(l.pid, []); byPlayer.get(l.pid).push(l); });
   for (const [pid, ls] of byPlayer) {
     ls.sort((a, b) => a.date.localeCompare(b.date));
-    let run = 0, best = 0;
-    const r = { pid, name: ls[0].n, team: ls[ls.length - 1].t, gp: ls.length, td: 0, dd: 0, p30: 0, p40: 0, streak: 0, bestStreak: 0 };
+    const r = { pid, name: ls[0].n, team: ls[ls.length - 1].t, gp: ls.length, dd: 0 };
+    for (const c of CHASES) { r[c.key] = 0; if (c.streak) r[c.key + 'Best'] = 0; }
     ls.forEach(l => {
-      const t = tens(l);
-      if (t >= 3) r.td++; if (t >= 2) { r.dd++; run++; best = Math.max(best, run); } else run = 0;
-      if (l.P >= 30) r.p30++; if (l.P >= 40) r.p40++;
+      if (tens(l) >= 2) r.dd++;
+      for (const c of CHASES) {
+        const hit = c.test(l);
+        if (!c.streak) { if (hit) r[c.key]++; }
+        else { r[c.key] = hit ? r[c.key] + 1 : 0; r[c.key + 'Best'] = Math.max(r[c.key + 'Best'], r[c.key]); }
+      }
     });
-    r.streak = run; r.bestStreak = best; P.set(pid, r);
+    r.streak = r.dds; r.bestStreak = r.ddsBest; // names the homepage tables use
+    P.set(pid, r);
   }
   return P;
 }
@@ -128,13 +146,13 @@ async function main() {
   allLines.forEach(l => { if (!linesBy.has(l.pid)) linesBy.set(l.pid, []); linesBy.get(l.pid).push(l); });
 
   // season feat records since 1996-97 (for the chases)
-  const records = { td: null, p40: null, ddStreak: null };
-  for (const s of seasons.filter(x => x !== SEASON)) {
-    const T = seasonFeatTotals(allLines.filter(l => l.season === s));
-    for (const r of T.values()) {
-      if (!records.td || r.td > records.td.v) records.td = { v: r.td, name: r.name, season: s };
-      if (!records.p40 || r.p40 > records.p40.v) records.p40 = { v: r.p40, name: r.name, season: s };
-      if (!records.ddStreak || r.bestStreak > records.ddStreak.v) records.ddStreak = { v: r.bestStreak, name: r.name, season: s };
+  // best single season since 1996-97 for every chase category
+  const records = {};
+  for (const sz of seasons.filter(x => x !== SEASON)) {
+    const T = seasonFeatTotals(allLines.filter(l => l.season === sz));
+    for (const r of T.values()) for (const c of CHASES) {
+      const v = c.streak ? r[c.key + 'Best'] : r[c.key];
+      if (v > 0 && (!records[c.key] || v > records[c.key].v)) records[c.key] = { v, name: r.name, season: sz };
     }
   }
 
@@ -208,12 +226,21 @@ async function main() {
   const T = seasonFeatTotals(cur);
   const teamGames = Math.max(0, ...[...new Set(cur.map(l => l.t))].map(t => new Set(cur.filter(l => l.t === t).map(l => l.gameId)).size));
   const leaders = [...T.values()].filter(r => r.td || r.dd || r.p30).sort((a, b) => b.td - a.td || b.p40 - a.p40 || b.dd - a.dd || b.p30 - a.p30).slice(0, 15);
-  const topTd = [...T.values()].sort((a, b) => b.td - a.td)[0], topStreak = [...T.values()].sort((a, b) => b.streak - a.streak)[0], top40 = [...T.values()].sort((a, b) => b.p40 - a.p40)[0];
   const chase = [];
-  const vs = (cur, rec) => cur > rec.v ? { max: cur, lbl: `${cur} · past the mark of ${rec.v}` } : { max: rec.v, lbl: `${cur} of ${rec.v}` };
-  if (topTd?.td && records.td?.v) chase.push({ pid: topTd.pid, name: topTd.name, what: `Triple-doubles this season. Most in a season since ${FIRST_LOG_SEASON}: ${records.td.v} by ${records.td.name} (${records.td.season}).`, cur: topTd.td, ...vs(topTd.td, records.td), need: 'Pace: ' + pace(topTd.td, topTd.gp, teamGames) });
-  if (topStreak?.streak && records.ddStreak?.v) chase.push({ pid: topStreak.pid, name: topStreak.name, what: `Active double-double streak. Longest in one season since ${FIRST_LOG_SEASON}: ${records.ddStreak.v} by ${records.ddStreak.name} (${records.ddStreak.season}).`, cur: topStreak.streak, max: Math.max(topStreak.streak, records.ddStreak.v), need: topStreak.streak > records.ddStreak.v ? 'New mark' : (records.ddStreak.v - topStreak.streak) + ' to tie', lbl: topStreak.streak + ' straight' });
-  if (top40?.p40 && records.p40?.v) chase.push({ pid: top40.pid, name: top40.name, what: `40-point games this season. Most in a season since ${FIRST_LOG_SEASON}: ${records.p40.v} by ${records.p40.name} (${records.p40.season}).`, cur: top40.p40, ...vs(top40.p40, records.p40), need: 'Pace: ' + pace(top40.p40, top40.gp, teamGames) });
+  for (const c of CHASES) {
+    const rec = records[c.key]; if (!rec) continue;
+    const top = [...T.values()].sort((a, b) => b[c.key] - a[c.key] || a.gp - b.gp)[0];
+    const cur = top?.[c.key] || 0; if (!cur) continue;
+    const since = `since ${FIRST_LOG_SEASON}: ${rec.v} by ${rec.name} (${rec.season})`;
+    chase.push(c.streak
+      ? { cat: c.label, pid: top.pid, name: top.name, cur, max: Math.max(cur, rec.v), ratio: cur / rec.v,
+          what: `Active ${c.label.toLowerCase()}. Longest in one season ${since}.`,
+          need: cur > rec.v ? 'New mark' : (rec.v - cur) + ' to tie', lbl: cur + ' straight' }
+      : { cat: c.label, pid: top.pid, name: top.name, cur, max: Math.max(cur, rec.v), ratio: cur / rec.v,
+          what: `${c.label} this season. Most in a season ${since}.`,
+          need: 'Pace: ' + pace(cur, top.gp, teamGames), lbl: cur > rec.v ? `${cur} · past the mark of ${rec.v}` : `${cur} of ${rec.v}` });
+  }
+  chase.sort((a, b) => b.ratio - a.ratio);
   const rareBy = new Map();
   buckets.forEach(b => {
     const r = rareBy.get(b.pid) || { pid: b.pid, name: b.n, team: b.t, rare: 0, logo: 0, buzz: 0, go: 0, deep: 0 };
@@ -266,7 +293,7 @@ async function main() {
 
   await writeData(path.join(DATA, 'career.json'), { updated: new Date().toISOString(), watch: watch.slice(0, 12), clubs });
 
-  if (!process.argv.includes('--skip-pages')) await renderSite({ root: ROOT, profiles, alltime, slugify, log });
+  if (!process.argv.includes('--skip-pages')) await renderSite({ root: ROOT, profiles, alltime, slugify, log, cur, buckets, season: SEASON });
   log(`done · ${profiles.length} player files`);
 }
 
@@ -324,20 +351,6 @@ function buildProfile(a, careerJ, infoJ, awardsJ, lines, buckets, rank, bio = {}
   profile.badges = badges(profile);
   return profile;
 }
-const TEAM_NAMES = {
-  ATL: 'Atlanta Hawks', BOS: 'Boston Celtics', BKN: 'Brooklyn Nets', CHA: 'Charlotte Hornets', CHI: 'Chicago Bulls', CLE: 'Cleveland Cavaliers',
-  DAL: 'Dallas Mavericks', DEN: 'Denver Nuggets', DET: 'Detroit Pistons', GSW: 'Golden State Warriors', HOU: 'Houston Rockets', IND: 'Indiana Pacers',
-  LAC: 'LA Clippers', LAL: 'Los Angeles Lakers', MEM: 'Memphis Grizzlies', MIA: 'Miami Heat', MIL: 'Milwaukee Bucks', MIN: 'Minnesota Timberwolves',
-  NOP: 'New Orleans Pelicans', NYK: 'New York Knicks', OKC: 'Oklahoma City Thunder', ORL: 'Orlando Magic', PHI: 'Philadelphia 76ers', PHX: 'Phoenix Suns',
-  POR: 'Portland Trail Blazers', SAC: 'Sacramento Kings', SAS: 'San Antonio Spurs', TOR: 'Toronto Raptors', UTA: 'Utah Jazz', WAS: 'Washington Wizards',
-  NJN: 'New Jersey Nets', SEA: 'Seattle SuperSonics', NOH: 'New Orleans Hornets', NOK: 'New Orleans/Oklahoma City Hornets', CHH: 'Charlotte Hornets',
-  VAN: 'Vancouver Grizzlies', WSB: 'Washington Bullets', KCK: 'Kansas City Kings', KCO: 'Kansas City-Omaha Kings', CIN: 'Cincinnati Royals',
-  ROC: 'Rochester Royals', SDC: 'San Diego Clippers', SDR: 'San Diego Rockets', BUF: 'Buffalo Braves', NOJ: 'New Orleans Jazz', NYN: 'New York Nets',
-  SFW: 'San Francisco Warriors', PHW: 'Philadelphia Warriors', GOS: 'Golden State Warriors', MNL: 'Minneapolis Lakers', SYR: 'Syracuse Nationals',
-  STL: 'St. Louis Hawks', MLH: 'Milwaukee Hawks', TRI: 'Tri-Cities Blackhawks', FTW: 'Fort Wayne Pistons', BAL: 'Baltimore Bullets', CAP: 'Capital Bullets',
-  CHZ: 'Chicago Zephyrs', CHP: 'Chicago Packers', INO: 'Indianapolis Olympians', AND: 'Anderson Packers', WAT: 'Waterloo Hawks', SHE: 'Sheboygan Red Skins',
-  PRO: 'Providence Steamrollers', WSC: 'Washington Capitols', CHS: 'Chicago Stags', BOM: 'St. Louis Bombers', BLT: 'Baltimore Bullets',
-};
 function teamSpans(seasons) {
   const out = [];
   seasons.forEach(s => s.team.split('/').forEach(t => { const y = +s.season.slice(0, 4); const last = out.find(o => o.team === t && o.to >= y - 1); if (last) last.to = y; else out.push({ team: t, from: y, to: y }); }));

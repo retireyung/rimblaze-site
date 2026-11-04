@@ -184,6 +184,11 @@ td.big-n{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:2
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--court),var(--leather));border-radius:99px}
 .bar .mk{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--text);opacity:.6}
 .bar-lbl{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.ch-item{display:grid;gap:8px;padding-bottom:4px}
+.ch-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ch-need{font-size:12px;color:var(--leather);font-weight:600}
+.ch-group{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
+.ch-group:first-child{border-top:0;padding-top:0;margin-top:0}
 
 /* teams */
 .teams{padding:20px;display:grid;gap:12px}
@@ -247,7 +252,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
       Rim<b>Blaze</b>
     </a>
     <nav aria-label="Primary">
-      <a href="#live">Live</a><a href="#nights">Big nights</a><a href="#leaders">Leaders</a><a href="#chase">Chase</a><a href="#teams">Teams</a><a href="all-time/">All-time</a><a href="players/">Players</a><a href="#alerts">Alerts</a>
+      <a href="#live">Live</a><a href="#nights">Big nights</a><a href="#leaders">Leaders</a><a href="#chase">Chase</a><a href="nights/">Game nights</a><a href="teams/">Teams</a><a href="all-time/">All-time</a><a href="players/">Players</a>
     </nav>
     <a href="#alerts" class="btn">Get alerts</a>
   </div>
@@ -259,7 +264,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     <div class="hero-grid">
       <div>
         <div class="live-pill mono"><span class="dot" id="liveDot"></span> <span id="liveText">Connecting to NBA…</span></div>
-        <h1>Every rare bucket. <em>The second it drops.</em></h1>
+        <h1>Every rare <em>bucket.</em></h1>
         <p class="lead">Logo threes, buzzer-beaters, go-ahead daggers, and-ones and half-court heaves from every NBA game, with the distance, the time left and a clip. Plus every big night: triple-doubles, 50-point games, 20-20s and the career milestones coming next.</p>
         <div class="cta">
           <a class="btn" href="#live">Watch the live feed</a>
@@ -308,7 +313,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 <section id="live">
   <div class="wrap">
     <div class="sec-head">
-      <h2 id="feedTitle">Live rare bucket feed</h2>
+      <div><h2 id="feedTitle">Live rare bucket feed</h2><a class="sub mono" id="nightLink" href="nights/" style="display:inline-block;margin-top:8px;text-decoration:underline;text-underline-offset:3px" hidden>Every big night from this date →</a></div>
       <div class="tools">
         <div class="seg" role="group" aria-label="Sort rare buckets">
           <button type="button" data-sort="time" aria-pressed="true">Latest</button>
@@ -432,7 +437,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <footer>
   <div class="wrap">
-    <nav aria-label="Explore" class="explore"><b>Explore</b> <a href="all-time/">All-time scoring leaders</a> <a href="all-time/rebounds/">Rebounding leaders</a> <a href="all-time/assists/">Assist leaders</a> <a href="all-time/threes/">3-point leaders</a> <a href="all-time/steals/">Steals leaders</a> <a href="all-time/blocks/">Blocks leaders</a> <a href="players/">All players A–Z</a></nav>
+    <nav aria-label="Explore" class="explore"><b>Explore</b> <a href="nights/">Every game night</a> <a href="teams/">All 30 teams</a> <a href="all-time/">All-time scoring leaders</a> <a href="all-time/rebounds/">Rebounding leaders</a> <a href="all-time/assists/">Assist leaders</a> <a href="all-time/threes/">3-point leaders</a> <a href="all-time/steals/">Steals leaders</a> <a href="all-time/blocks/">Blocks leaders</a> <a href="players/">All players A–Z</a></nav>
     <span>© 2026 RimBlaze. Play-by-play from NBA.com live data; clips open on NBA.com. Not affiliated with the National Basketball Association.</span>
     <span class="mono">rimblaze.com</span>
   </div>
@@ -456,6 +461,8 @@ function plink(name,pid){
 }
 function parseClock(c){var m=/PT(\d+)M([\d.]+)S/.exec(c||'');return m?(+m[1])*60+(+m[2]):null;}
 
+var TEAM_FULL={ATL:'Atlanta Hawks',BOS:'Boston Celtics',BKN:'Brooklyn Nets',CHA:'Charlotte Hornets',CHI:'Chicago Bulls',CLE:'Cleveland Cavaliers',DAL:'Dallas Mavericks',DEN:'Denver Nuggets',DET:'Detroit Pistons',GSW:'Golden State Warriors',HOU:'Houston Rockets',IND:'Indiana Pacers',LAC:'LA Clippers',LAL:'Los Angeles Lakers',MEM:'Memphis Grizzlies',MIA:'Miami Heat',MIL:'Milwaukee Bucks',MIN:'Minnesota Timberwolves',NOP:'New Orleans Pelicans',NYK:'New York Knicks',OKC:'Oklahoma City Thunder',ORL:'Orlando Magic',PHI:'Philadelphia 76ers',PHX:'Phoenix Suns',POR:'Portland Trail Blazers',SAC:'Sacramento Kings',SAS:'San Antonio Spurs',TOR:'Toronto Raptors',UTA:'Utah Jazz',WAS:'Washington Wizards'};
+var TEAM_SLUG={};Object.keys(TEAM_FULL).forEach(function(k){TEAM_SLUG[k]=TEAM_FULL[k].toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');});
 var S={mode:'loading',date:null,isToday:true,buckets:[],sort:'time',sel:null,showAll:false,anyLive:false,schedule:null,week:[]};
 
 /* ---------- NBA live data ---------- */
@@ -554,6 +561,7 @@ function renderFeed(){
   var list=sorted(),limit=S.showAll?list.length:8,el=document.getElementById('feed');
   var day=S.isToday?'tonight':'on '+fmtDate(S.date);
   document.getElementById('feedTitle').textContent=S.anyLive?'Live rare bucket feed':'Rare bucket feed';
+  var nl=document.getElementById('nightLink');if(S.mode==='live'&&S.date){nl.hidden=false;nl.href='nights/'+S.date+'/';nl.textContent='Every big night from '+fmtDate(S.date)+' →';}
   document.getElementById('courtTitle').textContent=(S.isToday?'Tonight’s':fmtDate(S.date))+' shot chart';
   if(!list.length)el.innerHTML='<div class="card empty">No rare buckets '+esc(day)+'. The NBA season runs from late October to June; pick a game night in that window.</div>';
   else el.innerHTML=list.slice(0,limit).map(card).join('')+(list.length>limit?'<button type="button" class="btn ghost more" id="moreBtn">Show all '+list.length+'</button>':'');
@@ -591,26 +599,50 @@ function renderLeaders(L,label){
     return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td><td class="big-n num">'+l.rare+'</td><td class="n">'+l.logo+'</td><td class="n">'+l.buzz+'</td><td class="n">'+l.go+'</td><td class="n">'+l.deep+' ft</td></tr>';
   }).join(''):'<tr><td colspan="8" class="empty">No rare buckets in this window yet.</td></tr>';
 }
+var CH={season:[],climbs:[],deep:null};
+function chaseItem(o){
+  var pct=Math.min(100,o.max?o.cur/o.max*100:0);
+  return '<div class="ch-item"><div class="ch-head"><div class="who">'+o.who+'</div>'+(o.need?'<span class="ch-need mono">'+esc(o.need)+'</span>':'')+'</div><div class="meta">'+o.meta+'</div>'+
+    '<div class="bar" role="progressbar" aria-valuenow="'+o.cur+'" aria-valuemin="0" aria-valuemax="'+o.max+'" aria-label="'+esc(o.aria||'Progress')+'"><i style="width:'+pct.toFixed(1)+'%"></i>'+(o.mark?'<span class="mk" style="left:'+(o.mark/o.max*100).toFixed(1)+'%"></span>':'')+'</div>'+
+    '<div class="bar-lbl mono"><span>'+esc(o.left)+'</span><span>'+esc(o.lbl)+'</span><span>'+esc(o.right)+'</span></div></div>';
+}
+function drawChase(){
+  var el=document.getElementById('chaseCard'),html='';
+  if(CH.season.length)html+='<div class="ch-group mono">'+(S.mode==='sample'?'Season chases':'Season chases · best season since 1996-97')+'</div>'+CH.season.slice(0,4).map(function(c){
+    return chaseItem({who:plink(c.name,c.pid)+' · '+esc(c.cat||''),meta:esc(c.what),cur:c.cur,max:c.max,need:c.need,lbl:c.lbl,left:'0',right:String(c.max),aria:c.cat});}).join('');
+  if(CH.climbs.length)html+='<div class="ch-group mono">All-time climbs</div>'+CH.climbs.slice(0,3).map(chaseItem).join('');
+  if(CH.deep){var d=CH.deep;html+='<div class="ch-group mono">Range</div>'+chaseItem({who:plink(d.n,d.pid)+' · Deepest make of the last 7 game nights',meta:d.d+' ft, '+esc(d.q)+' with '+clockStr(d.secs)+' left vs '+esc(d.o)+'. '+(d.d>=47?'From beyond half court.':(47-d.d)+' ft short of half court.')+' '+d.heaves+' heave'+(d.heaves===1?'':'s')+' made from 40+ ft this week.',cur:d.d,max:47,mark:30,lbl:d.d+' of 47 ft · logo range at 30',left:'0',right:'47',aria:'Deepest make compared with half court'});}
+  el.innerHTML=html||'<div class="meta">The chase starts at tip-off.</div>';
+}
+function setSeasonChase(list){CH.season=list||[];drawChase();}
+function setClimbs(at){
+  var NOUN={pts:'points',reb:'rebounds',ast:'assists',tpm:'threes',stl:'steals',blk:'blocks'},out=[];
+  ((at&&at.boards)||[]).forEach(function(b){
+    b.rows.forEach(function(r){
+      if(!r.active||r.rank>25)return;
+      var above=b.rows.filter(function(x){return x.v>r.v;}).sort(function(x,y){return x.v-y.v;})[0];if(!above)return;
+      var gap=above.v-r.v+1;
+      out.push({score:gap/above.v,who:plink(r.name,r.id)+' · All-time '+NOUN[b.key],meta:'#'+r.rank+' with '+r.v.toLocaleString()+'. '+gap.toLocaleString()+' more to pass '+esc(above.name)+' for #'+above.rank+'.',
+        cur:r.v,max:above.v,need:gap.toLocaleString()+' to go',lbl:'#'+r.rank+' → #'+above.rank,left:'',right:above.v.toLocaleString(),aria:'Progress toward the next all-time spot'});
+    });
+  });
+  CH.climbs=out.sort(function(a,b){return a.score-b.score;});drawChase();
+}
 function renderChase(all){
-  var el=document.getElementById('chaseCard');
   if(S.mode==='sample'){
-    el.innerHTML='<div><div class="who">Kenji Alvarez · Franchise record for logo threes in a season</div><div class="meta">6 logo threes through 7 games. Pace: 70.</div></div>'+
-      '<div class="bar" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="41" aria-label="Progress toward the franchise record"><i style="width:14.6%"></i></div>'+
-      '<div class="bar-lbl mono"><span>0</span><span>6 of 41 to tie</span><span>41</span></div>';
-    return;
+    CH.season=[{name:'Theo Okonkwo',cat:'Triple-doubles',what:'Triple-doubles this season. Franchise record is 22.',cur:3,max:22,need:'Pace: 35',lbl:'3 of 22'},
+      {name:'Marcus Bell',cat:'Double-double streak',what:'Active double-double streak: every game so far. Franchise record is 29.',cur:7,max:29,need:'22 to tie',lbl:'7 straight'}];
+    CH.climbs=[{who:plink('Kenji Alvarez')+' · All-time threes',meta:'#18 with 2,532. 37 more to pass Ray Castillo for #17.',cur:2532,max:2568,need:'37 to go',lbl:'#18 → #17',left:'',right:'2,568'}];
   }
-  var deep=all.slice().sort(function(a,b){return (b.d||0)-(a.d||0);})[0],heaves=all.filter(function(b){return b.tags.indexOf('HEAVE')>=0;}).length;
-  if(!deep){el.innerHTML='<div class="meta">The chase starts at tip-off.</div>';return;}
-  var pct=Math.min(100,deep.d/47*100);
-  el.innerHTML='<div><div class="who">'+esc(deep.n)+' · Deepest make of the last 7 game nights</div><div class="meta">'+deep.d+' ft, '+esc(deep.q)+' with '+clockStr(deep.secs)+' left vs '+esc(deep.o)+'. '+(deep.d>=47?'From beyond half court.':(47-deep.d)+' ft short of half court.')+' '+heaves+' heave'+(heaves===1?'':'s')+' made from 40+ ft this week.</div></div>'+
-    '<div class="bar" role="progressbar" aria-valuenow="'+deep.d+'" aria-valuemin="0" aria-valuemax="47" aria-label="Deepest make compared with half court"><i style="width:'+pct.toFixed(1)+'%"></i><span class="mk" style="left:'+(30/47*100).toFixed(1)+'%"></span></div>'+
-    '<div class="bar-lbl mono"><span>0</span><span>'+deep.d+' of 47 ft · logo range at 30</span><span>47</span></div>';
+  var deep=all.slice().sort(function(a,b){return (b.d||0)-(a.d||0);})[0];
+  CH.deep=deep?Object.assign({heaves:all.filter(function(b){return b.tags.indexOf('HEAVE')>=0;}).length},deep):null;
+  drawChase();
 }
 function renderTeams(T,label){
   document.getElementById('teamsSub').textContent=label;
   var max=Math.max.apply(null,[1].concat(T.map(function(t){return t.n;}))),show=T.slice(0,10);
   document.getElementById('teamsCard').innerHTML=(show.length?show.map(function(t,i){
-    return '<div class="tm'+(i<2?' hot':'')+'"><span>'+esc(t.name)+'</span><div class="b"><i style="width:'+(t.n/max*100).toFixed(1)+'%"></i></div><span class="n">'+t.n+'</span></div>';
+    return '<div class="tm'+(i<2?' hot':'')+'"><span>'+(TEAM_SLUG[t.name]&&S.mode!=='sample'?'<a href="teams/'+TEAM_SLUG[t.name]+'/">'+esc(TEAM_FULL[t.name])+'</a>':esc(t.name))+'</span><div class="b"><i style="width:'+(t.n/max*100).toFixed(1)+'%"></i></div><span class="n">'+t.n+'</span></div>';
   }).join(''):'<div class="meta">Team totals show up after the first game night.</div>')+
   '<p class="note">Tap any player for his profile: every big night, rare bucket, badge and milestone.</p>';
 }
@@ -818,7 +850,9 @@ loadIndex().then(function(){
     renderSeason(j.leaders||[],j.chase||[],'Season chase',j.season+' season · updated '+fmtDate(String(j.updated).slice(0,10))+'. Triple-doubles, double-doubles and 30/40-point games from NBA.com game logs; records compare seasons since '+j.since+'.');
     if(j.rareLeaders&&j.rareLeaders.length)renderLeaders(j.rareLeaders.map(function(r,i){r.rank=i+1;return r;}),j.season+' season');
     if(j.teamRare&&j.teamRare.length)renderTeams(j.teamRare,j.season+' season');
+    setSeasonChase(j.chase);
   }).catch(function(){});
+  getJSON('data/alltime.json').then(setClimbs).catch(function(){});
   getJSON('data/career.json').then(function(j){
     renderCareer(j.watch||[],j.clubs||[],'Active players. Games-to-go estimates use each player’s average this season · updated '+fmtDate(String(j.updated).slice(0,10))+'.');
   },function(){renderCareer([],[],'Career totals load from data/career.json, which the nightly stats build writes.');});

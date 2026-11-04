@@ -10,6 +10,8 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { prerender } from './prerender.mjs';
+import { renderTeams } from './teamPages.mjs';
+import { TEAMS, teamSlug } from './teams.mjs';
 
 const SITE = 'https://rimblaze.com';
 const OG_IMAGE = SITE + '/og-image.png';
@@ -187,14 +189,14 @@ h1{font-size:clamp(2.4rem,8vw,4.6rem);margin:28px 0 12px}h1 em{font-style:normal
 .grp li i{font-style:normal;font:500 10px "IBM Plex Mono",monospace;color:#fff;background:var(--leather);padding:1px 5px;border-radius:3px;margin-left:4px;vertical-align:1px}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;margin-top:30px}footer .wrap{padding-block:26px 34px}
 </style>
-<header class="top"><div class="wrap"><a class="logo" href="/"><img src="/favicon.svg" alt="">Rim<b>Blaze</b></a><nav aria-label="Primary"><a href="/">Live</a><a href="/all-time/">All-time</a><a href="/players/" aria-current="page">Players</a></nav></div></header>
+<header class="top"><div class="wrap"><a class="logo" href="/"><img src="/favicon.svg" alt="">Rim<b>Blaze</b></a><nav aria-label="Primary"><a href="/">Live</a><a href="/nights/">Game nights</a><a href="/teams/">Teams</a><a href="/all-time/">All-time</a><a href="/players/" aria-current="page">Players</a></nav></div></header>
 <main class="wrap">
 <h1>NBA players <em>A–Z.</em></h1>
 <p class="lead">${esc(desc)}</p>
 <ul class="letters">${letters.map(L => `<li><a href="#${L === '#' ? 'other' : L}">${esc(L)}</a></li>`).join('')}</ul>
 ${body}
 </main>
-<footer><div class="wrap">© 2026 RimBlaze. <a href="/all-time/">All-time leaders</a> · Stats from NBA.com. Not affiliated with the National Basketball Association.</div></footer>
+<footer><div class="wrap">© 2026 RimBlaze. <a href="/nights/">Game nights</a> · <a href="/teams/">Teams</a> · <a href="/all-time/">All-time leaders</a> · Stats from NBA.com. Not affiliated with the National Basketball Association.</div></footer>
 `;
   await write('players/index.html', html);
   return people.length;
@@ -203,19 +205,25 @@ ${body}
 // ---------- sitemap ----------
 async function sitemap(profiles, slugify, alltime) {
   const today = new Date().toISOString().slice(0, 10);
+  let nights = [];
+  try { nights = JSON.parse(await readFile(path.join(ROOT_DIR, 'data', 'live', 'index.json'), 'utf8')).dates || []; } catch {}
+  const latestNight = nights[nights.length - 1] || today;
   const urls = [[SITE + '/', today, 'hourly', '1.0'], [SITE + '/players/', today, 'daily', '0.8'],
+    [SITE + '/nights/', latestNight, 'hourly', '0.8'], ...nights.slice().reverse().map(d => [`${SITE}/nights/${d}/`, d, d === latestNight ? 'hourly' : 'monthly', '0.6']),
+    [SITE + '/teams/', today, 'daily', '0.8'], ...Object.keys(TEAMS).map(a => [`${SITE}/teams/${teamSlug(a)}/`, today, 'daily', '0.7']),
     ...(alltime ? Object.values(BOARD).map(b => [`${SITE}/all-time/${b.slug}`, today, 'daily', '0.8']) : []),
     ...profiles.map(p => [`${SITE}/players/${slugify(p.person.name)}-${p.person.id}/`, p.updated || today, p.person.active ? 'daily' : 'monthly', p.person.active ? '0.7' : '0.6'])];
   await writeFile(path.join(ROOT_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, d, f, pr]) => `  <url><loc>${u}</loc><lastmod>${d}</lastmod><changefreq>${f}</changefreq><priority>${pr}</priority></url>`).join('\n')}\n</urlset>\n`);
   return urls.length;
 }
 
-export async function renderSite({ root, profiles, alltime, slugify, log }) {
+export async function renderSite({ root, profiles, alltime, slugify, log, cur = [], buckets = [], season }) {
   ROOT_DIR = root;
   if (!existsSync(path.join(root, 'player.html'))) { log('player.html not found, skipping pages'); return; }
   const n1 = await playerPages(profiles, slugify);
   const n2 = await allTimePages(alltime);
   const n3 = await directory(profiles, slugify);
+  const nT = await renderTeams({ root, profiles, cur, buckets, season, slugify });
   const n4 = await sitemap(profiles, slugify, alltime);
-  log(`pages: ${n1} profiles, ${n2} all-time boards, directory of ${n3}, sitemap of ${n4} URLs`);
+  log(`pages: ${n1} profiles, ${n2} all-time boards, directory of ${n3}, ${nT} team pages updated, sitemap of ${n4} URLs`);
 }

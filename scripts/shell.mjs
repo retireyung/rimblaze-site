@@ -1,0 +1,105 @@
+// Shared page layout for the fully static pages (game nights, teams, directories):
+// head with title, description, share tags and structured data, the site header and footer,
+// and the components those pages use. Same look as the rest of RimBlaze.
+
+export const SITE = 'https://rimblaze.com';
+export const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+export const num = v => (v == null ? '—' : Number(v).toLocaleString('en-US'));
+export const ld = obj => `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, '\\u003c')}</script>`;
+export const pl = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+export const crumbsLd = items => ({ '@type': 'BreadcrumbList', itemListElement: items.map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item })) });
+export const fmtDay = iso => new Date(iso + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+export const fmtShort = iso => new Date(iso + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+const CSS = `
+:root{--bg:#F5F2EE;--surface:#fff;--surface-2:#EEE8E1;--line:#DDD3C8;--text:#1C1612;--muted:#6B5D51;--leather:#D9480F;--court:#18202F;--on-court:#F1EEE9;--on-court-muted:#A9B3C4}
+@media (prefers-color-scheme: dark){:root{--bg:#0E0C0A;--surface:#191512;--surface-2:#241E19;--line:#382E26;--text:#F2ECE5;--muted:#A99A8C;--leather:#FF7A3D;--court:#141A27;color-scheme:dark}}
+html,body{margin:0}*{box-sizing:border-box}[hidden]{display:none!important}
+body{background:var(--bg);color:var(--text);font:16px/1.55 Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font:900 24px Archivo,Impact,sans-serif;font-stretch:78%;text-transform:uppercase}.logo img{width:28px;height:28px}.logo b{color:var(--leather)}
+nav.main{display:flex;gap:18px;font-size:14px;color:var(--muted);flex-wrap:wrap}nav.main a:hover,nav.main a[aria-current="page"]{color:var(--text)}
+@media(max-width:640px){nav.main{display:none}}
+h1,h2,h3{font-family:Archivo,Impact,sans-serif;font-stretch:80%;font-weight:800;text-transform:uppercase;line-height:1.02;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.3rem,7.5vw,4.6rem);margin:14px 0 12px}h1 em{font-style:normal;color:var(--leather)}
+h2{font-size:clamp(1.6rem,4.5vw,2.4rem);margin-bottom:14px}
+.crumbs{padding-top:24px;font:500 12px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.crumbs a:hover{color:var(--text)}
+.lead{color:var(--muted);max-width:64ch;margin:0 0 8px;font-size:17px}
+section{padding-block:26px}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:20px}
+.strip div{background:var(--surface);padding:14px 16px;display:grid;gap:4px;min-width:0}
+.strip .k{font:500 10.5px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.strip .v{font:900 34px/1 Archivo,Impact,sans-serif;font-stretch:75%}.strip div:first-child .v{color:var(--leather)}
+.strip .s{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+@media(max-width:760px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:0 1px 0 rgba(28,22,18,.04),0 10px 30px -18px rgba(28,22,18,.35)}
+.games{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr))}
+.game{padding:12px 14px;display:grid;gap:6px}
+.game .row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:600}
+.game .row b{font:900 24px Archivo,Impact,sans-serif;font-stretch:75%}.game .row.win b{color:var(--leather)}
+.game .st{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.feats{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr))}
+.ft{padding:14px 16px;display:grid;gap:8px;border-left:4px solid var(--leather)}
+.ft .top-line{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.ft .pts{font:900 40px/0.9 Archivo,Impact,sans-serif;font-stretch:72%;text-align:right}.ft .pts small{display:block;font:500 10px "IBM Plex Mono",monospace;letter-spacing:.1em;color:var(--muted);margin-top:4px}
+.who{font-weight:600;font-size:16.5px}a.who:hover,.who a:hover,td a:hover{text-decoration:underline;text-underline-offset:3px}
+.meta{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.badges{display:flex;gap:4px;flex-wrap:wrap}.badge{font:500 10px "IBM Plex Mono",monospace;letter-spacing:.08em;padding:2px 6px;border-radius:3px;background:var(--leather);color:#fff}.badge.alt{background:var(--text);color:var(--bg)}
+.line{font:500 13px "IBM Plex Mono",monospace;display:flex;gap:10px;flex-wrap:wrap}.line .hit b{color:var(--leather)}
+.tbl{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{padding:10px 14px;text-align:left;font-size:14px;border-bottom:1px solid var(--line)}tr:last-child td{border-bottom:0}
+th{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}td.big{font:900 20px Archivo,Impact,sans-serif;font-stretch:75%}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 12px "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;padding:11px 16px;border-radius:3px;border:1px solid var(--line);background:var(--surface)}
+.btn.hot{background:var(--leather);border-color:var(--leather);color:#fff}
+.empty{padding:18px;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0;columns:3 260px;column-gap:28px}.list li{break-inside:avoid;padding:5px 0}.list li a{font-weight:600}.list li a:hover{text-decoration:underline}
+.note{font-size:12.5px;color:var(--muted);margin-top:12px;max-width:80ch}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;margin-top:30px}footer .wrap{padding-block:26px 34px;display:grid;gap:10px}
+footer .explore{display:flex;flex-wrap:wrap;gap:6px 16px}footer .explore a{text-decoration:underline;text-underline-offset:3px}
+`;
+
+export function page({ title, desc, url, graph, body, current = '' }) {
+  const navLink = (href, label, key) => `<a href="${href}"${current === key ? ' aria-current="page"' : ''}>${label}</a>`;
+  return `<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${url}">
+<meta property="og:site_name" content="RimBlaze"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${SITE}/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${SITE}/og-image.png">
+${ld({ '@context': 'https://schema.org', '@graph': graph })}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#18202F">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,700..900&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>${CSS}</style>
+<header class="top"><div class="wrap"><a class="logo" href="/"><img src="/favicon.svg" alt="">Rim<b>Blaze</b></a>
+<nav class="main" aria-label="Primary">${navLink('/', 'Live', 'live')}${navLink('/nights/', 'Game nights', 'nights')}${navLink('/teams/', 'Teams', 'teams')}${navLink('/all-time/', 'All-time', 'all-time')}${navLink('/players/', 'Players', 'players')}</nav></div></header>
+<main class="wrap">
+${body}
+</main>
+<footer><div class="wrap">
+<nav class="explore" aria-label="Explore"><a href="/nights/">Every game night</a><a href="/teams/">All 30 teams</a><a href="/all-time/">All-time scoring leaders</a><a href="/all-time/rebounds/">Rebounding leaders</a><a href="/all-time/assists/">Assist leaders</a><a href="/all-time/threes/">3-point leaders</a><a href="/players/">Players A–Z</a></nav>
+<span>© 2026 RimBlaze. Stats from NBA.com. Not affiliated with the National Basketball Association.</span>
+</div></footer>
+`;
+}
+
+// A big-night card: stat line, badges, links to the player and the night.
+export function featCard(l, { playerHref, nightHref, teamName } = {}) {
+  const hit = v => v >= 10 ? ' class="hit"' : '';
+  const name = playerHref ? `<a class="who" href="${playerHref}">${esc(l.n)}</a>` : `<span class="who">${esc(l.n)}</span>`;
+  return `<article class="card ft"><div class="top-line"><div>${name}<div class="meta">${esc(teamName || l.t)} vs ${esc(l.o)}${nightHref ? ` · <a href="${nightHref}">${esc(fmtShort(l.date))}</a>` : ''}${l.live ? ' · in progress' : ''}</div>
+<div class="badges" style="margin-top:6px">${l.feats.map((f, i) => `<span class="badge${i ? ' alt' : ''}">${esc(f)}</span>`).join('')}</div></div>
+<div class="pts">${l.P}<small>PTS</small></div></div>
+<div class="line"><span${hit(l.R)}><b>${l.R}</b> REB</span><span${hit(l.A)}><b>${l.A}</b> AST</span><span${hit(l.S)}><b>${l.S}</b> STL</span><span${hit(l.B)}><b>${l.B}</b> BLK</span><span><b>${l.fgm}-${l.fga}</b> FG</span><span><b>${l.tpm}</b> 3PM</span></div></article>`;
+}

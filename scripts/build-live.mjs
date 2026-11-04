@@ -17,6 +17,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cdn } from './nba.mjs';
 import { rareBuckets } from './feats.mjs';
+import { renderNights } from './nights.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data'), LIVE = path.join(DATA, 'live'), CACHE = path.join(DATA, 'cache', 'live');
@@ -78,7 +79,8 @@ async function main() {
     const sb = await cdn('liveData/scoreboard/todaysScoreboard_00.json');
     live = new Map((sb?.scoreboard?.games || []).map(g => [g.gameId, g.gameStatus]));
   } catch (e) { log(`scoreboard: ${e.message}`); }
-  const names = new Map(((await readJSON(path.join(DATA, 'players.json'), [])) || []).map(p => [p.id, p.name]));
+  const playerList = (await readJSON(path.join(DATA, 'players.json'), [])) || [];
+  const names = new Map(playerList.map(p => [p.id, p.name]));
 
   const byDate = new Map();
   for (const gd of sched.leagueSchedule.gameDates || []) {
@@ -88,7 +90,7 @@ async function main() {
     if (games.length && iso <= today) byDate.set(iso, games);
   }
 
-  const dates = [];
+  const dates = [], days = [];
   let changed = 0, latest = null;
   for (const [date, games] of [...byDate.entries()].sort()) {
     const started = games.filter(g => date < today || (live.get(g.gameId) ?? g.gameStatus) >= 2);
@@ -106,10 +108,12 @@ async function main() {
       lines: results.flatMap(r => r.lines),
     };
     if (await writeData(path.join(LIVE, date + '.json'), day)) changed++;
+    days.push(day);
     dates.push(date); latest = date;
   }
   await writeData(path.join(LIVE, 'index.json'), { updated: new Date().toISOString(), latest, dates });
-  log(`live: ${dates.length} game nights, ${changed} updated, latest ${latest}`);
+  const pages = await renderNights({ root: ROOT, days, players: playerList });
+  log(`live: ${dates.length} game nights, ${changed} updated, latest ${latest} · ${pages} night pages written`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
