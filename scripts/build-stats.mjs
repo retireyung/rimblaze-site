@@ -18,10 +18,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { stats, cdn, rows, seasonFor, seasonList, wikidataBios } from './nba.mjs';
 import { feats, featScore, tens, rareBuckets, MILESTONES, nextMilestone, badges } from './feats.mjs';
 
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data'), CACHE = path.join(DATA, 'cache');
 const arg = k => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : null; };
 const SEASON = arg('season') || seasonFor();
