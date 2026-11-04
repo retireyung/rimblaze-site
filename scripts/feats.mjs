@@ -114,7 +114,7 @@ export function badges(pl) {
   const ao = B.filter(b => b.tags.includes('4-PT PLAY'));
   if (ao.length) push({ tier: 'legend', span: 'game', name: 'Four-point play', short: '4', count: ao.length, detail: `Latest ${fmt(ao[ao.length - 1].date)}` });
   if (dd.length) push({ tier: 'legend', span: 'game', name: 'Double-double', short: '2×10', count: dd.length, detail: `First ${fmt(dd[0])} · latest ${fmt(dd[dd.length - 1])}` });
-  if (pl.games30) push({ tier: 'legend', span: 'game', name: '30-point game', short: '30', count: pl.games30, detail: 'Career, since 1996-97' });
+  if (pl.games30) push({ tier: 'legend', span: 'game', name: '30-point game', short: '30', count: pl.games30, detail: pl.logsPartial ? 'Since 1996-97' : 'Career' });
   push(gameBadge(N, '5+ STEALS', 'legend', 'Five steals', '5'));
   push(gameBadge(N, '5+ BLOCKS', 'legend', 'Five blocks', '5'));
   push(gameBadge(N, 'PERFECT FROM THE FIELD', 'legend', 'Perfect shooting night', '100%'));
@@ -141,7 +141,7 @@ export function badges(pl) {
   if (mvp.length > 1) push({ tier: 'unicorn', span: 'career', name: 'Multiple MVPs', short: mvp.length + '×', detail: mvp.length + ' MVP awards' });
   const careerMark = (key, val, tiers) => { tiers.forEach(([min, tier]) => { if (val >= min) push({ tier, span: 'career', name: min.toLocaleString() + ' ' + MILESTONES[key].label, short: min >= 1000 ? (min / 1000) + 'K' : String(min), detail: val.toLocaleString() + ' ' + MILESTONES[key].label }); }); };
   careerMark('pts', C.pts || 0, [[30000, 'unicorn'], [20000, 'rare'], [10000, 'legend']]);
-  careerMark('td', C.td || 0, [[100, 'unicorn'], [50, 'rare'], [10, 'legend']]);
+  if (!pl.logsPartial) careerMark('td', C.td || 0, [[100, 'unicorn'], [50, 'rare'], [10, 'legend']]); // can't count triple-doubles before 1996-97
   careerMark('reb', C.reb || 0, [[10000, 'rare']]);
   careerMark('ast', C.ast || 0, [[10000, 'unicorn'], [5000, 'rare']]);
   careerMark('tpm', C.tpm || 0, [[3000, 'unicorn'], [2000, 'rare'], [1000, 'legend']]);

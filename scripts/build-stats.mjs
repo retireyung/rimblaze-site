@@ -28,6 +28,7 @@ const arg = k => { const i = process.argv.indexOf('--' + k); return i > 0 ? proc
 const SEASON = arg('season') || seasonFor();
 const ONLY = (arg('players') || '').split(',').filter(Boolean).map(Number);
 const FIRST_LOG_SEASON = '1996-97'; // NBA.com game logs are complete from here on
+const HIST_TOP = +(arg('hist-top') || 250); // all-time rank cutoff for retired players' profiles
 const DAY = 864e5;
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 
@@ -146,16 +147,24 @@ async function main() {
   [['pts', 'PTSLeaders', 'PTS'], ['reb', 'REBLeaders', 'REB'], ['ast', 'ASTLeaders', 'AST'], ['tpm', 'FG3MLeaders', 'FG3M'], ['stl', 'STLLeaders', 'STL'], ['blk', 'BLKLeaders', 'BLK']]
     .forEach(([k, set, col]) => { rank[k] = new Map(rows(grids, set).map(r => [r.PLAYER_ID, { rank: r[col + '_RANK'], v: r[col] }])); });
 
+  // historical profiles: retired players in the top 250 all-time in points, rebounds or assists
+  const activeIds = new Set(active.map(p => p.id)), histMap = new Map();
+  [['PTSLeaders', 'PTS'], ['REBLeaders', 'REB'], ['ASTLeaders', 'AST']].forEach(([set, col]) =>
+    rows(grids, set).filter(r => r[col + '_RANK'] <= HIST_TOP && !activeIds.has(r.PLAYER_ID))
+      .forEach(r => histMap.set(r.PLAYER_ID, { id: r.PLAYER_ID, name: r.PLAYER_NAME, team: '', teamName: '', retired: true })));
+  const historical = [...histMap.values()];
+  log(`historical players: ${historical.length} (top ${HIST_TOP} in points, rebounds or assists)`);
+
   // hometown, high school and college from Wikidata (weekly; a failure just leaves those fields empty)
   let bios = new Map();
   try {
-    const raw = await cached('wikidata-bios-v2.json', 7 * DAY, async () => [...(await wikidataBios(active.map(p => p.id))).entries()]);
+    const raw = await cached('wikidata-bios-v3.json', 7 * DAY, async () => [...(await wikidataBios([...active, ...historical].map(p => p.id))).entries()]);
     bios = new Map(raw);
     log(`wikidata bios: ${bios.size} players`);
   } catch (e) { log(`wikidata bios unavailable: ${e.message}`); }
 
   // rare buckets
-  const fullName = new Map(active.map(p => [p.id, p.name]));
+  const fullName = new Map([...active, ...historical].map(p => [p.id, p.name]));
   cur.forEach(l => { if (!fullName.has(l.pid)) fullName.set(l.pid, l.n); });
   let rawBuckets = [];
   try { rawBuckets = await seasonBuckets(); } catch (e) { log(`rare buckets skipped tonight: ${e.message}`); }
@@ -174,21 +183,25 @@ async function main() {
     if (hit && hit._at >= (seen[id]?.at || 0) && Date.now() - hit._at < 7 * DAY) return hit.v;
     const v = await fetcher(); await writeJSON(f, { _at: Date.now(), v }); return v;
   };
-  const targets = ONLY.length ? active.filter(p => ONLY.includes(p.id)) : active;
+  const everyone = [...active, ...historical];
+  const targets = ONLY.length ? everyone.filter(p => ONLY.includes(p.id)) : everyone;
   const profiles = [];
   let i = 0;
   for (const a of targets) {
     i++; if (i % 50 === 0) log(`players ${i}/${targets.length}`);
     try {
-      const career = await careerFresh(a.id, () => stats('playercareerstats', { PlayerID: a.id, PerMode: 'Totals', LeagueID: '00' }));
-      const info = await cached(`info/${a.id}.json`, 7 * DAY, () => stats('commonplayerinfo', { PlayerID: a.id, LeagueID: '00' }));
-      const awardsRaw = await cached(`awards/${a.id}.json`, 7 * DAY, () => stats('playerawards', { PlayerID: a.id }));
+      // Retired careers don't change, so their files are kept for 90 days.
+      const keep = a.retired ? 90 * DAY : 7 * DAY;
+      const career = a.retired ? await cached(`career/${a.id}.json`, keep, () => stats('playercareerstats', { PlayerID: a.id, PerMode: 'Totals', LeagueID: '00' }))
+        : await careerFresh(a.id, () => stats('playercareerstats', { PlayerID: a.id, PerMode: 'Totals', LeagueID: '00' }));
+      const info = await cached(`info/${a.id}.json`, keep, () => stats('commonplayerinfo', { PlayerID: a.id, LeagueID: '00' }));
+      const awardsRaw = await cached(`awards/${a.id}.json`, keep, () => stats('playerawards', { PlayerID: a.id }));
       profiles.push(buildProfile(a, career, info, awardsRaw, linesBy.get(a.id) || [], buckets.filter(b => b.pid === a.id), rank, bios.get(a.id)));
     } catch (e) { log(`skip ${a.name}: ${e.message}`); }
   }
 
   for (const p of profiles) await writeJSON(path.join(DATA, 'players', p.person.id + '.json'), p);
-  await writeJSON(path.join(DATA, 'players.json'), profiles.map(p => ({ id: p.person.id, name: p.person.name, team: p.person.team?.abbr || '', slug: slugify(p.person.name) + '-' + p.person.id })));
+  await writeJSON(path.join(DATA, 'players.json'), profiles.map(p => ({ id: p.person.id, name: p.person.name, active: p.person.active, team: p.person.active ? (p.person.team?.abbr || '') : 'Retired', slug: slugify(p.person.name) + '-' + p.person.id })));
 
   // season.json
   const T = seasonFeatTotals(cur);
@@ -217,7 +230,8 @@ async function main() {
 
   // career.json
   const watch = [];
-  for (const p of profiles) {
+  const activeProfiles = profiles.filter(p => p.person.active);
+  for (const p of activeProfiles) {
     const s = p.seasons.find(x => x.season === SEASON);
     for (const key of Object.keys(MILESTONES)) {
       const curV = p.career[key] || 0, nm = nextMilestone(key, curV);
@@ -229,8 +243,8 @@ async function main() {
   }
   watch.sort((a, b) => a.eta - b.eta || a.goal - b.goal);
   const clubs = [['pts', 30000], ['pts', 20000], ['reb', 10000], ['ast', 8000], ['tpm', 2000], ['td', 100], ['td', 50]].map(([k, v]) => {
-    const inn = profiles.filter(p => (p.career[k] || 0) >= v);
-    const next = profiles.filter(p => (p.career[k] || 0) < v).sort((a, b) => (b.career[k] || 0) - (a.career[k] || 0))[0];
+    const inn = activeProfiles.filter(p => (p.career[k] || 0) >= v);
+    const next = activeProfiles.filter(p => (p.career[k] || 0) < v).sort((a, b) => (b.career[k] || 0) - (a.career[k] || 0))[0];
     return { club: v.toLocaleString() + ' ' + MILESTONES[k].label, n: inn.length, members: inn.map(p => p.person.name), next: next ? next.person.name : '—', nextPid: next?.person.id, nextNeed: next ? v - (next.career[k] || 0) : null };
   });
   await writeData(path.join(DATA, 'career.json'), { updated: new Date().toISOString(), watch: watch.slice(0, 12), clubs });
@@ -265,9 +279,12 @@ function buildProfile(a, careerJ, infoJ, awardsJ, lines, buckets, rank, bio = {}
     const best = lines.slice().sort((x, y) => y[k] - x[k] || x.date.localeCompare(y.date))[0];
     return best ? { stat: label, v: best[k], date: best.date, opp: best.opp, home: best.home, gameId: best.gameId, line: { P: best.P, R: best.R, A: best.A } } : null;
   }).filter(Boolean);
-  const curLines = lines.filter(l => l.season === SEASON);
+  const retired = !!a.retired;
+  const logsPartial = +String(info.FROM_YEAR || seasonRows[0]?.SEASON_ID || '9999').slice(0, 4) < +FIRST_LOG_SEASON.slice(0, 4);
+  // Splits: this season for active players; every logged game for retired ones.
+  const curLines = retired ? lines : lines.filter(l => l.season === SEASON);
   const split = f => { const ls = curLines.filter(f); return { gp: ls.length, ppg: ls.length ? +(ls.reduce((s, l) => s + l.P, 0) / ls.length).toFixed(1) : null, rpg: ls.length ? +(ls.reduce((s, l) => s + l.R, 0) / ls.length).toFixed(1) : null, apg: ls.length ? +(ls.reduce((s, l) => s + l.A, 0) / ls.length).toFixed(1) : null }; };
-  const months = [...new Set(curLines.map(l => l.date.slice(0, 7)))];
+  const months = retired ? [] : [...new Set(curLines.map(l => l.date.slice(0, 7)))];
   const ddDates = lines.filter(l => tens(l) >= 2).map(l => l.date).sort();
   const profile = {
     updated: lines.reduce((m, l) => l.date > m ? l.date : m, '') || null, season: SEASON, logsSince: FIRST_LOG_SEASON,
@@ -278,13 +295,14 @@ function buildProfile(a, careerJ, infoJ, awardsJ, lines, buckets, rank, bio = {}
       college: bio?.colleges?.length ? bio.colleges.join(', ') : null,
       lastAttended: info.SCHOOL && info.SCHOOL !== 'None' ? info.SCHOOL : null,
       draft: info.DRAFT_YEAR && info.DRAFT_YEAR !== 'Undrafted' ? { year: info.DRAFT_YEAR, round: info.DRAFT_ROUND, pick: info.DRAFT_NUMBER } : null,
-      team: { abbr: info.TEAM_ABBREVIATION || a.team, name: `${info.TEAM_CITY || ''} ${info.TEAM_NAME || ''}`.trim() || a.teamName },
-      teams: teamSpans(seasons), active: true,
+      team: retired ? { abbr: '', name: '' } : { abbr: info.TEAM_ABBREVIATION || a.team, name: `${info.TEAM_CITY || ''} ${info.TEAM_NAME || ''}`.trim() || a.teamName },
+      teams: teamSpans(seasons), active: !retired,
     },
     seasons, career, awards, highs, nights: nights.sort((x, y) => y.date.localeCompare(x.date)), ddDates,
     buckets: buckets.map(b => ({ date: b.date, gameId: b.gameId, o: b.o, q: b.q, secs: b.secs, d: b.d, a: b.a, tags: b.tags, shot: b.shot, sc: b.sc })),
     splits: { home: split(l => l.home), away: split(l => !l.home), wins: split(l => l.wl === 'W'), losses: split(l => l.wl === 'L'), months: months.map(m => ({ m, ...split(l => l.date.startsWith(m)) })) },
-    games30: lines.filter(l => l.P >= 30).length,
+    games30: lines.filter(l => l.P >= 30).length, logsPartial,
+    splitsLabel: retired ? (lines.length ? `Career · ${logsPartial ? 'games since ' + FIRST_LOG_SEASON : 'every game'}` : null) : null,
   };
   profile.badges = badges(profile);
   return profile;
@@ -296,7 +314,12 @@ const TEAM_NAMES = {
   NOP: 'New Orleans Pelicans', NYK: 'New York Knicks', OKC: 'Oklahoma City Thunder', ORL: 'Orlando Magic', PHI: 'Philadelphia 76ers', PHX: 'Phoenix Suns',
   POR: 'Portland Trail Blazers', SAC: 'Sacramento Kings', SAS: 'San Antonio Spurs', TOR: 'Toronto Raptors', UTA: 'Utah Jazz', WAS: 'Washington Wizards',
   NJN: 'New Jersey Nets', SEA: 'Seattle SuperSonics', NOH: 'New Orleans Hornets', NOK: 'New Orleans/Oklahoma City Hornets', CHH: 'Charlotte Hornets',
-  VAN: 'Vancouver Grizzlies',
+  VAN: 'Vancouver Grizzlies', WSB: 'Washington Bullets', KCK: 'Kansas City Kings', KCO: 'Kansas City-Omaha Kings', CIN: 'Cincinnati Royals',
+  ROC: 'Rochester Royals', SDC: 'San Diego Clippers', SDR: 'San Diego Rockets', BUF: 'Buffalo Braves', NOJ: 'New Orleans Jazz', NYN: 'New York Nets',
+  SFW: 'San Francisco Warriors', PHW: 'Philadelphia Warriors', GOS: 'Golden State Warriors', MNL: 'Minneapolis Lakers', SYR: 'Syracuse Nationals',
+  STL: 'St. Louis Hawks', MLH: 'Milwaukee Hawks', TRI: 'Tri-Cities Blackhawks', FTW: 'Fort Wayne Pistons', BAL: 'Baltimore Bullets', CAP: 'Capital Bullets',
+  CHZ: 'Chicago Zephyrs', CHP: 'Chicago Packers', INO: 'Indianapolis Olympians', AND: 'Anderson Packers', WAT: 'Waterloo Hawks', SHE: 'Sheboygan Red Skins',
+  PRO: 'Providence Steamrollers', WSC: 'Washington Capitols', CHS: 'Chicago Stags', BOM: 'St. Louis Bombers', BLT: 'Baltimore Bullets',
 };
 function teamSpans(seasons) {
   const out = [];
