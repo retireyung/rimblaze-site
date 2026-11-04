@@ -791,7 +791,7 @@ function arrangeSections(){
   leaders.style.paddingTop=leadersFirst?'28px':'8px';
   var j=document.getElementById('feedJump');
   j.hidden=!leadersFirst;
-  if(leadersFirst&&S.date)j.textContent=(S.date===yesterday()?'Last night’s':(S.date===today()?'Tonight’s':fmtDate(S.date)+'’s'))+' rare buckets ↓';
+  if(leadersFirst&&S.date)j.textContent=S.date===yesterday()?'Last night’s rare buckets ↓':S.date===today()?'Tonight’s rare buckets ↓':'Rare buckets from '+fmtDate(S.date)+' ↓';
 }
 function yesterday(){var d=new Date(today()+'T12:00:00');d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);}
 function setStatus(){
