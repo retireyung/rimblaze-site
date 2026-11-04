@@ -392,7 +392,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <section id="leaders" style="padding-top:8px">
   <div class="wrap">
-    <div class="sec-head"><h2>Rare bucket leaders</h2><span class="sub mono" id="leadersSub">Loading</span></div>
+    <div class="sec-head"><h2>Rare bucket leaders</h2>
+      <div class="tools"><span class="sub mono" id="leadersSub">Loading</span>
+        <div class="seg" role="group" aria-label="Rare bucket leaders range" id="leadersRange" hidden>
+          <button type="button" data-range="season" aria-pressed="true">Season</button>
+          <button type="button" data-range="all" aria-pressed="false">Since tracking began</button>
+        </div>
+      </div>
+    </div>
     <div class="card tbl">
       <table>
         <thead><tr><th></th><th>Player</th><th>Team</th><th>Rare</th><th>Logo 3s</th><th>Buzzer</th><th>Go-ahead</th><th>Deepest</th></tr></thead>
@@ -600,6 +607,23 @@ function renderLeaders(L,label){
     return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td><td class="big-n num">'+l.rare+'</td><td class="n">'+l.logo+'</td><td class="n">'+l.buzz+'</td><td class="n">'+l.go+'</td><td class="n">'+l.deep+' ft</td></tr>';
   }).join(''):'<tr><td colspan="8" class="empty">No rare buckets in this window yet.</td></tr>';
 }
+// Season vs since tracking began (rare buckets are tracked from the 2026-27 season on).
+var RL={season:null,all:null,range:'season'};
+function rank(L){return (L||[]).map(function(r,i){return Object.assign({},r,{rank:i+1});});}
+function setRareLeaders(j){
+  RL.season={L:rank(j.rareLeaders),label:j.season+' season'};
+  var since=j.rareSince?fmtDate(j.rareSince)+', '+j.rareSince.slice(0,4):'the '+j.season+' season';
+  RL.all={L:rank(j.rareLeadersAll||j.rareLeaders),label:'Since tracking began · '+since};
+  document.getElementById('leadersRange').hidden=false;
+  drawRareLeaders();
+}
+function drawRareLeaders(){var v=RL[RL.range];if(v)renderLeaders(v.L,v.label);}
+document.getElementById('leadersRange').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-range]');if(!b)return;
+  RL.range=b.getAttribute('data-range');
+  [].forEach.call(this.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',String(x===b));});
+  drawRareLeaders();
+});
 var CH={season:[],climbs:[],deep:null};
 function chaseItem(o){
   var pct=Math.min(100,o.max?o.cur/o.max*100:0);
@@ -849,7 +873,7 @@ loadIndex().then(function(){
   getJSON('data/season.json').then(function(j){
     S.haveSeason=true;
     renderSeason(j.leaders||[],j.chase||[],'Season chase',j.season+' season · updated '+fmtDate(String(j.updated).slice(0,10))+'. Triple-doubles, double-doubles and 30/40-point games from NBA.com game logs; records compare seasons since '+j.since+'.');
-    if(j.rareLeaders&&j.rareLeaders.length)renderLeaders(j.rareLeaders.map(function(r,i){r.rank=i+1;return r;}),j.season+' season');
+    if(j.rareLeaders&&j.rareLeaders.length)setRareLeaders(j);
     if(j.teamRare&&j.teamRare.length)renderTeams(j.teamRare,j.season+' season');
     setSeasonChase(j.chase);
   }).catch(function(){});

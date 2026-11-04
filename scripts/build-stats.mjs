@@ -15,7 +15,7 @@
 //
 // Usage: node scripts/build-stats.mjs [--season 2026-27] [--players 203999,1629029] [--skip-pages]
 
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -241,18 +241,34 @@ async function main() {
           need: 'Pace: ' + pace(cur, top.gp, teamGames), lbl: cur > rec.v ? `${cur} · past the mark of ${rec.v}` : `${cur} of ${rec.v}` });
   }
   chase.sort((a, b) => b.ratio - a.ratio);
-  const rareBy = new Map();
-  buckets.forEach(b => {
-    const r = rareBy.get(b.pid) || { pid: b.pid, name: b.n, team: b.t, rare: 0, logo: 0, buzz: 0, go: 0, deep: 0 };
-    r.rare++; if (b.tags.includes('LOGO') || b.tags.includes('HEAVE')) r.logo++; if (b.tags.includes('BUZZER')) r.buzz++; if (b.tags.includes('GO-AHEAD')) r.go++; r.deep = Math.max(r.deep, b.d || 0);
-    rareBy.set(b.pid, r);
-  });
+  const tallyRare = (list, rareBy = new Map()) => {
+    list.forEach(b => {
+      const r = rareBy.get(b.pid) || { pid: b.pid, name: b.n, team: b.t, rare: 0, logo: 0, buzz: 0, go: 0, deep: 0 };
+      r.team = b.t; // seasons are tallied oldest first, so this ends on the latest team
+      r.rare++; if (b.tags.includes('LOGO') || b.tags.includes('HEAVE')) r.logo++; if (b.tags.includes('BUZZER')) r.buzz++; if (b.tags.includes('GO-AHEAD')) r.go++; r.deep = Math.max(r.deep, b.d || 0);
+      rareBy.set(b.pid, r);
+    });
+    return rareBy;
+  };
+  const rareBy = tallyRare(buckets);
+  // Since tracking began: every season's rare buckets file, oldest first, with this season's fresh list.
+  const rareAllBy = new Map();
+  let rareSince = null;
+  const bucketSeasons = (await readdir(path.join(DATA, 'buckets')).catch(() => []))
+    .filter(f => /^\d{4}-\d{2}\.json$/.test(f)).map(f => f.slice(0, 7)).filter(s => s !== SEASON).sort();
+  for (const s of [...bucketSeasons, SEASON]) {
+    const list = s === SEASON ? buckets : (await readJSON(path.join(DATA, 'buckets', s + '.json'), [])) || [];
+    for (const b of list) if (b.date && (!rareSince || b.date < rareSince)) rareSince = b.date;
+    tallyRare(list, rareAllBy);
+  }
+  const rankRare = m => [...m.values()].sort((a, b) => b.rare - a.rare || b.deep - a.deep).slice(0, 10);
   const teamRare = Object.entries(buckets.reduce((m, b) => (m[b.t] = (m[b.t] || 0) + 1, m), {})).map(([name, n]) => ({ name, n })).sort((a, b) => b.n - a.n);
   await writeData(path.join(DATA, 'season.json'), {
     season: SEASON, updated: new Date().toISOString(), since: FIRST_LOG_SEASON,
     leaders: leaders.map(r => ({ pid: r.pid, name: r.name, team: r.team, td: r.td, dd: r.dd, p30: r.p30, p40: r.p40, streak: r.streak })),
     chase,
-    rareLeaders: [...rareBy.values()].sort((a, b) => b.rare - a.rare || b.deep - a.deep).slice(0, 10),
+    rareLeaders: rankRare(rareBy),
+    rareLeadersAll: rankRare(rareAllBy), rareSince,
     teamRare,
   });
 
