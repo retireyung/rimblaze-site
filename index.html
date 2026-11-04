@@ -153,6 +153,7 @@ input[type="date"]{font-family:var(--mono);font-size:12px;padding:6px 8px;border
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .chip{font-family:var(--mono);font-size:11.5px;padding:3px 8px;background:var(--surface-2);border-radius:3px}
 .chip b{font-weight:600}
+.chip.hot{background:color-mix(in srgb,var(--leather) 15%,var(--surface));color:var(--leather);font-weight:600}
 .watch{display:inline-block;margin-top:9px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--leather);font-weight:600}
 .watch:hover{text-decoration:underline}
 .feed-layout{display:grid;gap:18px}
@@ -274,11 +275,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
           <a class="btn ghost" href="all-time/">All-Time Leaders</a>
         </div>
         <div class="rules" aria-label="What counts as a rare bucket">
-          <span class="rule"><b>LOGO</b> 3 from 30+ ft</span>
-          <span class="rule"><b>HEAVE</b> make from 40+ ft</span>
+          <span class="rule"><b>GAME-WINNER</b> go-ahead in the final 30 s, and it holds</span>
+          <span class="rule"><b>DAGGER</b> one-possession game to two, final minute</span>
           <span class="rule"><b>BUZZER</b> 1.0 s or less left</span>
-          <span class="rule"><b>GO-AHEAD</b> final 30 s of Q4 or OT</span>
-          <span class="rule"><b>4-PT PLAY</b> · clutch <b>AND-ONE</b></span>
+          <span class="rule"><b>HALF-COURT</b> make from the other half</span>
+          <span class="rule"><b>HEAVE</b> 40+ ft</span>
+          <span class="rule"><b>LOGO</b> 3 from 30+ ft</span>
+          <span class="rule"><b>ON FIRE</b> 5+ threes in a row</span>
+          <span class="rule"><b>TAKEOVER</b> 12+ straight team points</span>
+          <span class="rule"><b>MILESTONE</b> 10,000th point, 1,000th three…</span>
+          <span class="rule"><b>GO-AHEAD</b> · <b>4-PT PLAY</b> · clutch <b>AND-ONE</b></span>
         </div>
         <div class="notice" id="notice"></div>
       </div>
@@ -303,7 +309,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
             <circle class="cl" cx="250" cy="417.5" r="8" style="stroke:var(--leather);opacity:1"/>
           </g>
           <text class="ctext" x="250" y="146" text-anchor="middle">LOGO RANGE · 30 FT</text>
-          <text class="ctext" x="250" y="24" text-anchor="middle" dy="40">HALF COURT · 47 FT</text>
+          <text class="ctext" x="250" y="24" text-anchor="middle" dy="40">HALF COURT · 42 FT</text>
           <g id="arcs"></g>
           <g id="spots"></g>
         </svg>
@@ -549,7 +555,8 @@ function drawCourt(){
 
 /* ---------- Feed ---------- */
 function watchURL(b){return b.gameId?'https://www.nba.com/game/'+b.gameId+'/play-by-play':'https://www.nba.com/watch';}
-function clutch(b){return (b.tags.indexOf('BUZZER')>=0||b.tags.indexOf('GO-AHEAD')>=0?0:1000)+(b.q.indexOf('OT')===0?-50:b.q==='Q4'?0:100)+(b.secs==null?999:b.secs);}
+function hasTag(b){for(var i=1;i<arguments.length;i++)if(b.tags.indexOf(arguments[i])>=0)return true;return false;}
+function clutch(b){return (hasTag(b,'GAME-WINNER')?-500:0)+(hasTag(b,'BUZZER','GO-AHEAD','GAME-WINNER','DAGGER')?0:1000)+(b.q.indexOf('OT')===0?-50:b.q==='Q4'?0:100)+(b.secs==null?999:b.secs);}
 function sorted(){
   var a=S.buckets.slice();
   if(S.sort==='time')a.sort(function(x,y){return String(y.time).localeCompare(String(x.time));});
@@ -564,7 +571,7 @@ function card(b){
     '<div class="dist num">'+fx(b.d)+'<small>FEET</small></div>'+
     '<div><div class="who">'+name+' <span class="meta">· '+esc(b.t)+' vs '+esc(b.o)+'</span>'+badges+'</div>'+
     '<div class="meta">'+esc(b.q)+' · '+clockStr(b.secs)+' left'+(b.shot?' · '+esc(b.shot):'')+(b.k?' · '+esc(b.k):'')+'</div>'+
-    '<div class="chips"><span class="chip">Score <b>'+esc(b.sc)+'</b></span><span class="chip">Clock <b>'+clockStr(b.secs)+'</b></span></div>'+
+    '<div class="chips">'+(b.ms?'<span class="chip hot">'+esc(b.ms)+'</span>':'')+(b.fire?'<span class="chip hot"><b>'+b.fire+'</b> straight threes</span>':'')+(b.run?'<span class="chip hot"><b>'+b.run+'</b> straight team points</span>':'')+'<span class="chip">Score <b>'+esc(b.sc)+'</b></span><span class="chip">Clock <b>'+clockStr(b.secs)+'</b></span></div>'+
     '<a class="watch" href="'+watchURL(b)+'" target="_blank" rel="noopener">▶ Watch clip</a></div></article>';
 }
 function renderFeed(){
@@ -584,7 +591,7 @@ function renderFeed(){
   document.getElementById('horn').innerHTML=(H?H.secs.toFixed(1):'—')+'<span> s left</span>';
   document.getElementById('horn-who').textContent=H?H.n+' · '+H.t+' · end of '+H.q:'No buzzer-beaters '+day;
   document.getElementById('total').textContent=list.length;
-  var bz=list.filter(function(b){return b.tags.indexOf('BUZZER')>=0;}).length,lg=list.filter(function(b){return b.tags.indexOf('LOGO')>=0||b.tags.indexOf('HEAVE')>=0;}).length;
+  var bz=list.filter(function(b){return b.tags.indexOf('BUZZER')>=0;}).length,lg=list.filter(function(b){return hasTag(b,'LOGO','HEAVE','HALF-COURT');}).length;
   document.getElementById('total-sub').textContent=(S.anyLive?'Across all games in progress':'Across all games')+(lg?' · '+lg+' from 30+ ft':'')+(bz?' · '+bz+' at the horn':'');
   drawCourt();
   S.buckets.forEach(function(b){b._fresh=false;});
@@ -595,7 +602,7 @@ function aggregate(all){
   var P={},T={};
   all.forEach(function(b){
     var k=b.pid||b.n,p=P[k]||(P[k]={name:b.n,pid:b.pid,team:b.t,rare:0,logo:0,buzz:0,go:0,deep:0});
-    p.rare++;if(b.tags.indexOf('LOGO')>=0||b.tags.indexOf('HEAVE')>=0)p.logo++;if(b.tags.indexOf('BUZZER')>=0)p.buzz++;if(b.tags.indexOf('GO-AHEAD')>=0)p.go++;p.deep=Math.max(p.deep,b.d||0);
+    p.rare++;if(hasTag(b,'LOGO','HEAVE','HALF-COURT'))p.logo++;if(hasTag(b,'BUZZER'))p.buzz++;if(hasTag(b,'GO-AHEAD','GAME-WINNER'))p.go++;p.deep=Math.max(p.deep,b.d||0);
     T[b.t]=(T[b.t]||0)+1;
   });
   var L=Object.keys(P).map(function(k){return P[k];}).sort(function(a,b){return b.rare-a.rare||b.deep-a.deep;}).slice(0,10).map(function(p,i){p.rank=i+1;return p;});
@@ -638,7 +645,7 @@ function drawChase(){
   if(CH.season.length)html+='<div class="ch-group mono">'+(S.mode==='sample'?'Season chases':'Season chases · best season since 1996-97')+'</div>'+CH.season.slice(0,4).map(function(c){
     return chaseItem({who:plink(c.name,c.pid)+' · '+esc(c.cat||''),meta:esc(c.what),cur:c.cur,max:c.max,need:c.need,lbl:c.lbl,left:'0',right:String(c.max),aria:c.cat});}).join('');
   if(CH.climbs.length)html+='<div class="ch-group mono">All-time climbs</div>'+CH.climbs.slice(0,3).map(chaseItem).join('');
-  if(CH.deep){var d=CH.deep;html+='<div class="ch-group mono">Range</div>'+chaseItem({who:plink(d.n,d.pid)+' · Deepest make of the last 7 game nights',meta:d.d+' ft, '+esc(d.q)+' with '+clockStr(d.secs)+' left vs '+esc(d.o)+'. '+(d.d>=47?'From beyond half court.':(47-d.d)+' ft short of half court.')+' '+d.heaves+' heave'+(d.heaves===1?'':'s')+' made from 40+ ft this week.',cur:d.d,max:47,mark:30,lbl:d.d+' of 47 ft · logo range at 30',left:'0',right:'47',aria:'Deepest make compared with half court'});}
+  if(CH.deep){var d=CH.deep;html+='<div class="ch-group mono">Range</div>'+chaseItem({who:plink(d.n,d.pid)+' · Deepest make of the last 7 game nights',meta:d.d+' ft, '+esc(d.q)+' with '+clockStr(d.secs)+' left vs '+esc(d.o)+'. '+(d.d>=43?'From the other half of the court.':(43-d.d)+' ft short of half court.')+' '+d.heaves+' heave'+(d.heaves===1?'':'s')+' made from 40+ ft this week.',cur:d.d,max:Math.max(47,d.d),mark:30,lbl:d.d+' ft · half court at 42, logo range at 30',left:'0',right:String(Math.max(47,d.d)),aria:'Deepest make compared with half court'});}
   el.innerHTML=html||'<div class="meta">The chase starts at tip-off.</div>';
 }
 function setSeasonChase(list){CH.season=list||[];drawChase();}
@@ -662,7 +669,7 @@ function renderChase(all){
     CH.climbs=[{who:plink('Kenji Alvarez')+' · All-time threes',meta:'#18 with 2,532. 37 more to pass Ray Castillo for #17.',cur:2532,max:2568,need:'37 to go',lbl:'#18 → #17',left:'',right:'2,568'}];
   }
   var deep=all.slice().sort(function(a,b){return (b.d||0)-(a.d||0);})[0];
-  CH.deep=deep?Object.assign({heaves:all.filter(function(b){return b.tags.indexOf('HEAVE')>=0;}).length},deep):null;
+  CH.deep=deep?Object.assign({heaves:all.filter(function(b){return hasTag(b,'HEAVE','HALF-COURT');}).length},deep):null;
   drawChase();
 }
 function renderTeams(T,label){
@@ -675,7 +682,7 @@ function renderTeams(T,label){
 }
 
 /* ---------- Big nights: stat-line feats ---------- */
-var FEAT_W={'QUADRUPLE-DOUBLE':100,'60-POINT GAME':95,'5x5':85,'50-POINT GAME':75,'TRIPLE-DOUBLE':60,'20-20':55,'10+ THREES':50,'40-POINT GAME':45,'15+ ASSISTS':40,'20+ REBOUNDS':40,'5+ STEALS':32,'5+ BLOCKS':32,'PERFECT FROM THE FIELD':28};
+var FEAT_W={'QUADRUPLE-DOUBLE':100,'60-POINT GAME':95,'5x5':85,'50-POINT GAME':75,'TRIPLE-DOUBLE':60,'20-20':55,'10+ THREES':50,'40-POINT GAME':45,'15+ ASSISTS':40,'20+ REBOUNDS':40,'5+ STEALS':32,'5+ BLOCKS':32,'PERFECT FROM THE FIELD':28,'20-POINT QUARTER':52};
 function feats(p){
   var cats=[p.P,p.R,p.A,p.S,p.B],tens=cats.filter(function(v){return v>=10;}).length,f=[];
   if(tens>=4)f.push('QUADRUPLE-DOUBLE');else if(tens===3)f.push('TRIPLE-DOUBLE');
@@ -688,6 +695,7 @@ function feats(p){
   if(p.B>=5)f.push('5+ BLOCKS');
   if(p.tpm>=10)f.push('10+ THREES');
   if(p.fga>=8&&p.fgm===p.fga)f.push('PERFECT FROM THE FIELD');
+  if(p.qMax>=20)f.push('20-POINT QUARTER');
   return f;
 }
 function isDD(p){return [p.P,p.R,p.A,p.S,p.B].filter(function(v){return v>=10;}).length===2;}

@@ -16,11 +16,13 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cdn } from './nba.mjs';
-import { rareBuckets } from './feats.mjs';
+import { rareBuckets, quarterPoints, RULES_VERSION } from './feats.mjs';
+import { careerFromCompact } from './career.mjs';
 import { renderNights } from './nights.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const DATA = path.join(ROOT, 'data'), LIVE = path.join(DATA, 'live'), CACHE = path.join(DATA, 'cache', 'live');
+// Finished games are cached per rules version, so a rule change recomputes them once.
+const DATA = path.join(ROOT, 'data'), LIVE = path.join(DATA, 'live'), CACHE = path.join(DATA, 'cache', `live-v${RULES_VERSION}`);
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 const readJSON = async (f, d = null) => { try { return JSON.parse(await readFile(f, 'utf8')); } catch { return d; } };
 const writeJSON = async (f, v) => { await mkdir(path.dirname(f), { recursive: true }); await writeFile(f, JSON.stringify(v)); };
@@ -46,22 +48,25 @@ function boxLines(box) {
   return out;
 }
 
-async function game(g, names) {
+async function game(g, names, career) {
   const cacheFile = path.join(CACHE, g.gameId + '.json');
   const hit = await readJSON(cacheFile);
   if (hit) return hit;
   const box = await cdn(`liveData/boxscore/boxscore_${g.gameId}.json`);
   if (!box?.game) return null;
   const G = box.game;
-  let buckets = [];
+  let buckets = [], quarters = {};
   if (G.gameStatus >= 2) {
     const pbp = await cdn(`liveData/playbyplay/playbyplay_${g.gameId}.json`);
-    buckets = rareBuckets(pbp?.game?.actions || [], g).map(b => ({ ...b, n: names.get(b.pid) || b.n, k: g.arenaName || '' }));
+    const acts = pbp?.game?.actions || [], GG = { ...g, final: G.gameStatus === 3 };
+    buckets = rareBuckets(acts, GG, { careerBefore: pid => career.before(pid, g.gameId, g.date) })
+      .map(b => ({ ...b, n: names.get(b.pid) || b.n, k: g.arenaName || '' }));
+    quarters = quarterPoints(acts, GG);
   }
   const out = {
     game: { id: G.gameId, status: G.gameStatus, text: (G.gameStatusText || '').trim(),
       away: G.awayTeam.teamTricode, home: G.homeTeam.teamTricode, awayScore: G.awayTeam.score, homeScore: G.homeTeam.score },
-    buckets, lines: G.gameStatus >= 2 ? boxLines(box) : [],
+    buckets, lines: G.gameStatus >= 2 ? boxLines(box).map(l => quarters[l.pid] ? { ...l, qMax: quarters[l.pid].qMax, qPer: quarters[l.pid].period } : l) : [],
   };
   if (G.gameStatus === 3) await writeJSON(cacheFile, out); // finished games never change
   return out;
@@ -81,6 +86,8 @@ async function main() {
   } catch (e) { log(`scoreboard: ${e.message}`); }
   const playerList = (await readJSON(path.join(DATA, 'players.json'), [])) || [];
   const names = new Map(playerList.map(p => [p.id, p.name]));
+  // career totals for MILESTONE (written by the stats build); without them, milestones just wait for it
+  const career = careerFromCompact(await readJSON(path.join(DATA, 'cache', 'career-base.json'), null));
 
   const byDate = new Map();
   for (const gd of sched.leagueSchedule.gameDates || []) {
@@ -97,7 +104,7 @@ async function main() {
     if (!started.length) continue;
     const results = [];
     for (const g of started) {
-      try { const r = await game(g, names); if (r && r.game.status >= 2) results.push(r); } catch (e) { log(`game ${g.gameId}: ${e.message}`); }
+      try { const r = await game({ ...g, date }, names, career); if (r && r.game.status >= 2) results.push(r); } catch (e) { log(`game ${g.gameId}: ${e.message}`); }
     }
     if (!results.length) continue;
     const day = {

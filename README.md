@@ -2,6 +2,28 @@
 
 Live NBA tracker for rare buckets (logo threes, buzzer-beaters, go-ahead daggers, and-ones, heaves) and big nights (triple-doubles, 40/50/60-point games, 20-20s, 5x5s and more), with season chases, career milestones and a profile for every active player.
 
+## Rare bucket rules (`scripts/feats.mjs`)
+
+A made shot is a rare bucket if it earns at least one tag (a plain and-one only counts alongside another tag). Distances are from the hoop; half court is about 42 ft from the hoop.
+
+| Tag | Rule |
+| --- | --- |
+| GAME-WINNER | Go-ahead basket in the final 30 s of the 4th or OT, and the lead holds to the final buzzer (shows as GO-AHEAD until the game is final) |
+| GO-AHEAD | Go-ahead basket in the final 30 s of the 4th or OT that didn't hold |
+| DAGGER | Final minute of the 4th or OT: turns a 1-3 point lead into 4+, and the team wins |
+| BUZZER | 1.0 s or less on the clock (0:00 only on old whole-second clocks) |
+| HALF-COURT | 43+ ft (from the other half of the court) |
+| HEAVE | 40-42 ft |
+| LOGO | Three from 30-39 ft |
+| ON FIRE | A player's 5th straight made three in a game, and each one after |
+| TAKEOVER | A player reaches 12 straight points for his team (once per run) |
+| MILESTONE | Reaches 10,000 / 15,000 / 20,000… career points or 1,000 / 2,000 / 3,000 career threes (regular season) |
+| 4-PT PLAY / AND-ONE | Three plus a made foul shot / two plus a made foul shot |
+
+Big nights also include the **20-point quarter** (20+ points in one quarter or overtime), from play-by-play.
+
+The streak thresholds were set from real games so each lands about once a night league-wide. Changing any rule means bumping `RULES_VERSION`: cached results from an older version are recomputed (the live and stats builds redo this season's games; the backfill rebuilds past seasons from its saved play-by-play in `data/cache/pbp/` without downloading).
+
 ## What's here
 
 | Path | What it is |

@@ -22,7 +22,8 @@ import { fileURLToPath } from 'node:url';
 import { stats, cdn, rows, seasonFor, seasonList, wikidataBios } from './nba.mjs';
 import { renderSite } from './pages.mjs';
 import { TEAM_NAMES } from './teams.mjs';
-import { feats, featScore, tens, rareBuckets, isRare, WATCH_MIN, MILESTONES, nextMilestone, badges } from './feats.mjs';
+import { feats, featScore, tens, rareBuckets, quarterPoints, isRare, isDeep, isClutch, RULES_VERSION, WATCH_MIN, MILESTONES, nextMilestone, badges } from './feats.mjs';
+import { careerIndex } from './career.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data'), CACHE = path.join(DATA, 'cache');
@@ -69,7 +70,7 @@ async function gameLogs(season) {
 }
 
 // ---------- 2. Rare buckets from play-by-play ----------
-async function seasonBuckets() {
+async function seasonBuckets(careerIdx) {
   let sched = null;
   for (const f of ['staticData/scheduleLeagueV2_1.json', 'staticData/scheduleLeagueV2.json']) {
     try { sched = await cdn(f); if (sched?.leagueSchedule) break; } catch (e) { log(`schedule ${f}: ${e.message.split(' failed: ').pop()}`); }
@@ -77,22 +78,29 @@ async function seasonBuckets() {
   if (!sched?.leagueSchedule) throw new Error('NBA.com schedule unavailable');
   const games = (sched?.leagueSchedule?.gameDates || []).flatMap(gd => (gd.games || []).map(g => ({ ...g, date: gd.gameDate })))
     .filter(g => /^002/.test(g.gameId) && g.gameStatus === 3);
-  const out = [];
+  const out = [], quarters = [];
   let missed = 0;
   for (const g of games) {
     const m = /(\d+)\/(\d+)\/(\d+)/.exec(g.date), date = `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}`;
     try {
       // Only a successful download is cached, so a game that failed tonight is retried tomorrow.
-      const list = await cached(`buckets/${g.gameId}.json`, Infinity, async () => {
+      // Cached per rules version, so a rule change recomputes every game once.
+      const res = await cached(`rules-v${RULES_VERSION}/${g.gameId}.json`, Infinity, async () => {
         const pbp = await cdn(`liveData/playbyplay/playbyplay_${g.gameId}.json`);
         if (!pbp) throw new Error('no play-by-play yet');
-        return rareBuckets(pbp.game.actions || [], g);
+        const acts = pbp.game.actions || [], G = { ...g, final: true };
+        const q = quarterPoints(acts, G);
+        return {
+          buckets: rareBuckets(acts, G, { careerBefore: pid => careerIdx.before(pid, g.gameId, date) }),
+          quarters: Object.entries(q).filter(([, v]) => v.qMax >= 20).map(([pid, v]) => ({ gameId: g.gameId, pid: +pid, date, ...v })),
+        };
       });
-      list.filter(b => isRare(b.tags)).forEach(b => out.push({ ...b, date })); // re-check cached games against today's rules
+      res.buckets.forEach(b => out.push({ ...b, date }));
+      quarters.push(...res.quarters);
     } catch (e) { missed++; }
   }
   log(`rare buckets: ${out.length} from ${games.length - missed} of ${games.length} final games`);
-  return out;
+  return { buckets: out, quarters };
 }
 
 // ---------- 3. Helpers over game lines ----------
@@ -142,6 +150,7 @@ async function main() {
   const allLines = [];
   for (const s of seasons) { const l = await gameLogs(s); allLines.push(...l); log(`game log ${s}: ${l.length} lines`); }
   const cur = allLines.filter(l => l.season === SEASON);
+  const careerIdx = careerIndex(allLines);
   const linesBy = new Map();
   allLines.forEach(l => { if (!linesBy.has(l.pid)) linesBy.set(l.pid, []); linesBy.get(l.pid).push(l); });
 
@@ -186,7 +195,18 @@ async function main() {
   const fullName = new Map([...active, ...historical].map(p => [p.id, p.name]));
   cur.forEach(l => { if (!fullName.has(l.pid)) fullName.set(l.pid, l.n); });
   let rawBuckets = [];
-  try { rawBuckets = await seasonBuckets(); } catch (e) { log(`rare buckets skipped tonight: ${e.message}`); }
+  try {
+    const sb = await seasonBuckets(careerIdx);
+    rawBuckets = sb.buckets;
+    await writeJSON(path.join(DATA, 'quarters', SEASON + '.json'), sb.quarters);
+  } catch (e) { log(`rare buckets skipped tonight: ${e.message}`); }
+  // 20-point quarters: every season's file (past seasons come from the backfill), onto the game lines
+  const qBy = new Map();
+  for (const f of (await readdir(path.join(DATA, 'quarters')).catch(() => [])).filter(f => /^\d{4}-\d{2}\.json$/.test(f)))
+    for (const q of (await readJSON(path.join(DATA, 'quarters', f), [])) || []) qBy.set(q.gameId + '|' + q.pid, q);
+  for (const l of allLines) { const q = qBy.get(l.gameId + '|' + l.pid); if (q) { l.qMax = q.qMax; l.qPer = q.period; } }
+  // career totals for the live build's MILESTONE checks
+  await writeJSON(path.join(CACHE, 'career-base.json'), careerIdx.compact(active.map(p => p.id), SEASON));
   const buckets = rawBuckets.map(b => ({ ...b, n: fullName.get(b.pid) || b.n }));
   await writeJSON(path.join(DATA, 'buckets', SEASON + '.json'), buckets);
 
@@ -245,7 +265,7 @@ async function main() {
     list.forEach(b => {
       const r = rareBy.get(b.pid) || { pid: b.pid, name: b.n, team: b.t, rare: 0, logo: 0, buzz: 0, go: 0, deep: 0 };
       r.team = b.t; // seasons are tallied oldest first, so this ends on the latest team
-      r.rare++; if (b.tags.includes('LOGO') || b.tags.includes('HEAVE')) r.logo++; if (b.tags.includes('BUZZER')) r.buzz++; if (b.tags.includes('GO-AHEAD')) r.go++; r.deep = Math.max(r.deep, b.d || 0);
+      r.rare++; if (isDeep(b)) r.logo++; if (b.tags.includes('BUZZER')) r.buzz++; if (isClutch(b)) r.go++; r.deep = Math.max(r.deep, b.d || 0);
       rareBy.set(b.pid, r);
     });
     return rareBy;
@@ -334,7 +354,7 @@ function buildProfile(a, careerJ, infoJ, awardsJ, lines, buckets, rank, bio = {}
   const awards = rows(awardsJ, 'PlayerAwards').map(r => ({ name: r.DESCRIPTION === 'All-NBA' || /All-NBA/.test(r.DESCRIPTION) ? 'All-NBA' : r.DESCRIPTION, season: r.SEASON, team: r.TEAM }))
     .filter(r => /Most Valuable|All-Star$|All-NBA|Champion|Defensive Player|Rookie of the Year|Finals Most/.test(r.name) && !/All-Star Most Valuable/.test(r.name));
   const nights = lines.map(l => ({ ...l, feats: feats(l) })).filter(l => l.feats.length)
-    .map(l => ({ date: l.date, season: l.season, gameId: l.gameId, opp: l.opp, home: l.home, wl: l.wl, P: l.P, R: l.R, A: l.A, S: l.S, B: l.B, tpm: l.tpm, fgm: l.fgm, fga: l.fga, feats: l.feats, score: featScore(l.feats) }));
+    .map(l => ({ date: l.date, season: l.season, gameId: l.gameId, opp: l.opp, home: l.home, wl: l.wl, P: l.P, R: l.R, A: l.A, S: l.S, B: l.B, tpm: l.tpm, fgm: l.fgm, fga: l.fga, ...(l.qMax ? { qMax: l.qMax, qPer: l.qPer } : {}), feats: l.feats, score: featScore(l.feats) }));
   const highs = [['P', 'Points'], ['R', 'Rebounds'], ['A', 'Assists'], ['tpm', 'Threes'], ['S', 'Steals'], ['B', 'Blocks']].map(([k, label]) => {
     const best = lines.slice().sort((x, y) => y[k] - x[k] || x.date.localeCompare(y.date))[0];
     return best ? { stat: label, v: best[k], date: best.date, opp: best.opp, home: best.home, gameId: best.gameId, line: { P: best.P, R: best.R, A: best.A } } : null;
@@ -359,7 +379,7 @@ function buildProfile(a, careerJ, infoJ, awardsJ, lines, buckets, rank, bio = {}
       teams: teamSpans(seasons), active: !retired,
     },
     seasons, career, awards, highs, nights: nights.sort((x, y) => y.date.localeCompare(x.date)), ddDates,
-    buckets: buckets.map(b => ({ date: b.date, gameId: b.gameId, o: b.o, q: b.q, secs: b.secs, d: b.d, a: b.a, tags: b.tags, shot: b.shot, sc: b.sc })),
+    buckets: buckets.map(b => ({ date: b.date, gameId: b.gameId, o: b.o, q: b.q, secs: b.secs, d: b.d, a: b.a, tags: b.tags, shot: b.shot, sc: b.sc, ...(b.ms ? { ms: b.ms } : {}), ...(b.fire ? { fire: b.fire } : {}), ...(b.run ? { run: b.run } : {}) })),
     splits: { home: split(l => l.home), away: split(l => !l.home), wins: split(l => l.wl === 'W'), losses: split(l => l.wl === 'L'), months: months.map(m => ({ m, ...split(l => l.date.startsWith(m)) })) },
     games30: lines.filter(l => l.P >= 30).length, logsPartial,
     splitsLabel: retired ? (lines.length ? `Career · ${logsPartial ? 'games since ' + FIRST_LOG_SEASON : 'every game'}` : null) : null,

@@ -5,10 +5,13 @@ export const FEAT_WEIGHT = {
   'QUADRUPLE-DOUBLE': 100, '60-POINT GAME': 95, '5x5': 85, '50-POINT GAME': 75,
   'TRIPLE-DOUBLE': 60, '20-20': 55, '10+ THREES': 50, '40-POINT GAME': 45,
   '15+ ASSISTS': 40, '20+ REBOUNDS': 40, '5+ STEALS': 32, '5+ BLOCKS': 32,
-  'PERFECT FROM THE FIELD': 28,
+  'PERFECT FROM THE FIELD': 28, '20-POINT QUARTER': 52,
 };
 
-// p = {P,R,A,S,B,tpm,fgm,fga}
+// Bump this when the rules change: cached results computed under an older version are recomputed.
+export const RULES_VERSION = 2;
+
+// p = {P,R,A,S,B,tpm,fgm,fga, qMax?} (qMax: his most points in one quarter or overtime, from play-by-play)
 export function tens(p) { return [p.P, p.R, p.A, p.S, p.B].filter(v => v >= 10).length; }
 
 export function feats(p) {
@@ -23,6 +26,7 @@ export function feats(p) {
   if (p.B >= 5) f.push('5+ BLOCKS');
   if (p.tpm >= 10) f.push('10+ THREES');
   if (p.fga >= 8 && p.fgm === p.fga) f.push('PERFECT FROM THE FIELD');
+  if (p.qMax >= 20) f.push('20-POINT QUARTER');
   return f;
 }
 export const featScore = f => f.reduce((s, k) => s + (FEAT_WEIGHT[k] || 0), 0);
@@ -37,30 +41,113 @@ export const isRare = tags => tags.length > 0 && !(tags.length === 1 && tags[0] 
 // Milestone watch only shows numbers worth celebrating (the profile ladder still shows every rung).
 export const WATCH_MIN = { pts: 10000, reb: 5000, ast: 5000, tpm: 1000, stl: 1000, blk: 1000, td: 25 };
 
-export function rareBuckets(actions, game) {
+// Shot distance is measured from the hoop. The half-court line is about 42 ft from the hoop
+// (47 ft from the baseline), so 43+ ft means the shot came from the other half of the court.
+export const DIST = { logo: 30, heave: 40, halfCourt: 43 };
+// Streak thresholds, set from real games so each lands about once a night league-wide.
+export const STREAK = { fire: 5, takeover: 12 };
+export const MS_STEPS = { pts: v => v >= 10000 && v % 5000 === 0, tpm: v => v >= 1000 && v % 1000 === 0 };
+const nth = v => v.toLocaleString('en-US') + 'th';
+
+// Points scored on each action, from the running score (works for live and archived play-by-play).
+function* scoring(actions, home, away) {
+  let h = 0, w = 0;
+  for (let i = 0; i < actions.length; i++) {
+    const a = actions[i];
+    const sh = a.scoreHome === '' || a.scoreHome == null ? null : +a.scoreHome, sa = a.scoreAway === '' || a.scoreAway == null ? null : +a.scoreAway;
+    if (sh == null || sa == null || isNaN(sh) || isNaN(sa)) { yield { i, a, pts: 0 }; continue; }
+    const dh = sh - h, dw = sa - w; h = sh; w = sa;
+    // One play scores at most 4 (a four-point play); anything else is a gap in the record, so just resync.
+    if (dh < 0 || dw < 0 || dh > 4 || dw > 4 || (dh > 0 && dw > 0)) { yield { i, a, pts: 0, h, w }; continue; }
+    const team = dh > 0 ? home : dw > 0 ? away : null, pts = Math.max(dh, dw, 0);
+    yield { i, a, pts: team && a.teamTricode === team ? pts : 0, team, h, w };
+  }
+}
+
+// Most points each player scored in a single period: { pid: { qMax, period } }.
+export function quarterPoints(actions, game) {
+  const per = new Map();
+  for (const { a, pts } of scoring(actions, game.homeTeam.teamTricode, game.awayTeam.teamTricode)) {
+    if (!pts || !a.personId) continue;
+    const k = a.personId + '|' + a.period; per.set(k, (per.get(k) || 0) + pts);
+  }
+  const out = {};
+  for (const [k, v] of per) { const [pid, q] = k.split('|'); if (!out[pid] || v > out[pid].qMax) out[pid] = { qMax: v, period: +q }; }
+  return out;
+}
+
+// game: { gameId, homeTeam:{teamTricode}, awayTeam:{teamTricode}, final?: bool }
+// ctx:  { careerBefore?: pid => ({pts, tpm} career regular-season totals before this game) | null, coarse?: bool }
+export function rareBuckets(actions, game, ctx = {}) {
   const home = game.homeTeam.teamTricode, away = game.awayTeam.teamTricode, out = [];
-  actions.forEach(a => {
-    if (!(a.actionType === '2pt' || a.actionType === '3pt') || a.shotResult !== 'Made') return;
-    const secs = parseClock(a.clock), d = a.shotDistance != null ? Math.round(a.shotDistance) : null, pts = a.actionType === '3pt' ? 3 : 2;
+  const regular = /^002/.test(game.gameId || '');
+  const steps = [...scoring(actions, home, away)];
+  const fire = new Map(), run = new Map(), gamePts = new Map(), gameThrees = new Map();
+  // GAME-WINNER: the lead must hold through the end of the game.
+  const holds = (from, team) => {
+    for (let j = from + 1; j < steps.length; j++) {
+      const s = steps[j]; if (s.h == null) continue;
+      const us = team === home ? s.h : s.w, them = team === home ? s.w : s.h;
+      if (us <= them) return false;
+    }
+    return true;
+  };
+  for (const st of steps) {
+    const a = st.a;
+    // streak and scoring bookkeeping
+    if (a.actionType === '3pt' && a.personId) fire.set(a.personId, a.shotResult === 'Made' ? (fire.get(a.personId) || 0) + 1 : 0);
+    if (st.pts && st.team) {
+      const r = run.get(st.team);
+      if (r && r.pid === a.personId) r.pts += st.pts; else run.set(st.team, { pid: a.personId, pts: st.pts, tagged: false });
+      gamePts.set(a.personId, (gamePts.get(a.personId) || 0) + st.pts);
+    }
+    if (!(a.actionType === '2pt' || a.actionType === '3pt') || a.shotResult !== 'Made') continue;
+    if (a.actionType === '3pt') gameThrees.set(a.personId, (gameThrees.get(a.personId) || 0) + 1);
+
+    const secs = parseClock(a.clock), d = a.shotDistance != null && a.shotDistance !== '' ? Math.round(a.shotDistance) : null, pts = a.actionType === '3pt' ? 3 : 2;
     const isHome = a.teamTricode === home, us = isHome ? +a.scoreHome : +a.scoreAway, them = isHome ? +a.scoreAway : +a.scoreHome;
-    const tags = [];
-    if (d != null && d >= 40) tags.push('HEAVE'); else if (pts === 3 && d != null && d >= 30) tags.push('LOGO');
-    if (secs != null && secs <= 1.0) tags.push('BUZZER');
-    if (a.period >= 4 && secs != null && secs <= 30 && us - pts <= them && us > them) tags.push('GO-AHEAD');
+    const before = us - pts - them, after = us - them;
+    const tags = [], extra = {};
+    // distance
+    if (d != null && d >= DIST.halfCourt) tags.push('HALF-COURT');
+    else if (d != null && d >= DIST.heave) tags.push('HEAVE');
+    else if (pts === 3 && d != null && d >= DIST.logo) tags.push('LOGO');
+    // the clock
+    if (secs != null && secs <= 1.0 && !(ctx.coarse && secs > 0)) tags.push('BUZZER');
+    const late = a.period >= 4 && secs != null;
+    if (late && secs <= 30 && before <= 0 && after > 0) tags.push(game.final && holds(st.i, a.teamTricode) ? 'GAME-WINNER' : 'GO-AHEAD');
+    if (late && secs <= 60 && before >= 1 && before <= 3 && after >= 4 && (!game.final || holds(st.i, a.teamTricode))) tags.push('DAGGER');
+    // and-ones
     const ft = actions.find(x => x.actionType === 'freethrow' && x.personId === a.personId && x.period === a.period && x.clock === a.clock && /1 of 1/.test(x.subType || ''));
     if (ft) tags.push(pts === 3 ? '4-PT PLAY' : 'AND-ONE');
-    if (!isRare(tags)) return;
+    // streaks
+    if (pts === 3 && (fire.get(a.personId) || 0) >= STREAK.fire) { tags.push('ON FIRE'); extra.fire = fire.get(a.personId); }
+    const r = run.get(a.teamTricode);
+    if (r && r.pid === a.personId && r.pts >= STREAK.takeover && !r.tagged) { tags.push('TAKEOVER'); r.tagged = true; extra.run = r.pts; }
+    // career milestones (regular season only, when career totals are known)
+    const base = regular && ctx.careerBefore ? ctx.careerBefore(a.personId) : null;
+    if (base) {
+      const nowP = base.pts + (gamePts.get(a.personId) || 0), wasP = nowP - (st.pts || pts);
+      for (let v = Math.ceil((wasP + 1) / 5000) * 5000; v <= nowP; v += 5000) if (MS_STEPS.pts(v)) { extra.ms = (extra.ms ? extra.ms + ' · ' : '') + `${nth(v)} career point`; }
+      if (pts === 3) { const t = base.tpm + (gameThrees.get(a.personId) || 0); if (MS_STEPS.tpm(t)) extra.ms = (extra.ms ? extra.ms + ' · ' : '') + `${nth(t)} career three`; }
+      if (extra.ms) tags.push('MILESTONE');
+    }
+    if (!isRare(tags)) continue;
     const lat = a.xLegacy != null ? -a.xLegacy / 10 : null, outFt = a.yLegacy != null ? a.yLegacy / 10 : null;
     out.push({
       id: game.gameId + '-' + a.actionNumber, gameId: game.gameId, pid: a.personId, n: a.playerNameI || a.playerName,
       t: a.teamTricode, o: isHome ? away : home, q: period(a.period), secs, d,
       a: lat != null && outFt != null ? Math.round(Math.atan2(lat, Math.max(outFt, -4)) * 180 / Math.PI) : 0,
       shot: (a.subType || '').replace(/^\w/, c => c.toUpperCase()) + (a.descriptor ? ' · ' + a.descriptor : ''),
-      sc: `${away} ${a.scoreAway}–${a.scoreHome} ${home}`, tags, time: a.timeActual || '',
+      sc: `${away} ${a.scoreAway}–${a.scoreHome} ${home}`, tags, ...extra, time: a.timeActual || '',
     });
-  });
+  }
   return out;
 }
+
+// Counting helpers shared by the leaders tables.
+export const isDeep = b => b.tags.includes('LOGO') || b.tags.includes('HEAVE') || b.tags.includes('HALF-COURT');
+export const isClutch = b => b.tags.includes('GO-AHEAD') || b.tags.includes('GAME-WINNER');
 
 // ---- Milestones ----
 export const MILESTONES = {
@@ -105,8 +192,22 @@ export function badges(pl) {
   push(gameBadge(N, '10+ THREES', 'rare', 'Ten threes', '10'));
   push(gameBadge(N, '15+ ASSISTS', 'rare', '15 assists', '15'));
   push(gameBadge(N, '20+ REBOUNDS', 'rare', '20 rebounds', '20'));
-  const bz = B.filter(b => b.tags.includes('BUZZER') && b.tags.includes('GO-AHEAD'));
-  if (bz.length) push({ tier: 'unicorn', span: 'game', name: 'Game-winner at the horn', short: '0.0', count: bz.length, detail: `Latest ${fmt(bz[bz.length - 1].date)} vs ${bz[bz.length - 1].o}` });
+  const latest = list => `Latest ${fmt(list[list.length - 1].date)} vs ${list[list.length - 1].o}`;
+  const bz = B.filter(b => b.tags.includes('BUZZER') && (b.tags.includes('GAME-WINNER') || b.tags.includes('GO-AHEAD')));
+  if (bz.length) push({ tier: 'unicorn', span: 'game', name: 'Game-winner at the horn', short: '0.0', count: bz.length, detail: latest(bz) });
+  const hc = B.filter(b => b.tags.includes('HALF-COURT'));
+  if (hc.length) push({ tier: 'unicorn', span: 'game', name: 'Half-court make', short: Math.max(...hc.map(b => b.d)) + "'", count: hc.length, detail: `Deepest ${Math.max(...hc.map(b => b.d))} ft` });
+  const gw = B.filter(b => b.tags.includes('GAME-WINNER'));
+  if (gw.length) push({ tier: 'rare', span: 'game', name: 'Game-winner', short: 'GW', count: gw.length, detail: latest(gw) });
+  const ms = B.filter(b => b.tags.includes('MILESTONE'));
+  if (ms.length) push({ tier: 'rare', span: 'game', name: 'Milestone bucket', short: 'MS', count: ms.length, detail: ms.map(b => b.ms).slice(-2).join(' · ') });
+  const of = B.filter(b => b.tags.includes('ON FIRE'));
+  if (of.length) push({ tier: 'rare', span: 'game', name: 'On fire', short: Math.max(...of.map(b => b.fire || 5)) + '', count: new Set(of.map(b => b.gameId)).size, detail: `Best: ${Math.max(...of.map(b => b.fire || 5))} straight threes` });
+  push(gameBadge(N, '20-POINT QUARTER', 'rare', '20-point quarter', '20Q'));
+  const tk = B.filter(b => b.tags.includes('TAKEOVER'));
+  if (tk.length) push({ tier: 'legend', span: 'game', name: 'Takeover', short: Math.max(...tk.map(b => b.run || 12)) + '', count: tk.length, detail: `Best: ${Math.max(...tk.map(b => b.run || 12))} straight team points` });
+  const dg = B.filter(b => b.tags.includes('DAGGER'));
+  if (dg.length) push({ tier: 'legend', span: 'game', name: 'Dagger', short: 'DGR', count: dg.length, detail: latest(dg) });
   const hv = B.filter(b => b.tags.includes('HEAVE'));
   if (hv.length) push({ tier: 'rare', span: 'game', name: 'Heave made', short: Math.max(...hv.map(b => b.d)) + "'", count: hv.length, detail: `Deepest ${Math.max(...hv.map(b => b.d))} ft` });
   const lg = B.filter(b => b.tags.includes('LOGO'));
