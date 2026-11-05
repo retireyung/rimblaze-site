@@ -217,6 +217,9 @@ async function sitemap(profiles, slugify, alltime) {
   return urls.length;
 }
 
+// Rebuild only the player pages (after a change to player.html), from the saved profiles.
+export async function renderProfiles({ root, profiles, slugify }) { ROOT_DIR = root; return playerPages(profiles, slugify); }
+
 export async function renderSite({ root, profiles, alltime, slugify, log, cur = [], buckets = [], season }) {
   ROOT_DIR = root;
   if (!existsSync(path.join(root, 'player.html'))) { log('player.html not found, skipping pages'); return; }
