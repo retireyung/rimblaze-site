@@ -210,6 +210,15 @@ async function main() {
   const buckets = rawBuckets.map(b => ({ ...b, n: fullName.get(b.pid) || b.n }));
   await writeJSON(path.join(DATA, 'buckets', SEASON + '.json'), buckets);
 
+  // every rare bucket on record, past seasons (from the backfill) plus this one, by player, for profiles
+  const pastSeasons = (await readdir(path.join(DATA, 'buckets')).catch(() => []))
+    .filter(f => /^\d{4}-\d{2}\.json$/.test(f)).map(f => f.slice(0, 7)).filter(s => s !== SEASON).sort();
+  const pastBuckets = new Map(); // season -> list
+  for (const s of pastSeasons) pastBuckets.set(s, (await readJSON(path.join(DATA, 'buckets', s + '.json'), [])) || []);
+  const bucketsBy = new Map();
+  for (const list of [...pastBuckets.values(), buckets]) for (const b of list) { if (!bucketsBy.has(b.pid)) bucketsBy.set(b.pid, []); bucketsBy.get(b.pid).push(b); }
+  log(`rare buckets on record: ${[...bucketsBy.values()].reduce((n, l) => n + l.length, 0)} across ${pastSeasons.length + 1} seasons`);
+
   // per player
   // Refetch a player's career totals once each time a new game of his shows up in the game log.
   const seenFile = path.join(CACHE, 'seen.json'), firstRun = !existsSync(seenFile);
@@ -235,7 +244,7 @@ async function main() {
         : await careerFresh(a.id, () => stats('playercareerstats', { PlayerID: a.id, PerMode: 'Totals', LeagueID: '00' }));
       const info = await cached(`info/${a.id}.json`, keep, () => stats('commonplayerinfo', { PlayerID: a.id, LeagueID: '00' }));
       const awardsRaw = await cached(`awards/${a.id}.json`, keep, () => stats('playerawards', { PlayerID: a.id }));
-      profiles.push(buildProfile(a, career, info, awardsRaw, linesBy.get(a.id) || [], buckets.filter(b => b.pid === a.id), rank, bios.get(a.id)));
+      profiles.push(buildProfile(a, career, info, awardsRaw, linesBy.get(a.id) || [], bucketsBy.get(a.id) || [], rank, bios.get(a.id)));
     } catch (e) { log(`skip ${a.name}: ${e.message}`); }
   }
 
@@ -274,10 +283,9 @@ async function main() {
   // Since tracking began: every season's rare buckets file, oldest first, with this season's fresh list.
   const rareAllBy = new Map();
   let rareSince = null;
-  const bucketSeasons = (await readdir(path.join(DATA, 'buckets')).catch(() => []))
-    .filter(f => /^\d{4}-\d{2}\.json$/.test(f)).map(f => f.slice(0, 7)).filter(s => s !== SEASON).sort();
+  const bucketSeasons = pastSeasons;
   for (const s of [...bucketSeasons, SEASON]) {
-    const list = s === SEASON ? buckets : (await readJSON(path.join(DATA, 'buckets', s + '.json'), [])) || [];
+    const list = s === SEASON ? buckets : pastBuckets.get(s) || [];
     for (const b of list) if (b.date && (!rareSince || b.date < rareSince)) rareSince = b.date;
     tallyRare(list, rareAllBy);
   }
