@@ -470,8 +470,13 @@ function per(p){return p<=4?'Q'+p:(p===5?'OT':'OT'+(p-4));}
 function clockStr(s){if(s==null)return '';if(s<60)return '0:'+(s<10?'0':'')+s.toFixed(1);var m=Math.floor(s/60),r=Math.floor(s%60);return m+':'+(r<10?'0':'')+r;}
 function slugify(s){return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
 var SAMPLE_PROFILE='https://claude.ai/artifact/Vn5FYt4sQJQvHCGnUZXFmq';
+// Profile addresses come from the site's player index, so a link never depends on how a name was
+// written in the data ("S. Curry" vs "Stephen Curry"). Players without a profile show as plain text.
+var PROFILES=null;
+function loadProfiles(){return getJSON('data/players.json',15000).then(function(list){PROFILES={};(list||[]).forEach(function(p){PROFILES[p.id]=p;});},function(){PROFILES=null;});}
 function plink(name,pid){
-  if(pid)return '<a href="players/'+slugify(name)+'-'+pid+'/">'+esc(name)+'</a>';
+  if(pid&&PROFILES){var p=PROFILES[pid];return p?'<a href="players/'+p.slug+'/">'+esc(p.name)+'</a>':esc(name);}
+  if(pid&&S.mode==='live')return esc(name);
   if(name==='Kenji Alvarez')return '<a href="'+SAMPLE_PROFILE+'" target="_blank" rel="noopener">'+esc(name)+'</a>';
   return esc(name);
 }
@@ -891,7 +896,7 @@ function liveError(){
   setTimeout(start,60000);
 }
 function start(){
-loadIndex().then(function(){
+Promise.all([loadIndex(),PROFILES?null:loadProfiles()]).then(function(){
   S.date=latestDate();S.isToday=S.date===today();
   return loadDate(S.date);
 }).then(function(b){
