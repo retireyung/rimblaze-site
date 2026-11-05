@@ -69,11 +69,11 @@ function teamPage(abbr, d, season) {
 <p class="lead">${esc(desc)}</p>
 <div class="strip"><div><span class="k">${esc(season)} record</span><span class="v">${d.w}-${d.l}</span><span class="s">${T.conf}ern Conference</span></div>
 <div><span class="k">Big nights</span><span class="v">${d.big.length}</span><span class="s">${d.td} triple-double${d.td === 1 ? '' : 's'}, ${d.p40} 40-point game${d.p40 === 1 ? '' : 's'}</span></div>
-<div><span class="k">Rare buckets</span><span class="v">${d.rare.length}</span><span class="s">Logo threes, buzzer-beaters, game-winners</span></div>
+<div><span class="k">Rare buckets</span><span class="v">${d.rare.length ? `<a class="cnt" href="#rare">${d.rare.length}</a>` : 0}</span><span class="s">Logo threes, buzzer-beaters, game-winners</span></div>
 <div><span class="k">Franchise leader</span><span class="v">${leader ? num(leader.pts) : '—'}</span><span class="s">${leader ? esc(leader.p.person.name) + ' · points' : ''}</span></div></div>
 <section><h2>${esc(T.name)} roster</h2>${rosterHtml}</section>
 <section><h2>Big nights this season</h2>${bigHtml}</section>
-<section><h2>Rare buckets this season</h2>${rareHtml}</section>
+<section id="rare"><h2>Rare buckets this season</h2>${rareHtml}</section>
 <section><h2>Franchise scoring leaders</h2>${legendsHtml}</section>`;
   return page({ title, desc, url, graph, body, current: 'teams' });
 }
@@ -83,7 +83,7 @@ function indexPage(all, season) {
   const desc = `All 30 NBA teams: ${season} records, rosters, every big night and buzzer-beater, and each franchise's scoring leaders.`;
   const conf = c => `<section><h2>${c}ern Conference</h2><div class="card tbl"><table><thead><tr><th>Team</th><th>Record</th><th>Big nights</th><th>Rare buckets</th><th>Franchise leader</th></tr></thead><tbody>${all.filter(x => TEAMS[x.abbr].conf === c)
     .sort((a, b) => (b.d.w - b.d.l) - (a.d.w - a.d.l) || TEAMS[a.abbr].name.localeCompare(TEAMS[b.abbr].name)).map(({ abbr, d }) => `<tr>
-<td><a href="/teams/${teamSlug(abbr)}/"><b>${esc(TEAMS[abbr].name)}</b></a></td><td class="n">${d.w}-${d.l}</td><td class="n">${d.big.length}</td><td class="n">${d.rare.length}</td>
+<td><a href="/teams/${teamSlug(abbr)}/"><b>${esc(TEAMS[abbr].name)}</b></a></td><td class="n">${d.w}-${d.l}</td><td class="n">${d.big.length}</td><td class="n">${d.rare.length ? `<a class="cnt" href="/teams/${teamSlug(abbr)}/#rare">${d.rare.length}</a>` : 0}</td>
 <td>${d.legends[0] ? `${esc(d.legends[0].p.person.name)} <span class="meta">${num(d.legends[0].pts)} pts</span>` : '—'}</td></tr>`).join('')}</tbody></table></div></section>`;
   const body = `<div class="crumbs"><a href="/">RimBlaze</a> / Teams</div>
 <h1>All 30 <em>NBA teams.</em></h1>

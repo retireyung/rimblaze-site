@@ -57,6 +57,9 @@ td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}td.
 .btn{display:inline-flex;align-items:center;gap:8px;font:600 12px "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;padding:11px 16px;border-radius:3px;border:1px solid var(--line);background:var(--surface)}
 .btn.hot{background:var(--leather);border-color:var(--leather);color:#fff}
 .empty{padding:18px;color:var(--muted)}
+a.cnt{text-decoration:underline;text-decoration-thickness:2px;text-decoration-color:color-mix(in srgb,var(--leather) 45%,transparent);text-underline-offset:4px}
+a.cnt:hover{color:var(--leather)}
+#rare{scroll-margin-top:76px}
 .list{list-style:none;margin:0;padding:0;columns:3 260px;column-gap:28px}.list li{break-inside:avoid;padding:5px 0}.list li a{font-weight:600}.list li a:hover{text-decoration:underline}
 .note{font-size:12.5px;color:var(--muted);margin-top:12px;max-width:80ch}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;margin-top:30px}footer .wrap{padding-block:26px 34px;display:grid;gap:10px}

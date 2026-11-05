@@ -59,11 +59,11 @@ function nightPage(day, sum, prev, next, slugs) {
 <p class="lead">${esc(`${pl(sum.games, 'game')}, ${pl(sum.td, 'triple-double')}, ${pl(sum.p40, '40-point game')} and ${pl(sum.rare, 'rare bucket')}.${topLine}`)}${day.anyLive ? ' Games are still in progress; this page updates every 2 minutes.' : ''}</p>
 <div class="strip"><div><span class="k">Big nights</span><span class="v">${sum.big.length}</span><span class="s">Triple-doubles, 40-point games, 20-20s and more</span></div>
 <div><span class="k">Triple-doubles</span><span class="v">${sum.td}</span><span class="s">${sum.dd.length + sum.big.filter(l => tens(l) === 2).length} more double-doubles</span></div>
-<div><span class="k">Rare buckets</span><span class="v">${sum.rare}</span><span class="s">Logo threes, buzzer-beaters, game-winners</span></div>
+<div><span class="k">Rare buckets</span><span class="v">${sum.rare ? `<a class="cnt" href="#rare">${sum.rare}</a>` : 0}</span><span class="s">Logo threes, buzzer-beaters, game-winners</span></div>
 <div><span class="k">Top scorer</span><span class="v">${sum.top ? sum.top.P : '—'}</span><span class="s">${sum.top ? esc(sum.top.n) + ' · ' + esc(sum.top.t) : ''}</span></div></div>
 <section><h2>Final scores</h2><div class="games">${games}</div></section>
 <section><h2>Big nights</h2>${bigHtml}</section>
-<section><h2>Rare buckets</h2>${rareHtml}</section>
+<section id="rare"><h2>Rare buckets</h2>${rareHtml}</section>
 <section><h2>Double-doubles</h2>${ddHtml}</section>
 ${pager}`;
   return page({ title, desc, url, graph, body, current: 'nights' });
@@ -79,7 +79,7 @@ function indexPage(days, sums, slugs) {
 <p class="lead">${esc(desc)}</p>
 ${Object.entries(byMonth).map(([m, ds]) => `<section><h2>${esc(m)}</h2><div class="card tbl"><table><thead><tr><th>Night</th><th>Games</th><th>Triple-doubles</th><th>40-point games</th><th>Rare buckets</th><th>Top scorer</th></tr></thead><tbody>${ds.map(d => {
     const s = sums.get(d.date), href = s.top && slugs.get(s.top.pid);
-    return `<tr><td><a href="/nights/${d.date}/"><b>${esc(fmtDay(d.date))}</b></a></td><td class="n">${s.games}</td><td class="n">${s.td}</td><td class="n">${s.p40}</td><td class="n">${s.rare}</td><td>${s.top ? `${href ? `<a href="/players/${href}/">${esc(s.top.n)}</a>` : esc(s.top.n)} <span class="meta">${s.top.P} pts</span>` : '—'}</td></tr>`;
+    return `<tr><td><a href="/nights/${d.date}/"><b>${esc(fmtDay(d.date))}</b></a></td><td class="n">${s.games}</td><td class="n">${s.td}</td><td class="n">${s.p40}</td><td class="n">${s.rare ? `<a class="cnt" href="/nights/${d.date}/#rare">${s.rare}</a>` : 0}</td><td>${s.top ? `${href ? `<a href="/players/${href}/">${esc(s.top.n)}</a>` : esc(s.top.n)} <span class="meta">${s.top.P} pts</span>` : '—'}</td></tr>`;
   }).join('')}</tbody></table></div></section>`).join('\n')}`;
   const graph = [{ '@type': 'CollectionPage', '@id': url + '#page', url, name: title, description: desc, isPartOf: { '@id': SITE + '/#site' } }, crumbsLd([['RimBlaze', SITE + '/'], ['Game nights', url]])];
   return page({ title, desc, url, graph, body, current: 'nights' });

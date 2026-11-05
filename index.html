@@ -153,6 +153,8 @@ input[type="date"]{font-family:var(--mono);font-size:12px;padding:6px 8px;border
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .chip{font-family:var(--mono);font-size:11.5px;padding:3px 8px;background:var(--surface-2);border-radius:3px}
 .chip b{font-weight:600}
+a.cnt{text-decoration:underline;text-decoration-thickness:2px;text-decoration-color:color-mix(in srgb,var(--leather) 45%,transparent);text-underline-offset:4px}
+a.cnt:hover{color:var(--leather);text-decoration-color:var(--leather)}
 .chip.hot{background:color-mix(in srgb,var(--leather) 15%,var(--surface));color:var(--leather);font-weight:600}
 .watch{display:inline-block;margin-top:9px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--leather);font-weight:600}
 .watch:hover{text-decoration:underline}
@@ -474,6 +476,11 @@ var SAMPLE_PROFILE='https://claude.ai/artifact/Vn5FYt4sQJQvHCGnUZXFmq';
 // written in the data ("S. Curry" vs "Stephen Curry"). Players without a profile show as plain text.
 var PROFILES=null;
 function loadProfiles(){return getJSON('data/players.json',15000).then(function(list){PROFILES={};(list||[]).forEach(function(p){PROFILES[p.id]=p;});},function(){PROFILES=null;});}
+// A count that opens the player's rare buckets on his profile (#rare = this season, #rare-all = career).
+function rareLink(n,pid,hash){
+  var p=pid&&PROFILES&&PROFILES[pid];
+  return p?'<a class="cnt" href="players/'+p.slug+'/'+hash+'" title="See '+esc(p.name)+'’s rare buckets">'+n+'</a>':String(n);
+}
 function plink(name,pid){
   if(pid&&PROFILES){var p=PROFILES[pid];return p?'<a href="players/'+p.slug+'/">'+esc(p.name)+'</a>':esc(name);}
   if(pid&&S.mode==='live')return esc(name);
@@ -618,7 +625,7 @@ function renderLeaders(L,label){
   document.getElementById('leadersSub').textContent=label;
   document.getElementById('leadersBody').innerHTML=L.length?L.map(function(l){
     var nm=plink(l.name,l.pid);
-    return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td><td class="big-n num">'+l.rare+'</td><td class="n">'+l.logo+'</td><td class="n">'+l.buzz+'</td><td class="n">'+l.go+'</td><td class="n">'+l.deep+' ft</td></tr>';
+    return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td><td class="big-n num">'+rareLink(l.rare,l.pid,RL.range==='all'?'#rare-all':'#rare')+'</td><td class="n">'+l.logo+'</td><td class="n">'+l.buzz+'</td><td class="n">'+l.go+'</td><td class="n">'+l.deep+' ft</td></tr>';
   }).join(''):'<tr><td colspan="8" class="empty">No rare buckets in this window yet.</td></tr>';
 }
 // Season vs since tracking began (rare buckets are tracked from the 2026-27 season on).
@@ -681,7 +688,7 @@ function renderTeams(T,label){
   document.getElementById('teamsSub').textContent=label;
   var max=Math.max.apply(null,[1].concat(T.map(function(t){return t.n;}))),show=T.slice(0,10);
   document.getElementById('teamsCard').innerHTML=(show.length?show.map(function(t,i){
-    return '<div class="tm'+(i<2?' hot':'')+'"><span>'+(TEAM_SLUG[t.name]&&S.mode!=='sample'?'<a href="teams/'+TEAM_SLUG[t.name]+'/">'+esc(TEAM_FULL[t.name])+'</a>':esc(t.name))+'</span><div class="b"><i style="width:'+(t.n/max*100).toFixed(1)+'%"></i></div><span class="n">'+t.n+'</span></div>';
+    return '<div class="tm'+(i<2?' hot':'')+'"><span>'+(TEAM_SLUG[t.name]&&S.mode!=='sample'?'<a href="teams/'+TEAM_SLUG[t.name]+'/">'+esc(TEAM_FULL[t.name])+'</a>':esc(t.name))+'</span><div class="b"><i style="width:'+(t.n/max*100).toFixed(1)+'%"></i></div><span class="n">'+(TEAM_SLUG[t.name]&&S.mode!=='sample'?'<a class="cnt" href="teams/'+TEAM_SLUG[t.name]+'/#rare">'+t.n+'</a>':t.n)+'</span></div>';
   }).join(''):'<div class="meta">Team totals show up after the first game night.</div>')+
   '<p class="note">Tap any player for his profile: every big night, rare bucket, badge and milestone.</p>';
 }
