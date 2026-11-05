@@ -29,7 +29,7 @@ function shareTags({ title, desc, url, type = 'website' }) {
     `<meta property="og:type" content="${type}">`, `<meta property="og:title" content="${esc(title)}">`,
     `<meta property="og:description" content="${esc(desc)}">`, `<meta property="og:url" content="${url}">`,
     `<meta property="og:image" content="${OG_IMAGE}">`, `<meta property="og:image:width" content="1200">`, `<meta property="og:image:height" content="630">`,
-    `<meta name="twitter:card" content="summary_large_image">`, `<meta name="twitter:title" content="${esc(title)}">`,
+    `<meta name="twitter:card" content="summary_large_image">`, `<meta name="twitter:site" content="@RimBlazeNBA">`, `<meta name="twitter:title" content="${esc(title)}">`,
     `<meta name="twitter:description" content="${esc(desc)}">`, `<meta name="twitter:image" content="${OG_IMAGE}">`,
   ].join('\n');
 }
