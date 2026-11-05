@@ -216,6 +216,7 @@ async function main() {
   const pastBuckets = new Map(); // season -> list
   for (const s of pastSeasons) pastBuckets.set(s, (await readJSON(path.join(DATA, 'buckets', s + '.json'), [])) || []);
   const bucketsBy = new Map();
+  for (const list of pastBuckets.values()) for (const b of list) b.n = fullName.get(b.pid) || b.n; // archived seasons store "S. Curry"
   for (const list of [...pastBuckets.values(), buckets]) for (const b of list) { if (!bucketsBy.has(b.pid)) bucketsBy.set(b.pid, []); bucketsBy.get(b.pid).push(b); }
   log(`rare buckets on record: ${[...bucketsBy.values()].reduce((n, l) => n + l.length, 0)} across ${pastSeasons.length + 1} seasons`);
 
@@ -272,7 +273,7 @@ async function main() {
   chase.sort((a, b) => b.ratio - a.ratio);
   const tallyRare = (list, rareBy = new Map()) => {
     list.forEach(b => {
-      const r = rareBy.get(b.pid) || { pid: b.pid, name: b.n, team: b.t, rare: 0, logo: 0, buzz: 0, go: 0, deep: 0 };
+      const r = rareBy.get(b.pid) || { pid: b.pid, name: fullName.get(b.pid) || b.n, team: b.t, rare: 0, logo: 0, buzz: 0, go: 0, deep: 0 };
       r.team = b.t; // seasons are tallied oldest first, so this ends on the latest team
       r.rare++; if (isDeep(b)) r.logo++; if (b.tags.includes('BUZZER')) r.buzz++; if (isClutch(b)) r.go++; r.deep = Math.max(r.deep, b.d || 0);
       rareBy.set(b.pid, r);
