@@ -215,7 +215,7 @@ tr:last-child td{border-bottom:0}
 td.best{color:var(--leather)}
 a.cnt{text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--leather) 50%,transparent);text-underline-offset:3px}
 a.cnt:hover{color:var(--leather)}
-#rare{scroll-margin-top:80px}
+#rare,#vault{scroll-margin-top:80px}
 
 /* splits */
 .two{display:grid;gap:18px}
@@ -486,6 +486,10 @@ function notFound(id){
   document.querySelector('main').innerHTML='<div class="wrap" style="padding-block:60px 80px"><div class="crumbs mono"><a href="index.html">RimBlaze</a> / Players</div><h1 class="p-name" style="margin-top:14px">'+(id?'Player <em>not found</em>':'Find a <em>player</em>')+'</h1><p class="p-intro">'+(id?'We don’t have a profile for that player yet. Profiles cover every active NBA player and refresh each night.':'Search for any active NBA player above to open his profile: every season, big night, rare bucket, badge and milestone.')+'</p><p style="margin-top:22px"><a class="btn" href="index.html">Back to the live feed</a></p></div>';
 }
 // #rare (this season), #rare-all (career) or #rare-2024-25: open the shot chart on those rare buckets.
+function vaultFromHash(){
+  if(location.hash!=='#vault')return;
+  var el=$('vault');if(el&&el.scrollIntoView)el.scrollIntoView({block:'start'});
+}
 function rareFromHash(){
   var m=/^#rare(?:-(all|\d{4}-\d{2}))?$/.exec(location.hash);if(!m||!D)return false;
   var want=m[1]||D.seasons[D.seasons.length-1].season;
@@ -742,7 +746,7 @@ function renderHeadings(){
   $('splitsTitle').textContent=nm+' splits';
 }
 function render(){
-  setTimeout(rareFromHash,0);
+  setTimeout(function(){rareFromHash();vaultFromHash();},0);
   renderHeadings();
   renderIdentity();renderSeasonPick();renderCourt();renderStrip();renderVault();renderArc();renderMilestones();renderRecords();renderYby();renderSplits();renderNights();renderQA();
 }

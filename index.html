@@ -476,10 +476,10 @@ var SAMPLE_PROFILE='https://claude.ai/artifact/Vn5FYt4sQJQvHCGnUZXFmq';
 // written in the data ("S. Curry" vs "Stephen Curry"). Players without a profile show as plain text.
 var PROFILES=null;
 function loadProfiles(){return getJSON('data/players.json',15000).then(function(list){PROFILES={};(list||[]).forEach(function(p){PROFILES[p.id]=p;});},function(){PROFILES=null;});}
-// A count that opens the player's rare buckets on his profile (#rare = this season, #rare-all = career).
+// A count that opens the player's profile at his Player's Vault (his badges).
 function rareLink(n,pid,hash){
   var p=pid&&PROFILES&&PROFILES[pid];
-  return p?'<a class="cnt" href="players/'+p.slug+'/'+hash+'" title="See '+esc(p.name)+'’s rare buckets">'+n+'</a>':String(n);
+  return p?'<a class="cnt" href="players/'+p.slug+'/'+hash+'" title="See '+esc(p.name)+'’s Player’s Vault">'+n+'</a>':String(n);
 }
 function plink(name,pid){
   if(pid&&PROFILES){var p=PROFILES[pid];return p?'<a href="players/'+p.slug+'/">'+esc(p.name)+'</a>':esc(name);}
@@ -625,7 +625,7 @@ function renderLeaders(L,label){
   document.getElementById('leadersSub').textContent=label;
   document.getElementById('leadersBody').innerHTML=L.length?L.map(function(l){
     var nm=plink(l.name,l.pid);
-    return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td><td class="big-n num">'+rareLink(l.rare,l.pid,RL.range==='all'?'#rare-all':'#rare')+'</td><td class="n">'+l.logo+'</td><td class="n">'+l.buzz+'</td><td class="n">'+l.go+'</td><td class="n">'+l.deep+' ft</td></tr>';
+    return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td><td class="big-n num">'+rareLink(l.rare,l.pid,'#vault')+'</td><td class="n">'+l.logo+'</td><td class="n">'+l.buzz+'</td><td class="n">'+l.go+'</td><td class="n">'+l.deep+' ft</td></tr>';
   }).join(''):'<tr><td colspan="8" class="empty">No rare buckets in this window yet.</td></tr>';
 }
 // Season vs since tracking began (rare buckets are tracked from the 2026-27 season on).
