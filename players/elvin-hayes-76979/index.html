@@ -350,7 +350,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
           <line class="cl" x1="220" y1="430" x2="280" y2="430"/>
           <circle class="cl" cx="250" cy="417.5" r="8" style="stroke:var(--leather);opacity:1"/>
           <text class="ctext" x="250" y="146" text-anchor="middle">LOGO RANGE · 30 FT</text>
-          <text class="ctext" x="250" y="64" text-anchor="middle">HALF COURT · 47 FT</text>
+          <text class="ctext" x="250" y="64" text-anchor="middle">HALF COURT · 42 FT</text>
           <g id="arcs"></g><g id="spots"></g>
         </svg>
         <div class="court-foot" id="courtFoot">No rare buckets tracked in 1983-84.</div>
@@ -665,7 +665,7 @@ function nightCard(x){
 }
 function bucketCard(b){
   return '<article class="card night"><div class="pts num">'+b.d+'<small>FEET</small></div><div><div class="who">'+fmtDate(b.date)+' <span class="meta">· vs '+esc(b.o)+' · '+esc(b.q)+' '+clockStr(b.secs)+' left</span></div>'+
-    '<div class="badges" style="margin-top:6px">'+b.tags.map(function(f,i){return '<span class="badge'+(i?' alt':'')+'">'+esc(f)+'</span>';}).join('')+'</div><div class="meta" style="margin-top:6px">'+esc(b.shot||'')+(b.sc?' · '+esc(b.sc):'')+'</div></div></article>';
+    '<div class="badges" style="margin-top:6px">'+b.tags.map(function(f,i){return '<span class="badge'+(i?' alt':'')+'">'+esc(f)+'</span>';}).join('')+'</div><div class="meta" style="margin-top:6px">'+(b.ms?'<b>'+esc(b.ms)+'</b> · ':'')+(b.fire?'<b>'+b.fire+' straight threes</b> · ':'')+(b.run?'<b>'+b.run+' straight team points</b> · ':'')+esc(b.shot||'')+(b.sc?' · '+esc(b.sc):'')+'</div></div></article>';
 }
 function renderRecords(){
   $('highs').hidden=!(D.highs||[]).length;
