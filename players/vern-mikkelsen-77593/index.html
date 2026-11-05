@@ -228,6 +228,9 @@ tbody tr.yr{cursor:pointer}
 tbody tr.yr:hover td{background:var(--surface-2)}
 tr:last-child td{border-bottom:0}
 td.best{color:var(--leather)}
+a.cnt{text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--leather) 50%,transparent);text-underline-offset:3px}
+a.cnt:hover{color:var(--leather)}
+#rare{scroll-margin-top:80px}
 
 /* splits */
 .two{display:grid;gap:18px}
@@ -334,7 +337,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
         </div>
         <div class="notice" id="notice"><span class="tag">NBA data</span><span>Career 1949–1958. Game-by-game feats count games since 1996-97, when NBA.com game logs begin.</span></div>
       </div>
-      <div class="court-card">
+      <div class="court-card" id="rare">
         <div class="cap mono"><span><label for="seasonSel">Rare buckets</label> <select id="seasonSel"></select></span><span id="count">0 rare</span></div>
         <svg viewBox="0 0 500 470" role="img" aria-label="Half court with this season's rare bucket locations">
           <defs><radialGradient id="floor" cx="50%" cy="90%" r="95%"><stop offset="0" style="stop-color:var(--floor-in)"/><stop offset="1" style="stop-color:var(--floor-out)"/></radialGradient></defs>
@@ -497,6 +500,16 @@ function notFound(id){
   document.title='Find a player | RimBlaze';
   document.querySelector('main').innerHTML='<div class="wrap" style="padding-block:60px 80px"><div class="crumbs mono"><a href="index.html">RimBlaze</a> / Players</div><h1 class="p-name" style="margin-top:14px">'+(id?'Player <em>not found</em>':'Find a <em>player</em>')+'</h1><p class="p-intro">'+(id?'We don’t have a profile for that player yet. Profiles cover every active NBA player and refresh each night.':'Search for any active NBA player above to open his profile: every season, big night, rare bucket, badge and milestone.')+'</p><p style="margin-top:22px"><a class="btn" href="index.html">Back to the live feed</a></p></div>';
 }
+// #rare (this season), #rare-all (career) or #rare-2024-25: open the shot chart on those rare buckets.
+function rareFromHash(){
+  var m=/^#rare(?:-(all|\d{4}-\d{2}))?$/.exec(location.hash);if(!m||!D)return false;
+  var want=m[1]||D.seasons[D.seasons.length-1].season;
+  if(want!=='all'&&!seasonRow(want))return false;
+  pickSeason(want);
+  var el=$('rare');if(el&&el.scrollIntoView)el.scrollIntoView({block:'start'});
+  return true;
+}
+window.addEventListener('hashchange',function(){rareFromHash();});
 window.addEventListener('hashchange',function(){if(hashId()&&MODE!=='loading'){ST.season=null;ST.sel=null;boot();}});
 
 /* ---------- Identity ---------- */
@@ -682,8 +695,8 @@ function renderRecords(){
 function renderYby(){
   var S=D.seasons,c=D.career,bestP=Math.max.apply(null,S.map(function(s){return s.pts/s.gp;}));
   $('yby').innerHTML=S.slice().reverse().map(function(s){
-    return '<tr class="yr'+(s.season===ST.season?' sel':'')+'" data-season="'+s.season+'" tabindex="0"><td class="n">'+s.season+'</td><td class="team">'+esc(s.team)+'</td><td class="n">'+s.gp+'</td><td class="n">'+n(s.pts)+'</td><td class="big-n num'+(s.pts/s.gp===bestP?' best':'')+'">'+per(s.pts,s.gp)+'</td><td class="n">'+per(s.reb,s.gp)+'</td><td class="n">'+per(s.ast,s.gp)+'</td><td class="n">'+pct(s.fgm,s.fga)+'</td><td class="n">'+pct(s.fg3m,s.fg3a)+'</td><td class="n">'+pct(s.ftm,s.fta)+'</td><td class="n">'+n(s.fg3m)+'</td><td class="n">'+(s.td==null?'—':s.td)+'</td><td class="n">'+(s.dd==null?'—':s.dd)+'</td><td class="n">'+(s.rare==null?'—':s.rare)+'</td></tr>';
-  }).join('')+'<tr class="career"><td class="n">Career</td><td class="team">'+S.length+' seasons</td><td class="n">'+n(c.gp)+'</td><td class="n">'+n(c.pts)+'</td><td class="big-n num">'+per(c.pts,c.gp)+'</td><td class="n">'+per(c.reb,c.gp)+'</td><td class="n">'+per(c.ast,c.gp)+'</td><td class="n">'+pct(c.fgm,c.fga)+'</td><td class="n">'+pct(c.fg3m,c.fg3a)+'</td><td class="n">'+pct(c.ftm,c.fta)+'</td><td class="n">'+n(c.fg3m)+'</td><td class="n">'+(D.logsPartial?'—':c.td)+'</td><td class="n">'+(D.logsPartial?'—':c.dd)+'</td><td class="n">'+(D.buckets||[]).length+'</td></tr>';
+    return '<tr class="yr'+(s.season===ST.season?' sel':'')+'" data-season="'+s.season+'" tabindex="0"><td class="n">'+s.season+'</td><td class="team">'+esc(s.team)+'</td><td class="n">'+s.gp+'</td><td class="n">'+n(s.pts)+'</td><td class="big-n num'+(s.pts/s.gp===bestP?' best':'')+'">'+per(s.pts,s.gp)+'</td><td class="n">'+per(s.reb,s.gp)+'</td><td class="n">'+per(s.ast,s.gp)+'</td><td class="n">'+pct(s.fgm,s.fga)+'</td><td class="n">'+pct(s.fg3m,s.fg3a)+'</td><td class="n">'+pct(s.ftm,s.fta)+'</td><td class="n">'+n(s.fg3m)+'</td><td class="n">'+(s.td==null?'—':s.td)+'</td><td class="n">'+(s.dd==null?'—':s.dd)+'</td><td class="n">'+(s.rare==null?'—':'<a class="cnt" href="#rare-'+s.season+'">'+s.rare+'</a>')+'</td></tr>';
+  }).join('')+'<tr class="career"><td class="n">Career</td><td class="team">'+S.length+' seasons</td><td class="n">'+n(c.gp)+'</td><td class="n">'+n(c.pts)+'</td><td class="big-n num">'+per(c.pts,c.gp)+'</td><td class="n">'+per(c.reb,c.gp)+'</td><td class="n">'+per(c.ast,c.gp)+'</td><td class="n">'+pct(c.fgm,c.fga)+'</td><td class="n">'+pct(c.fg3m,c.fg3a)+'</td><td class="n">'+pct(c.ftm,c.fta)+'</td><td class="n">'+n(c.fg3m)+'</td><td class="n">'+(D.logsPartial?'—':c.td)+'</td><td class="n">'+(D.logsPartial?'—':c.dd)+'</td><td class="n">'+((D.buckets||[]).length?'<a class="cnt" href="#rare-all">'+(D.buckets||[]).length+'</a>':'0')+'</td></tr>';
 }
 
 /* ---------- Splits ---------- */
@@ -744,6 +757,7 @@ function renderHeadings(){
   $('splitsTitle').textContent=nm+' splits';
 }
 function render(){
+  setTimeout(rareFromHash,0);
   renderHeadings();
   renderIdentity();renderSeasonPick();renderCourt();renderStrip();renderVault();renderArc();renderMilestones();renderRecords();renderYby();renderSplits();renderNights();renderQA();
 }
