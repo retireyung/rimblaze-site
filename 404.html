@@ -24,5 +24,20 @@ a.btn{display:inline-block;background:var(--leather);color:#fff;text-decoration:
   <p>That page isn’t here. It may have moved, or the player profile hasn’t been built yet.</p>
   <a class="btn" href="/">Back to the live feed</a>
 </main>
+<script>
+// A player address with the wrong name part (an old link like /players/s-curry-201939/) still ends in
+// the player's NBA.com id: look the id up and forward to his real profile.
+(function(){
+  var m=/^\/players\/(?:[^\/]*-)?(\d+)\/?$/.exec(location.pathname);
+  if(!m)return;
+  var id=+m[1];
+  document.querySelector('main p').textContent='Looking up that player…';
+  fetch('/data/players.json').then(function(r){return r.ok?r.json():[];}).then(function(list){
+    var p=(list||[]).find(function(x){return x.id===id;});
+    if(p&&location.pathname!=='/players/'+p.slug+'/'){location.replace('/players/'+p.slug+'/'+location.hash);return;}
+    document.querySelector('main p').textContent='We don’t have a profile for that player yet. Profiles cover every active player and the all-time greats.';
+  }).catch(function(){});
+})();
+</script>
 </body>
 </html>
