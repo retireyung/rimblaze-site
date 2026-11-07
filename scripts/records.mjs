@@ -410,7 +410,8 @@ export async function renderRecords({ root, season }) {
     if (await writeIfChanged(path.join(root, 'records', p.slug, 'index.html'), out.html)) changed++;
   }
   if (await writeIfChanged(path.join(root, 'records', 'index.html'), hub(built))) changed++;
-  return { urls: [SITE + '/records/', ...built.map(p => p.url)], changed, pages: built.length };
+  let rl = null; try { rl = await renderRareLeaders({ root, season }); } catch (e) { console.log(`rare leaders page: ${e.message}`); }
+  return { urls: [SITE + '/records/', ...built.map(p => p.url), ...(rl ? [rl] : [])], changed, pages: built.length };
 }
 
 // ---------- 6. Record book entries for profiles ----------
@@ -445,4 +446,94 @@ export async function recordBook(root) {
   }
   for (const v of book.values()) v.sort((a, b) => a.rank - b.rank);
   return book;
+}
+
+// ---------- 7. /all-time/rare-buckets/: top 250 rare bucket leaders, sortable by every category ----------
+const RB_COLS = [
+  ['rare', 'Rare', 'Rare buckets', () => true],
+  ['logo', 'Logo 3s', 'Logo threes, heaves and half-court makes (30+ ft)', isDeep],
+  ['buzz', 'Buzzer', 'Buzzer-beaters', b => b.tags.includes('BUZZER')],
+  ['go', 'Go-ahead', 'Go-ahead shots in the final 30 seconds', isClutch],
+  ['horn', 'Horn GW', 'Buzzer-beating game-winners', isHornWinner],
+  ['hc', 'Half-court', 'Half-court makes (43+ ft)', b => validDist(b) && b.d >= 43],
+  ['four', '4-pt plays', '4-point plays', b => b.tags.includes('4-PT PLAY')],
+  ['deep', 'Deepest', 'Deepest make, in feet', null],
+];
+function rbTally(list) {
+  const by = new Map();
+  for (const b of list) {
+    const r = by.get(b.pid) || { pid: b.pid, n: b.n, t: b.t, from: b.s, to: b.s, deep: 0 };
+    RB_COLS.forEach(([k, , , test]) => { if (test) r[k] = (r[k] || 0) + (test(b) ? 1 : 0); });
+    if (validDist(b)) r.deep = Math.max(r.deep, b.d || 0);
+    r.t = b.t; r.to = b.s; by.set(b.pid, r);
+  }
+  const rows = [...by.values()], keep = new Set();
+  // everyone in the top 250 of any column, so each sort shows its true top 250
+  for (const [k] of RB_COLS) rows.slice().sort((a, b) => (b[k] || 0) - (a[k] || 0) || b.rare - a.rare).slice(0, 250).forEach(r => { if (r[k]) keep.add(r); });
+  return [...keep].sort((a, b) => b.rare - a.rare || b.deep - a.deep);
+}
+export async function renderRareLeaders({ root, season }) {
+  const rec = await readJSON(path.join(root, 'data', 'records.json'));
+  season = season || rec?.season || (await readJSON(path.join(root, 'data', 'season.json')))?.season;
+  const R = await rareData(root, season); if (!R.all.length) return null;
+  const players = (await readJSON(path.join(root, 'data', 'players.json'), [])) || [];
+  const slugs = new Map(players.map(p => [p.id, p.slug])), names = { ...(rec?.names || {}) }; players.forEach(p => { names[p.id] = p.name; });
+  const pack = rows => rows.map(r => [r.pid, names[r.pid] || r.n, r.t, slugs.get(r.pid) || '', r.from, r.to, ...RB_COLS.map(([k]) => r[k] || 0)]);
+  const all = rbTally(R.all), cur = rbTally(R.all.filter(b => b.s === season));
+  const url = `${SITE}/all-time/rare-buckets/`, since = R.seasons[0];
+  const top = all.slice(0, 250), lead = top[0], hornLead = all.slice().sort((a, b) => (b.horn || 0) - (a.horn || 0))[0];
+  const title = `NBA Rare Bucket Leaders: Top 250 in Buzzer-Beaters, Logo Threes & Game-Winners Since ${since} | RimBlaze`;
+  const desc = `The top 250 players in rare buckets since ${since}: buzzer-beaters, logo threes, go-ahead shots, buzzer-beating game-winners, half-court makes and 4-point plays. ${names[lead.pid] || lead.n} leads with ${lead.rare}. Sort by any category.`;
+  const tabs = [['/all-time/rare-buckets/', 'Rare buckets', true], ['/all-time/', 'Points'], ['/all-time/rebounds/', 'Rebounds'], ['/all-time/assists/', 'Assists'], ['/all-time/threes/', 'Threes'], ['/all-time/steals/', 'Steals'], ['/all-time/blocks/', 'Blocks']];
+  const who = r => slugs.get(r.pid) ? `<a href="/players/${slugs.get(r.pid)}/#vault"><b>${esc(names[r.pid] || r.n)}</b></a>` : `<b>${esc(names[r.pid] || r.n)}</b>`;
+  const rk = ranks(top.map(r => ({ v: r.rare })));
+  const rowHtml = top.map((r, i) => `<tr><td class="rk">${rk[i]}</td><td>${who(r)}</td><td class="n">${tlink(r.t)}</td>${RB_COLS.map(([k], j) => `<td class="${j ? 'n' : 'big'}">${k === 'deep' ? (r.deep ? r.deep + ' ft' : '—') : r[k] || 0}</td>`).join('')}</tr>`).join('');
+  const css = `<style>
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 10px}.tabs a{font:600 12px "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;padding:9px 13px;border:1px solid var(--line);border-radius:3px;background:var(--surface)}.tabs a[aria-current]{background:var(--leather);border-color:var(--leather);color:#fff}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:8px 0 12px}.seg2{display:inline-flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}.seg2 button{font:600 12px "IBM Plex Mono",monospace;letter-spacing:.05em;text-transform:uppercase;padding:9px 12px;border:0;background:var(--surface);color:var(--muted);cursor:pointer}.seg2 button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+#q{font:14px Inter,system-ui,sans-serif;padding:9px 12px;border:1px solid var(--line);border-radius:3px;background:var(--surface);color:var(--text);min-width:0;width:220px;max-width:100%}
+th button{all:unset;cursor:pointer;display:inline-flex;gap:4px;align-items:center;white-space:nowrap}th button:hover,th button:focus-visible{color:var(--text);text-decoration:underline}th[aria-sort="descending"] button{color:var(--leather)}th[aria-sort="descending"] button::after{content:"▼";font-size:9px}
+td.rk{font:600 13px "IBM Plex Mono",monospace;color:var(--muted);width:44px}table{min-width:860px}
+</style>`;
+  const body = `${css}<div class="crumbs"><a href="/">RimBlaze</a> / <a href="/all-time/">All-time</a> / Rare buckets</div>
+<h1>Rare bucket <em>leaders.</em></h1>
+<p class="lead">${esc(`The top 250 players in rare buckets since ${since}, from NBA.com play-by-play: buzzer-beaters, logo threes, clutch go-ahead shots, buzzer-beating game-winners, half-court makes and 4-point plays. Click any column to sort it high to low.`)}</p>
+<nav class="tabs" aria-label="All-time boards">${tabs.map(([h, l, cur]) => `<a href="${h}"${cur ? ' aria-current="page"' : ''}>${esc(l)}</a>`).join('')}</nav>
+${stripOf([['Leader', lead.rare, `${esc(names[lead.pid] || lead.n)} · rare buckets`], ['Horn GW leader', hornLead.horn || 0, esc(names[hornLead.pid] || hornLead.n)], ['Tracked', num(R.all.length), `rare buckets since ${esc(since)}`], ['Players', num(new Set(R.all.map(b => b.pid)).size), 'with at least one']])}
+<section style="padding-top:18px"><div class="bar"><div class="seg2" role="group" aria-label="Range"><button type="button" data-range="all" aria-pressed="true">Since ${esc(since)}</button><button type="button" data-range="season" aria-pressed="false">${esc(season)}</button></div>
+<label class="sr" for="q" style="position:absolute;left:-9999px">Filter by name</label><input id="q" type="search" placeholder="Filter by name" autocomplete="off"></div>
+<p class="meta" id="showing">Top 250 by rare buckets since ${esc(since)}</p>
+<div class="card tbl"><table><thead><tr><th>#</th><th>Player</th><th>Team</th>${RB_COLS.map(([k, l, t], j) => `<th data-k="${k}"${j ? '' : ' aria-sort="descending"'}><button type="button" title="Sort by ${esc(t.toLowerCase())}">${esc(l)}</button></th>`).join('')}</tr></thead><tbody id="rows">${rowHtml}</tbody></table></div>
+<p class="note">${esc(coverage({ rare: R, season }))} Team is the player's most recent team with a rare bucket. Horn GW: a go-ahead make with 1.0 second or less left in the 4th quarter or overtime. See also <a class="cnt" href="/records/buzzer-beating-game-winners/">every buzzer-beating game-winner</a> and <a class="cnt" href="/records/">all NBA records</a>.</p></section>
+<script type="application/json" id="rb">${JSON.stringify({ cols: RB_COLS.map(([k]) => k), all: pack(all), season: pack(cur), since, seasonLabel: season }).replace(/</g, '\\u003c')}</script>
+<script>
+(function(){
+  var D=JSON.parse(document.getElementById('rb').textContent),C=D.cols,ST={k:'rare',range:'all',q:''};
+  var NAMES={rare:'rare buckets',logo:'logo threes',buzz:'buzzer-beaters',go:'go-ahead shots',horn:'buzzer-beating game-winners',hc:'half-court makes',four:'4-point plays',deep:'deepest make'};
+  var TEAMS=${JSON.stringify(Object.fromEntries(Object.keys((await import('./teams.mjs')).TEAMS).map(a => [a, teamSlug(a)])))};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  function render(){
+    var i=C.indexOf(ST.k)+6,rows=(ST.range==='all'?D.all:D.season).slice().sort(function(a,b){return b[i]-a[i]||b[6]-a[6]||String(a[1]).localeCompare(b[1]);});
+    rows=rows.filter(function(r){return r[i]>0;}).slice(0,250);
+    var rk=[],last=null,n=0;rows.forEach(function(r,j){if(r[i]!==last){n=j+1;last=r[i];}rk.push(n);});
+    var q=ST.q.toLowerCase(),shown=rows.map(function(r,j){return [r,rk[j]];}).filter(function(x){return !q||String(x[0][1]).toLowerCase().indexOf(q)>=0;});
+    document.getElementById('rows').innerHTML=shown.length?shown.map(function(x){var r=x[0];
+      var nm=r[3]?'<a href="/players/'+r[3]+'/#vault"><b>'+esc(r[1])+'</b></a>':'<b>'+esc(r[1])+'</b>';
+      var tm=TEAMS[r[2]]?'<a href="/teams/'+TEAMS[r[2]]+'/">'+esc(r[2])+'</a>':esc(r[2]);
+      return '<tr><td class="rk">'+x[1]+'</td><td>'+nm+'</td><td class="n">'+tm+'</td>'+C.map(function(k,j){var v=r[j+6];return '<td class="'+(k===ST.k?'big':'n')+'">'+(k==='deep'?(v?v+' ft':'—'):v)+'</td>';}).join('')+'</tr>';
+    }).join(''):'<tr><td colspan="'+(C.length+3)+'" class="empty">'+(rows.length?'No player matches “'+esc(ST.q)+'”.':'None yet.')+'</td></tr>';
+    document.querySelectorAll('th[data-k]').forEach(function(th){if(th.dataset.k===ST.k)th.setAttribute('aria-sort','descending');else th.removeAttribute('aria-sort');});
+    document.getElementById('showing').textContent=(q?shown.length+' of ':'')+'Top '+rows.length+' by '+NAMES[ST.k]+(ST.range==='all'?' since '+D.since:' in '+D.seasonLabel);
+  }
+  document.querySelector('thead').addEventListener('click',function(e){var th=e.target.closest('th[data-k]');if(!th)return;ST.k=th.dataset.k;try{history.replaceState(null,'','#'+ST.k);}catch(err){}render();});
+  document.querySelectorAll('[data-range]').forEach(function(b){b.addEventListener('click',function(){ST.range=b.dataset.range;document.querySelectorAll('[data-range]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});render();});});
+  document.getElementById('q').addEventListener('input',function(){ST.q=this.value.trim();render();});
+  var h=location.hash.slice(1);if(C.indexOf(h)>=0){ST.k=h;render();}
+})();
+</script>`;
+  const graph = [{ '@type': 'CollectionPage', '@id': url + '#page', url, name: title, description: desc, isPartOf: { '@id': SITE + '/#site' },
+    mainEntity: { '@type': 'ItemList', name: 'Rare bucket leaders', numberOfItems: top.length, itemListOrder: 'https://schema.org/ItemListOrderDescending', itemListElement: top.slice(0, 50).map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: `${names[r.pid] || r.n}: ${r.rare} rare buckets`, ...(slugs.get(r.pid) ? { url: `${SITE}/players/${slugs.get(r.pid)}/` } : {}) })) } },
+    crumbsLd([['RimBlaze', SITE + '/'], ['All-time leaders', SITE + '/all-time/'], ['Rare buckets', url]])];
+  await writeIfChanged(path.join(root, 'all-time', 'rare-buckets', 'index.html'), page({ title, desc, url, graph, body, current: 'all-time' }));
+  return url;
 }

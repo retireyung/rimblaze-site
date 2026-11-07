@@ -9,3 +9,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const r = await renderRecords({ root: ROOT });
 await addToSitemap(ROOT, r.urls);
 console.log(`records: ${r.pages} pages, ${r.changed} changed`);
+// the all-time boards share the tab bar with /all-time/rare-buckets/
+import { renderAllTime } from './pages.mjs';
+const alltime = JSON.parse(await readFile(path.join(ROOT, 'data', 'alltime.json'), 'utf8'));
+console.log(`all-time boards: ${await renderAllTime({ root: ROOT, alltime })}`);
