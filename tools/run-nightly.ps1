@@ -28,6 +28,18 @@ try {
   if (Test-Path .git\MERGE_HEAD) { git merge --abort 2>$null }
   Step 'Get latest code' { git fetch origin main }
   Step 'Reset to latest' { git checkout -f -B main origin/main }
+  # Seasons finished by the history backfill (scripts/backfill-buckets.mjs) wait in data\cache\backfill-out
+  # so the reset above can't discard them; copy them in so this run uploads them.
+  $stage = Join-Path $logDir 'backfill-out'
+  if (Test-Path $stage) {
+    $n = 0
+    Get-ChildItem -Path $stage -Recurse -File | ForEach-Object {
+      $dest = Join-Path (Join-Path $repo 'data') $_.FullName.Substring($stage.Length).TrimStart('\')
+      New-Item -ItemType Directory -Force (Split-Path -Parent $dest) | Out-Null
+      Copy-Item -LiteralPath $_.FullName -Destination $dest -Force; $n++
+    }
+    Write-Host "Backfill: copied $n staged file(s) into data"
+  }
   Step 'Live snapshot'   { node scripts/build-live.mjs }
   # Full stats (profiles, season, career) at most every 25 minutes; the live snapshot runs every time.
   $stamp = Join-Path $logDir 'last-full.txt'

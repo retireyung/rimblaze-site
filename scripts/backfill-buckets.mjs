@@ -36,6 +36,7 @@ import { careerIndex } from './career.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data'), CACHE = path.join(DATA, 'cache'), HIST = path.join(CACHE, 'hist'), PBP = path.join(CACHE, 'pbp');
+const STAGE = path.join(CACHE, 'backfill-out'); // finished seasons, copied into data/ by every scheduled update
 const DONE = path.join(CACHE, 'hist-done.json'); // { season: rules version it was built with }
 const FIRST = '1996-97';
 const log = (...a) => console.log(new Date().toLocaleTimeString('en-US', { hour12: false }), ...a);
@@ -172,7 +173,9 @@ async function main() {
   let grand = 0;
   for (const season of seasons) {
     const outFile = path.join(DATA, 'buckets', season + '.json');
-    if (!DRY && !opt('season') && done[season] === RULES_VERSION && (await readJSON(outFile))) { log(`${season}: already done`); continue; }
+    // A season counts as done only once its staged copy exists (see STAGE): files written straight into
+    // data/ could be reset by the scheduled update before it uploaded them.
+    if (!DRY && !opt('season') && done[season] === RULES_VERSION && (await readJSON(path.join(STAGE, 'buckets', season + '.json')))) { log(`${season}: already done`); continue; }
     const games = (await seasonGames(season)).slice(0, LIMIT);
     if (!games.length) { log(`${season}: no games found, skipped`); continue; }
     const all = [], quarters = []; let failed = 0, missing = 0, count = 0, coarse = 0; const srcs = {};
@@ -194,12 +197,16 @@ async function main() {
     if (DRY) continue;
     if (failed) { log(`${season}: ${failed} game(s) failed, so the season file is not written yet. Run again to retry them.`); continue; }
     all.sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
-    await writeJSON(outFile, all);
-    await writeJSON(path.join(DATA, 'quarters', season + '.json'), quarters);
-    done[season] = RULES_VERSION; await writeJSON(DONE, done);
     // which rules each archived season was built with, for the site (records pages trust only current-rules seasons where it matters)
-    const rulesFile = path.join(DATA, 'buckets', 'rules.json'), rules = (await readJSON(rulesFile, {})) || {};
-    rules[season] = RULES_VERSION; await writeJSON(rulesFile, rules);
+    const rules = { ...((await readJSON(path.join(DATA, 'buckets', 'rules.json'), {})) || {}), ...((await readJSON(path.join(STAGE, 'buckets', 'rules.json'), {})) || {}), [season]: RULES_VERSION };
+    // Written to data/ and to the staging folder; the scheduled update (tools/run-nightly.ps1) resets data/ to
+    // GitHub's version and then copies the staging folder back in, so a finished season always gets uploaded.
+    for (const base of [DATA, STAGE]) {
+      await writeJSON(path.join(base, 'buckets', season + '.json'), all);
+      await writeJSON(path.join(base, 'quarters', season + '.json'), quarters);
+      await writeJSON(path.join(base, 'buckets', 'rules.json'), rules);
+    }
+    done[season] = RULES_VERSION; await writeJSON(DONE, done);
   }
   log(`backfill finished: ${grand} rare buckets.${DRY ? '' : ' The next stats build adds them to "Since tracking began".'}`);
 }
