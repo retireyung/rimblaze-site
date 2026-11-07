@@ -177,6 +177,8 @@ a.cnt:hover{color:var(--leather);text-decoration-color:var(--leather)}
 table{width:100%;border-collapse:collapse;min-width:600px}
 th,td{padding:12px 14px;text-align:left;font-size:14px;border-bottom:1px solid var(--line)}
 th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+th button{all:unset;cursor:pointer;white-space:nowrap}th button:hover,th button:focus-visible{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+th[aria-sort="descending"] button{color:var(--leather)}th[aria-sort="descending"] button::after{content:" ▼";font-size:9px}
 td.n{font-family:var(--mono);font-variant-numeric:tabular-nums}
 tr:last-child td{border-bottom:0}
 td.big-n{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:22px}
@@ -413,7 +415,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     </div>
     <div class="card tbl">
       <table>
-        <thead><tr><th></th><th>Player</th><th>Team</th><th>Rare</th><th>Logo 3s</th><th>Buzzer</th><th>Go-ahead</th><th title="Buzzer-beating game-winners">Horn GW</th><th>Deepest</th></tr></thead>
+        <thead id="leadersHead"><tr><th></th><th>Player</th><th>Team</th><th data-k="rare" aria-sort="descending"><button type="button" title="Sort by rare buckets">Rare</button></th><th data-k="logo"><button type="button" title="Sort by logo threes">Logo 3s</button></th><th data-k="buzz"><button type="button" title="Sort by buzzer-beaters">Buzzer</button></th><th data-k="go"><button type="button" title="Sort by go-ahead shots">Go-ahead</button></th><th data-k="horn"><button type="button" title="Sort by buzzer-beating game-winners">Horn GW</button></th><th data-k="deep"><button type="button" title="Sort by deepest make">Deepest</button></th></tr></thead>
         <tbody id="leadersBody"><tr><td colspan="9" class="empty">Loading leaders…</td></tr></tbody>
       </table>
     </div>
@@ -619,19 +621,27 @@ function aggregate(all){
     p.rare++;if(hasTag(b,'LOGO','HEAVE','HALF-COURT'))p.logo++;if(hasTag(b,'BUZZER'))p.buzz++;if(hasTag(b,'GO-AHEAD','GAME-WINNER')){p.go++;if(hasTag(b,'BUZZER'))p.horn++;}p.deep=Math.max(p.deep,b.d||0);
     T[b.t]=(T[b.t]||0)+1;
   });
-  var L=Object.keys(P).map(function(k){return P[k];}).sort(function(a,b){return b.rare-a.rare||b.deep-a.deep;}).slice(0,10).map(function(p,i){p.rank=i+1;return p;});
+  var L=Object.keys(P).map(function(k){return P[k];}).sort(function(a,b){return b.rare-a.rare||b.deep-a.deep;});
   var TT=Object.keys(T).map(function(k){return{name:k,n:T[k]};}).sort(function(a,b){return b.n-a.n;});
   return{L:L,T:TT};
 }
+// Leaders tables sort high to low by any column (RL.k); ties fall back to rare buckets.
+function sortLeaders(L){
+  var k=RL.k,rows=(L||[]).slice().sort(function(a,b){return (b[k]||0)-(a[k]||0)||(b.rare||0)-(a.rare||0)||(b.deep||0)-(a.deep||0);});
+  if(k!=='rare')rows=rows.filter(function(r){return (r[k]||0)>0;});
+  var last=null,n=0;return rows.slice(0,10).map(function(r,i){if(r[k]!==last){n=i+1;last=r[k];}return Object.assign({},r,{rank:n});});
+}
 function renderLeaders(L,label){
+  RL.shown={L:L,label:label};L=sortLeaders(L);
+  [].forEach.call(document.querySelectorAll('#leadersHead th[data-k]'),function(th){if(th.getAttribute('data-k')===RL.k)th.setAttribute('aria-sort','descending');else th.removeAttribute('aria-sort');});
   document.getElementById('leadersSub').textContent=label;
   document.getElementById('leadersBody').innerHTML=L.length?L.map(function(l){
     var nm=plink(l.name,l.pid);
-    return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td><td class="big-n num">'+rareLink(l.rare,l.pid,'#vault')+'</td><td class="n">'+l.logo+'</td><td class="n">'+l.buzz+'</td><td class="n">'+l.go+'</td><td class="n">'+(l.horn||0)+'</td><td class="n">'+l.deep+' ft</td></tr>';
-  }).join(''):'<tr><td colspan="9" class="empty">No rare buckets in this window yet.</td></tr>';
+    return '<tr><td class="rank n">'+l.rank+'</td><td><b>'+nm+'</b></td><td class="n">'+esc(l.team)+'</td>'+['rare','logo','buzz','go','horn','deep'].map(function(k){var v=l[k]||0,cls=k===RL.k?'big-n num':'n';return '<td class="'+cls+'">'+(k==='rare'?rareLink(v,l.pid,'#vault'):k==='deep'?v+' ft':v)+'</td>';}).join('')+'</tr>';
+  }).join(''):'<tr><td colspan="9" class="empty">'+(RL.k==='rare'?'No rare buckets in this window yet.':'None in this window yet.')+'</td></tr>';
 }
 // Season vs since tracking began (rare buckets are tracked from the 2026-27 season on).
-var RL={season:null,all:null,range:'season'};
+var RL={season:null,all:null,range:'season',k:'rare',shown:null};
 function rank(L){return (L||[]).map(function(r,i){return Object.assign({},r,{rank:i+1});});}
 function setRareLeaders(j){
   RL.season={L:rank(j.rareLeaders),label:j.season+' season'};
@@ -639,8 +649,18 @@ function setRareLeaders(j){
   RL.all={L:rank(j.rareLeadersAll||j.rareLeaders),label:'Since tracking began · '+since};
   document.getElementById('leadersRange').hidden=false;
   drawRareLeaders();
+  // full tallies (everyone in the top 250 of any column), so a re-sort shows the true leaders, not a reshuffled top 10
+  fetch('data/rare-leaders.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(!d)return;
+    var un=function(rows){return rows.map(function(r){var o={pid:r[0],name:r[1],team:r[2]};d.cols.forEach(function(k,i){o[k]=r[i+6];});return o;});};
+    RL.season.L=un(d.season);RL.all.L=un(d.all);drawRareLeaders();
+  },function(){});
 }
 function drawRareLeaders(){var v=RL[RL.range];if(v)renderLeaders(v.L,v.label);}
+document.getElementById('leadersHead').addEventListener('click',function(e){
+  var th=e.target.closest('th[data-k]');if(!th)return;RL.k=th.getAttribute('data-k');
+  if(RL.shown)renderLeaders(RL.shown.L,RL.shown.label);
+});
 document.getElementById('leadersRange').addEventListener('click',function(e){
   var b=e.target.closest('button[data-range]');if(!b)return;
   RL.range=b.getAttribute('data-range');

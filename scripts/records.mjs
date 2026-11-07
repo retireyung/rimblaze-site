@@ -535,5 +535,7 @@ ${stripOf([['Leader', lead.rare, `${esc(names[lead.pid] || lead.n)} · rare buck
     mainEntity: { '@type': 'ItemList', name: 'Rare bucket leaders', numberOfItems: top.length, itemListOrder: 'https://schema.org/ItemListOrderDescending', itemListElement: top.slice(0, 50).map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: `${names[r.pid] || r.n}: ${r.rare} rare buckets`, ...(slugs.get(r.pid) ? { url: `${SITE}/players/${slugs.get(r.pid)}/` } : {}) })) } },
     crumbsLd([['RimBlaze', SITE + '/'], ['All-time leaders', SITE + '/all-time/'], ['Rare buckets', url]])];
   await writeIfChanged(path.join(root, 'all-time', 'rare-buckets', 'index.html'), page({ title, desc, url, graph, body, current: 'all-time' }));
+  // the same tallies for the homepage's sortable leaders table
+  await writeIfChanged(path.join(root, 'data', 'rare-leaders.json'), JSON.stringify({ cols: RB_COLS.map(([k]) => k), all: pack(all), season: pack(cur), since, seasonLabel: season }));
   return url;
 }
