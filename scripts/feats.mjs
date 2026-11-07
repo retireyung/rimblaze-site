@@ -205,7 +205,6 @@ export function badges(pl) {
   const bzBy = {}; bz.forEach(b => { const s = seasonOfDate(b.date); bzBy[s] = (bzBy[s] || 0) + 1; });
   const bzMulti = Object.keys(bzBy).filter(s => bzBy[s] >= 2).sort();
   if (bzMulti.length) push({ tier: 'unicorn', span: 'season', name: 'Two horn game-winners in a season', short: '2×', count: bzMulti.length, detail: bzMulti.map(s => `${s} (${bzBy[s]})`).join(', ') });
-  if (bz.length >= 3) push({ tier: 'unicorn', span: 'career', name: 'Clutch at the horn', short: bz.length + '×', detail: `${bz.length} buzzer-beating game-winners` });
   const hc = B.filter(b => b.tags.includes('HALF-COURT'));
   if (hc.length) push({ tier: 'unicorn', span: 'game', name: 'Half-court make', short: Math.max(...hc.map(b => b.d)) + "'", count: hc.length, detail: `Deepest ${Math.max(...hc.map(b => b.d))} ft` });
   const gw = B.filter(b => b.tags.includes('GAME-WINNER'));
