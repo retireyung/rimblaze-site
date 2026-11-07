@@ -10,7 +10,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { prerender } from './prerender.mjs';
-import { renderRecords } from './records.mjs';
+import { renderRecords, recordBook } from './records.mjs';
 import { renderTeams } from './teamPages.mjs';
 import { TEAMS, teamSlug } from './teams.mjs';
 
@@ -88,6 +88,8 @@ function playerLd(p, url, title, qaHtml) {
 
 async function playerPages(profiles, slugify) {
   const tpl = await readFile(path.join(ROOT_DIR, 'player.html'), 'utf8');
+  let book = new Map();
+  try { book = await recordBook(ROOT_DIR); } catch (e) { console.log(`record book: ${e.message}`); }
   let done = 0;
   const seen = new Map(); profiles.forEach(p => seen.set(p.person.name, (seen.get(p.person.name) || 0) + 1));
   const dupNames = new Set([...seen].filter(([, k]) => k > 1).map(([n]) => n));
@@ -100,6 +102,13 @@ async function playerPages(profiles, slugify) {
     try {
       const r = await prerender(html, { ids: PLAYER_IDS });
       html = r.html.replace('</title>', `</title>\n${playerLd(p, url, title, r.html)}`); // the quick answers are the only <summary> tags
+      // "In the record book": every /records/ board he appears on (static, so search engines follow the links)
+      const rb = (book.get(p.person.id) || []).slice(0, 8);
+      if (rb.length) html = html.replace('<section id="seasons"', `<section id="recordbook" style="padding-top:8px"><div class="wrap"><div class="sec-head"><h2>In the record book</h2><span class="sub mono">NBA records since 1996-97</span></div>
+<ul style="list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))">${rb.map(e => `<li><a href="${e.href}" style="display:block;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:6px;font-size:14.5px"><b style="color:var(--leather)">${esc(e.text.split(' ')[0])}</b> ${esc(e.text.slice(e.text.indexOf(' ') + 1))}</a></li>`).join('')}</ul>
+<p style="margin-top:12px;font-size:13px"><a href="/records/" style="text-decoration:underline;text-underline-offset:3px">Every NBA record</a></p></div></section>
+
+<section id="seasons"`);
       // The data now loads from /data/players/<id>.json, so the page doesn't carry it twice.
       html = html.replace(/<script type="application\/json" id="rb-data">[\s\S]*?<\/script>/, `<meta name="rb-pid" content="${p.person.id}">`);
     } catch (e) { console.log(`prerender ${p.person.name}: ${e.message}`); }

@@ -400,3 +400,37 @@ export async function renderRecords({ root, season }) {
   if (await writeIfChanged(path.join(root, 'records', 'index.html'), hub(built))) changed++;
   return { urls: [SITE + '/records/', ...built.map(p => p.url)], changed, pages: built.length };
 }
+
+// ---------- 6. Record book entries for profiles ----------
+// pid -> up to 8 [{ href, text, rank }] for every board a player appears on, best rank first.
+export async function recordBook(root) {
+  const rec = await readJSON(path.join(root, 'data', 'records.json'));
+  const season = rec?.season || (await readJSON(path.join(root, 'data', 'season.json')))?.season;
+  const R = await rareData(root, season), book = new Map();
+  const add = (pid, rank, href, text) => { if (!book.has(pid)) book.set(pid, []); book.get(pid).push({ rank, href, text }); };
+  const ord = k => { const s = ['th', 'st', 'nd', 'rd'], v = k % 100; return k + (s[(v - 20) % 10] || s[v] || s[0]); };
+  if (rec) {
+    for (const [k, word, slug] of GAME_PAGES) {
+      const G = rec.games?.[k] || [], rk = ranks(G.map(g => ({ v: g[k] }))), seen = new Set();
+      G.forEach((g, i) => { if (rk[i] > 25 || seen.has(g.pid)) return; seen.add(g.pid); add(g.pid, rk[i], `/records/${slug}/`, `${ord(rk[i])} most ${word} in a game since 1996-97 (${g[k]}, ${fmtShort(g.date)})`); });
+    }
+    for (const f of FEATS) {
+      const F = rec.feats?.[f.key], slug = FEAT_PAGES[f.key][0]; if (!F) continue;
+      const rc = ranks(F.career), rs = ranks(F.season), seen = new Set();
+      F.career.forEach((r, i) => { if (rc[i] <= 25) add(r.pid, rc[i], `/records/${slug}/`, `${ord(rc[i])} in career ${f.many} since 1996-97 (${r.v})`); });
+      F.season.forEach((r, i) => { if (rs[i] > 25 || seen.has(r.pid)) return; seen.add(r.pid); add(r.pid, rs[i], `/records/${slug}/`, `${ord(rs[i])} in ${f.many} in a season since 1996-97 (${r.v} in ${r.s})`); });
+    }
+    for (const st of STREAKS) {
+      const S = rec.streaks?.[st.key], slug = STREAK_PAGES[st.key][0]; if (!S) continue;
+      const rs = ranks(S.season), seen = new Set();
+      S.season.forEach((r, i) => { if (rs[i] > 25 || seen.has(r.pid)) return; seen.add(r.pid); add(r.pid, rs[i], `/records/${slug}/`, `${ord(rs[i])}-longest ${st.label} in a season since 1996-97 (${r.v} games, ${r.s})`); });
+    }
+  }
+  if (R.all.length) for (const [slug, word, test] of [['buzzer-beaters', 'buzzer-beaters', b => b.tags.includes('BUZZER')], ['game-winners', 'clutch go-ahead shots', isClutch],
+    ['logo-threes', 'logo threes (30+ ft)', b => isDeep(b) && validDist(b) && b.d >= 30], ['four-point-plays', '4-point plays', b => b.tags.includes('4-PT PLAY')]]) {
+    const C = leaders(R.all, test), rc = ranks(C);
+    C.forEach((r, i) => add(r.pid, rc[i], `/records/${slug}/`, `${ord(rc[i])} in ${word} since ${R.seasons[0]} (${r.v})`));
+  }
+  for (const v of book.values()) v.sort((a, b) => a.rank - b.rank);
+  return book;
+}
