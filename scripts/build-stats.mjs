@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { stats, cdn, rows, seasonFor, seasonList, wikidataBios } from './nba.mjs';
 import { renderSite } from './pages.mjs';
 import { TEAM_NAMES } from './teams.mjs';
-import { feats, featScore, tens, rareBuckets, quarterPoints, isRare, isDeep, isClutch, RULES_VERSION, WATCH_MIN, MILESTONES, nextMilestone, badges } from './feats.mjs';
+import { feats, featScore, tens, rareBuckets, quarterPoints, isRare, isDeep, isClutch, isHornWinner, RULES_VERSION, WATCH_MIN, MILESTONES, nextMilestone, badges } from './feats.mjs';
 import { careerIndex } from './career.mjs';
 import { gameRecords } from './records.mjs';
 
@@ -274,9 +274,9 @@ async function main() {
   chase.sort((a, b) => b.ratio - a.ratio);
   const tallyRare = (list, rareBy = new Map()) => {
     list.forEach(b => {
-      const r = rareBy.get(b.pid) || { pid: b.pid, name: fullName.get(b.pid) || b.n, team: b.t, rare: 0, logo: 0, buzz: 0, go: 0, deep: 0 };
+      const r = rareBy.get(b.pid) || { pid: b.pid, name: fullName.get(b.pid) || b.n, team: b.t, rare: 0, logo: 0, buzz: 0, go: 0, horn: 0, deep: 0 };
       r.team = b.t; // seasons are tallied oldest first, so this ends on the latest team
-      r.rare++; if (isDeep(b)) r.logo++; if (b.tags.includes('BUZZER')) r.buzz++; if (isClutch(b)) r.go++; r.deep = Math.max(r.deep, b.d || 0);
+      r.rare++; if (isDeep(b)) r.logo++; if (b.tags.includes('BUZZER')) r.buzz++; if (isClutch(b)) r.go++; if (isHornWinner(b)) r.horn++; r.deep = Math.max(r.deep, b.d || 0);
       rareBy.set(b.pid, r);
     });
     return rareBy;

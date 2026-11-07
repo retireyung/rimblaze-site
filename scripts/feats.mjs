@@ -148,6 +148,9 @@ export function rareBuckets(actions, game, ctx = {}) {
 // Counting helpers shared by the leaders tables.
 export const isDeep = b => b.tags.includes('LOGO') || b.tags.includes('HEAVE') || b.tags.includes('HALF-COURT');
 export const isClutch = b => b.tags.includes('GO-AHEAD') || b.tags.includes('GAME-WINNER');
+// Buzzer-beating game-winner: a go-ahead make with 1.0 s or less left in the 4th quarter or overtime.
+export const isHornWinner = b => b.tags.includes('BUZZER') && isClutch(b);
+const seasonOfDate = iso => { const y = +iso.slice(0, 4), m = +iso.slice(5, 7), s = m >= 9 ? y : y - 1; return `${s}-${String((s + 1) % 100).padStart(2, '0')}`; };
 
 // ---- Milestones ----
 export const MILESTONES = {
@@ -193,8 +196,12 @@ export function badges(pl) {
   push(gameBadge(N, '15+ ASSISTS', 'rare', '15 assists', '15'));
   push(gameBadge(N, '20+ REBOUNDS', 'rare', '20 rebounds', '20'));
   const latest = list => `Latest ${fmt(list[list.length - 1].date)} vs ${list[list.length - 1].o}`;
-  const bz = B.filter(b => b.tags.includes('BUZZER') && (b.tags.includes('GAME-WINNER') || b.tags.includes('GO-AHEAD')));
-  if (bz.length) push({ tier: 'unicorn', span: 'game', name: 'Game-winner at the horn', short: '0.0', count: bz.length, detail: latest(bz) });
+  const bz = B.filter(isHornWinner).sort((a, b) => a.date.localeCompare(b.date));
+  if (bz.length) push({ tier: 'unicorn', span: 'game', name: 'Buzzer-beating game-winner', short: '0.0', count: bz.length, detail: latest(bz) });
+  const bzBy = {}; bz.forEach(b => { const s = seasonOfDate(b.date); bzBy[s] = (bzBy[s] || 0) + 1; });
+  const bzMulti = Object.keys(bzBy).filter(s => bzBy[s] >= 2).sort();
+  if (bzMulti.length) push({ tier: 'unicorn', span: 'season', name: 'Two horn game-winners in a season', short: '2×', count: bzMulti.length, detail: bzMulti.map(s => `${s} (${bzBy[s]})`).join(', ') });
+  if (bz.length >= 3) push({ tier: 'unicorn', span: 'career', name: 'Clutch at the horn', short: bz.length + '×', detail: `${bz.length} buzzer-beating game-winners` });
   const hc = B.filter(b => b.tags.includes('HALF-COURT'));
   if (hc.length) push({ tier: 'unicorn', span: 'game', name: 'Half-court make', short: Math.max(...hc.map(b => b.d)) + "'", count: hc.length, detail: `Deepest ${Math.max(...hc.map(b => b.d))} ft` });
   const gw = B.filter(b => b.tags.includes('GAME-WINNER'));

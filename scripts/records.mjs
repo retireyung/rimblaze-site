@@ -11,7 +11,7 @@
 
 import { mkdir, readFile, writeFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
-import { tens, isDeep, isClutch } from './feats.mjs';
+import { tens, isDeep, isClutch, isHornWinner } from './feats.mjs';
 import { seasonList } from './nba.mjs';
 import { teamSlug } from './teams.mjs';
 import { SITE, esc, num, page, crumbsLd, fmtShort, ld } from './shell.mjs';
@@ -282,13 +282,21 @@ function rarePage({ slug, label, blurb, title, h1, test, word, lead, extra, qaFn
   });
 }
 const shotRows = (D, list) => list.map(b => [D.c.who(b.pid, b.n), `<span class="big">${b.d ?? '—'}</span>`, `${tlink(b.t)} vs ${tlink(b.o)}`, D.nights.has(b.date) ? nlink(b.date) : esc(fmtShort(b.date)), `<span class="n">${esc(b.q)} ${clock(b.secs)}</span>`, `<div class="badges">${b.tags.map((t, i) => `<span class="badge${i ? ' alt' : ''}">${esc(t)}</span>`).join('')}</div>`]);
-const RARE_REL = ['buzzer-beaters', 'game-winners', 'logo-threes', 'longest-shots', 'four-point-plays', '20-point-quarters'];
+const RARE_REL = ['buzzer-beating-game-winners', 'buzzer-beaters', 'game-winners', 'logo-threes', 'longest-shots', 'four-point-plays', '20-point-quarters'];
 rarePage({ slug: 'buzzer-beaters', label: 'Buzzer-beaters', blurb: 'Most shots made at the horn', title: 'NBA Buzzer-Beater Leaders: Most Buzzer-Beaters Since 1996-97', word: 'buzzer-beater',
   h1: 'Buzzer-<em>beaters.</em>', test: b => b.tags.includes('BUZZER'),
   lead: 'Every made shot with one second or less on the clock at the end of a quarter or overtime, from NBA.com play-by-play since 1996-97: career and single-season leaders and this season\'s list.',
-  extra: D => { const w = D.rare.all.filter(b => b.tags.includes('BUZZER') && isClutch(b)).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 40);
-    return [`<section><h2>Buzzer-beating go-ahead shots</h2><p class="lead" style="font-size:15px">Shots at the horn of the fourth quarter or overtime that put the team ahead, newest first.</p>${table(['Player', 'Feet', 'Game', 'Date', 'Clock', 'Tags'], shotRows(D, w))}</section>`]; },
+  extra: () => [`<section><p class="lead" style="font-size:15px">Looking for the ones that won the game? See <a class="cnt" href="/records/buzzer-beating-game-winners/">every buzzer-beating game-winner</a>.</p></section>`],
   related: RARE_REL.filter(s => s !== 'buzzer-beaters') });
+rarePage({ slug: 'buzzer-beating-game-winners', label: 'Buzzer-beating game-winners', blurb: 'Go-ahead shots at the final horn', title: 'Buzzer-Beating Game-Winners: Every One Since 1996-97 and the Career Leaders', word: 'buzzer-beating game-winner',
+  h1: 'Game-winners <em>at the horn.</em>', test: isHornWinner,
+  lead: 'Every go-ahead shot made with one second or less left in the fourth quarter or overtime, from NBA.com play-by-play since 1996-97: the career and single-season leaders, and the complete list. One of the rarest shots in basketball, about 20 a season across the whole league.',
+  extra: D => { const w = D.rare.all.filter(isHornWinner).sort((a, b) => b.date.localeCompare(a.date) || (a.secs ?? 9) - (b.secs ?? 9));
+    return [`<section><h2>Every buzzer-beating game-winner, newest first (${w.length})</h2>${table(['Player', 'Feet', 'Game', 'Date', 'Clock', 'Score'], w.map(b => [D.c.who(b.pid, b.n), `<span class="big">${b.d ?? '—'}</span>`, `${tlink(b.t)} vs ${tlink(b.o)}`, D.nights.has(b.date) ? nlink(b.date) : esc(fmtShort(b.date)), `<span class="n">${esc(b.q)} ${clock(b.secs)}</span>`, `<span class="meta">${esc(b.sc || '')}</span>`]))}<p class="note">${esc(coverage(D))} Counted: a made shot that takes the lead with 1.0 second or less on the clock in the 4th quarter or overtime.</p></section>`]; },
+  qaFn: D => { const w = D.rare.all.filter(isHornWinner), by = {}; w.forEach(b => by[b.s] = (by[b.s] || 0) + 1); const ss = Object.keys(by).filter(s => s !== D.season);
+    const avg = ss.length ? Math.round(ss.reduce((n, s) => n + by[s], 0) / ss.length) : 0;
+    return [['How rare is a buzzer-beating game-winner?', `About ${avg} a season across the whole NBA, fewer than one per team. ${w.length} since ${D.rare.seasons[0]}, by ${new Set(w.map(b => b.pid)).size} different players.`]]; },
+  related: RARE_REL.filter(s => s !== 'buzzer-beating-game-winners') });
 rarePage({ slug: 'game-winners', label: 'Game-winners', blurb: 'Most go-ahead shots in the final 30 seconds', title: 'Most Game-Winning Shots in the NBA: Clutch Go-Ahead Leaders Since 1996-97', word: 'go-ahead clutch shot',
   h1: 'Game-<em>winners.</em>', test: isClutch,
   lead: 'Every made shot that put a team ahead in the final 30 seconds of the fourth quarter or overtime, from NBA.com play-by-play since 1996-97. Shots whose lead held to the final horn are tagged GAME-WINNER.',
@@ -426,7 +434,7 @@ export async function recordBook(root) {
       S.season.forEach((r, i) => { if (rs[i] > 25 || seen.has(r.pid)) return; seen.add(r.pid); add(r.pid, rs[i], `/records/${slug}/`, `${ord(rs[i])}-longest ${st.label} in a season since 1996-97 (${r.v} games, ${r.s})`); });
     }
   }
-  if (R.all.length) for (const [slug, word, test] of [['buzzer-beaters', 'buzzer-beaters', b => b.tags.includes('BUZZER')], ['game-winners', 'clutch go-ahead shots', isClutch],
+  if (R.all.length) for (const [slug, word, test] of [['buzzer-beating-game-winners', 'buzzer-beating game-winners', isHornWinner], ['buzzer-beaters', 'buzzer-beaters', b => b.tags.includes('BUZZER')], ['game-winners', 'clutch go-ahead shots', isClutch],
     ['logo-threes', 'logo threes (30+ ft)', b => isDeep(b) && validDist(b) && b.d >= 30], ['four-point-plays', '4-point plays', b => b.tags.includes('4-PT PLAY')]]) {
     const C = leaders(R.all, test), rc = ranks(C);
     C.forEach((r, i) => add(r.pid, rc[i], `/records/${slug}/`, `${ord(rc[i])} in ${word} since ${R.seasons[0]} (${r.v})`));
