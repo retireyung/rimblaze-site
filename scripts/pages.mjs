@@ -42,8 +42,10 @@ const PLAYER_IDS = ['crumbName', 'kicker', 'pName', 'pNick', 'pIntro', 'bio', 't
   'recNights', 'recDeepNote', 'recDeep', 'ybyTitle', 'yby', 'splitsTitle', 'splitsSub', 'splitsCard', 'scoreSub', 'scoreCard', 'nightsTitle', 'nightList',
   'qaSub', 'qa', 'followTitle', 'follow', 'count', 'courtFoot'];
 
-function playerText(p) {
-  const n = p.person.name, c = p.career, r = c.ranks || {}, team = p.person.team?.name;
+function playerText(p, dupNames = new Set()) {
+  const c = p.career, r = c.ranks || {}, team = p.person.team?.name;
+  // Two players with one name (the two Eddie Johnsons) get their years, so every title is unique.
+  const n = dupNames.has(p.person.name) && p.person.from ? `${p.person.name} (${p.person.from}–${p.person.active ? 'present' : p.person.to})` : p.person.name;
   const td = !p.logsPartial && c.td ? `, ${num(c.td)} triple-doubles` : '';
   const title = `${n} Stats, Career Highs, Triple-Doubles & Milestones | RimBlaze`;
   const desc = p.person.active
@@ -86,15 +88,19 @@ function playerLd(p, url, title, qaHtml) {
 async function playerPages(profiles, slugify) {
   const tpl = await readFile(path.join(ROOT_DIR, 'player.html'), 'utf8');
   let done = 0;
+  const seen = new Map(); profiles.forEach(p => seen.set(p.person.name, (seen.get(p.person.name) || 0) + 1));
+  const dupNames = new Set([...seen].filter(([, k]) => k > 1).map(([n]) => n));
   for (const p of profiles) {
     const slug = slugify(p.person.name) + '-' + p.person.id, url = `${SITE}/players/${slug}/`;
-    const { title, desc } = playerText(p);
+    const { title, desc } = playerText(p, dupNames);
     let html = setDesc(setTitle(tpl, title), desc)
       .replace(/<script type="application\/json" id="rb-sample">[\s\S]*?<\/script>/, '')
       .replace('<!--RB-DATA-->', `<base href="/">\n${shareTags({ title, desc, url, type: 'profile' })}\n<meta name="rb-prod" content="1">\n<script type="application/json" id="rb-data">${JSON.stringify(p).replace(/</g, '\\u003c')}</script>`);
     try {
       const r = await prerender(html, { ids: PLAYER_IDS });
       html = r.html.replace('</title>', `</title>\n${playerLd(p, url, title, r.html)}`); // the quick answers are the only <summary> tags
+      // The data now loads from /data/players/<id>.json, so the page doesn't carry it twice.
+      html = html.replace(/<script type="application\/json" id="rb-data">[\s\S]*?<\/script>/, `<meta name="rb-pid" content="${p.person.id}">`);
     } catch (e) { console.log(`prerender ${p.person.name}: ${e.message}`); }
     await write(`players/${slug}/index.html`, html);
     done++;

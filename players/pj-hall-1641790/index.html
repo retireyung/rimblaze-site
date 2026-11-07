@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="PJ Hall (Charlotte Hornets) career stats: 119 points, 99 rebounds and 17 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-10-30","season":"2026-27","logsSince":"1996-97","person":{"id":1641790,"name":"PJ Hall","first":"PJ","last":"Hall","number":"16","position":"Center","height":"6-9","weight":"245","birthDate":"2002-02-21","country":"USA","from":2024,"to":2026,"hometown":"Spartanburg, South Carolina","highSchools":[],"college":null,"lastAttended":"Clemson","draft":null,"team":{"abbr":"CHA","name":"Charlotte Hornets"},"teams":[{"team":"Denver Nuggets","from":2024,"to":2024},{"team":"Memphis Grizzlies","from":2025,"to":2025},{"team":"Charlotte Hornets","from":2025,"to":2026}],"active":true},"seasons":[{"season":"2024-25","team":"DEN","gp":19,"min":66,"pts":33,"reb":22,"ast":4,"stl":0,"blk":4,"tpm":2,"fgm":14,"fga":24,"fg3m":2,"fg3a":8,"ftm":3,"fta":4,"td":0,"dd":0,"p40":0,"rare":null},{"season":"2025-26","team":"MEM/CHA","gp":19,"min":213,"pts":86,"reb":75,"ast":10,"stl":3,"blk":10,"tpm":3,"fgm":30,"fga":59,"fg3m":3,"fg3a":5,"ftm":23,"fta":29,"td":0,"dd":1,"p40":0,"rare":null},{"season":"2026-27","team":"CHA","gp":2,"min":11,"pts":0,"reb":2,"ast":3,"stl":0,"blk":1,"tpm":0,"fgm":0,"fga":3,"fg3m":0,"fg3a":3,"ftm":0,"fta":0,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":40,"pts":119,"reb":99,"ast":17,"stl":3,"blk":15,"tpm":5,"fgm":44,"fga":86,"fg3m":5,"fg3a":16,"ftm":26,"fta":33,"td":0,"dd":1,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":13,"date":"2026-01-05","opp":"OKC","home":false,"gameId":"0022500506","line":{"P":13,"R":5,"A":1}},{"stat":"Rebounds","v":10,"date":"2026-02-11","opp":"ATL","home":true,"gameId":"0022500775","line":{"P":11,"R":10,"A":0}},{"stat":"Assists","v":3,"date":"2026-10-23","opp":"ATL","home":true,"gameId":"0022600094","line":{"P":0,"R":1,"A":3}},{"stat":"Threes","v":1,"date":"2025-03-19","opp":"LAL","home":false,"gameId":"0022401006","line":{"P":5,"R":2,"A":1}},{"stat":"Steals","v":1,"date":"2025-12-26","opp":"ORL","home":false,"gameId":"0022500424","line":{"P":7,"R":4,"A":0}},{"stat":"Blocks","v":2,"date":"2025-03-19","opp":"LAL","home":false,"gameId":"0022401006","line":{"P":5,"R":2,"A":1}}],"nights":[],"ddDates":["2026-02-11"],"buckets":[],"splits":{"home":{"gp":1,"ppg":0,"rpg":1,"apg":3},"away":{"gp":1,"ppg":0,"rpg":1,"apg":0},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":2,"ppg":0,"rpg":1,"apg":1.5},"months":[{"m":"2026-10","gp":2,"ppg":0,"rpg":1,"apg":1.5}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Double-double","short":"2×10","count":1,"detail":"First Feb 11, 2026 · latest Feb 11, 2026"}]}</script>
+<meta name="rb-pid" content="1641790">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

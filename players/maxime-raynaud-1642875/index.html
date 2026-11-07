@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Maxime Raynaud (Sacramento Kings) career stats: 922 points, 556 rebounds and 100 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-04-12","season":"2026-27","logsSince":"1996-97","person":{"id":1642875,"name":"Maxime Raynaud","first":"Maxime","last":"Raynaud","number":"42","position":"Center","height":"7-1","weight":"268","birthDate":"2003-04-07","country":"France","from":2025,"to":2026,"hometown":"Paris, France","highSchools":[{"name":"Lycée Henri-IV","place":"5th arrondissement of Paris, France"}],"college":"Stanford University","lastAttended":"Stanford","draft":{"year":"2025","round":"2","pick":"42"},"team":{"abbr":"SAC","name":"Sacramento Kings"},"teams":[{"team":"Sacramento Kings","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"SAC","gp":74,"min":1964,"pts":922,"reb":556,"ast":100,"stl":38,"blk":39,"tpm":24,"fgm":383,"fga":671,"fg3m":24,"fg3a":74,"ftm":132,"fta":168,"td":0,"dd":18,"p40":0,"rare":1}],"career":{"gp":74,"pts":922,"reb":556,"ast":100,"stl":38,"blk":39,"tpm":24,"fgm":383,"fga":671,"fg3m":24,"fg3a":74,"ftm":132,"fta":168,"td":0,"dd":18,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":32,"date":"2026-03-17","opp":"SAS","home":true,"gameId":"0022500998","line":{"P":32,"R":9,"A":3}},{"stat":"Rebounds","v":19,"date":"2026-02-09","opp":"NOP","home":false,"gameId":"0022500766","line":{"P":21,"R":19,"A":1}},{"stat":"Assists","v":5,"date":"2026-01-16","opp":"WAS","home":true,"gameId":"0022500592","line":{"P":4,"R":8,"A":5}},{"stat":"Threes","v":3,"date":"2026-03-19","opp":"PHI","home":true,"gameId":"0022501015","line":{"P":30,"R":4,"A":2}},{"stat":"Steals","v":3,"date":"2026-03-26","opp":"ORL","home":false,"gameId":"0022501065","line":{"P":10,"R":7,"A":3}},{"stat":"Blocks","v":3,"date":"2026-03-08","opp":"CHI","home":true,"gameId":"0022500930","line":{"P":26,"R":11,"A":2}}],"nights":[],"ddDates":["2025-12-06","2025-12-18","2025-12-20","2025-12-21","2025-12-28","2025-12-30","2026-01-30","2026-02-09","2026-02-19","2026-02-21","2026-02-23","2026-03-01","2026-03-03","2026-03-08","2026-03-10","2026-03-22","2026-03-28","2026-04-05"],"buckets":[{"date":"2026-01-30","gameId":"0022500689","o":"BOS","q":"Q3","secs":0,"d":19,"a":39,"tags":["BUZZER"],"shot":"Jump Shot · turnaround","sc":"SAC 66–89 BOS"}],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":2,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Double-double","short":"2×10","count":18,"detail":"First Dec 6, 2025 · latest Apr 5, 2026"},{"tier":"legend","span":"game","name":"30-point game","short":"30","count":2,"detail":"Career"}]}</script>
+<meta name="rb-pid" content="1642875">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

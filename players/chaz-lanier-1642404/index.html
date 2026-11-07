@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Chaz Lanier (Detroit Pistons) career stats: 93 points, 23 rebounds and 17 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-11-02","season":"2026-27","logsSince":"1996-97","person":{"id":1642404,"name":"Chaz Lanier","first":"Chaz","last":"Lanier","number":"8","position":"Guard","height":"6-4","weight":"206","birthDate":"2001-12-19","country":"USA","from":2025,"to":2026,"hometown":"Nashville, Tennessee","highSchools":[],"college":"University of North Florida, University of Tennessee","lastAttended":"Tennessee","draft":{"year":"2025","round":"2","pick":"37"},"team":{"abbr":"DET","name":"Detroit Pistons"},"teams":[{"team":"Detroit Pistons","from":2025,"to":2026}],"active":true},"seasons":[{"season":"2025-26","team":"DET","gp":34,"min":262,"pts":80,"reb":23,"ast":17,"stl":7,"blk":0,"tpm":19,"fgm":28,"fga":89,"fg3m":19,"fg3a":67,"ftm":5,"fta":6,"td":0,"dd":0,"p40":0,"rare":null},{"season":"2026-27","team":"DET","gp":3,"min":11,"pts":13,"reb":0,"ast":0,"stl":0,"blk":0,"tpm":3,"fgm":5,"fga":7,"fg3m":3,"fg3a":5,"ftm":0,"fta":0,"td":0,"dd":0,"p40":0,"rare":1}],"career":{"gp":37,"pts":93,"reb":23,"ast":17,"stl":7,"blk":0,"tpm":22,"fgm":33,"fga":96,"fg3m":22,"fg3a":72,"ftm":5,"fta":6,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":9,"date":"2025-11-18","opp":"ATL","home":false,"gameId":"0022500251","line":{"P":9,"R":2,"A":0}},{"stat":"Rebounds","v":4,"date":"2025-11-14","opp":"PHI","home":true,"gameId":"0022500041","line":{"P":6,"R":4,"A":4}},{"stat":"Assists","v":4,"date":"2025-11-14","opp":"PHI","home":true,"gameId":"0022500041","line":{"P":6,"R":4,"A":4}},{"stat":"Threes","v":3,"date":"2025-11-18","opp":"ATL","home":false,"gameId":"0022500251","line":{"P":9,"R":2,"A":0}},{"stat":"Steals","v":2,"date":"2026-03-19","opp":"WAS","home":false,"gameId":"0022501009","line":{"P":0,"R":0,"A":0}},{"stat":"Blocks","v":0,"date":"2025-10-24","opp":"HOU","home":false,"gameId":"0022500093","line":{"P":3,"R":0,"A":1}}],"nights":[],"ddDates":[],"buckets":[{"date":"2026-11-02","gameId":"0022600159","o":"CHA","q":"Q4","secs":300,"d":32,"a":27,"tags":["LOGO"],"shot":"Jump Shot","sc":"DET 118–85 CHA"}],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":3,"ppg":4.3,"rpg":0,"apg":0},"wins":{"gp":2,"ppg":5.5,"rpg":0,"apg":0},"losses":{"gp":1,"ppg":2,"rpg":0,"apg":0},"months":[{"m":"2026-10","gp":2,"ppg":4,"rpg":0,"apg":0},{"m":"2026-11","gp":1,"ppg":5,"rpg":0,"apg":0}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Logo three","short":"30+","count":1,"detail":"Deepest 32 ft"}]}</script>
+<meta name="rb-pid" content="1642404">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Yanic Konan Niederhäuser (LA Clippers) career stats: 176 points, 117 rebounds and 12 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-03-04","season":"2026-27","logsSince":"1996-97","person":{"id":1642949,"name":"Yanic Konan Niederhäuser","first":"Yanic Konan","last":"Niederhäuser","number":"14","position":"Center","height":"6-11","weight":"242","birthDate":"2003-03-14","country":"Switzerland","from":2025,"to":2026,"hometown":"Fräschels, Switzerland","highSchools":[],"college":null,"lastAttended":"Penn State","draft":{"year":"2025","round":"1","pick":"30"},"team":{"abbr":"LAC","name":"LA Clippers"},"teams":[{"team":"LA Clippers","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"LAC","gp":41,"min":424,"pts":176,"reb":117,"ast":12,"stl":5,"blk":30,"tpm":1,"fgm":64,"fga":100,"fg3m":1,"fg3a":5,"ftm":47,"fta":62,"td":0,"dd":0,"p40":0,"rare":1}],"career":{"gp":41,"pts":176,"reb":117,"ast":12,"stl":5,"blk":30,"tpm":1,"fgm":64,"fga":100,"fg3m":1,"fg3a":5,"ftm":47,"fta":62,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":16,"date":"2025-12-30","opp":"SAC","home":true,"gameId":"0022500461","line":{"P":16,"R":6,"A":2}},{"stat":"Rebounds","v":10,"date":"2026-01-01","opp":"UTA","home":true,"gameId":"0022500475","line":{"P":6,"R":10,"A":1}},{"stat":"Assists","v":2,"date":"2025-10-28","opp":"GSW","home":false,"gameId":"0022500127","line":{"P":0,"R":1,"A":2}},{"stat":"Threes","v":1,"date":"2026-02-22","opp":"ORL","home":true,"gameId":"0022500827","line":{"P":7,"R":8,"A":0}},{"stat":"Steals","v":2,"date":"2026-03-02","opp":"GSW","home":false,"gameId":"0022500882","line":{"P":11,"R":9,"A":0}},{"stat":"Blocks","v":4,"date":"2026-02-22","opp":"ORL","home":true,"gameId":"0022500827","line":{"P":7,"R":8,"A":0}}],"nights":[],"ddDates":[],"buckets":[{"date":"2025-12-01","gameId":"0022500313","o":"MIA","q":"Q4","secs":0,"d":6,"a":35,"tags":["BUZZER"],"shot":"DUNK · alley-oop","sc":"LAC 123–140 MIA"}],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1642949">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

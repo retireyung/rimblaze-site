@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Keshon Gilbert (Atlanta Hawks) career stats: 17 points, 5 rebounds and 12 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-04-12","season":"2026-27","logsSince":"1996-97","person":{"id":1642933,"name":"Keshon Gilbert","first":"Keshon","last":"Gilbert","number":"00","position":"Guard","height":"6-3","weight":"200","birthDate":"2003-06-30","country":"USA","from":2025,"to":2026,"hometown":"St. Louis, Missouri","highSchools":[],"college":"Iowa State University, University of Nevada, Las Vegas","lastAttended":"Iowa State","draft":null,"team":{"abbr":"ATL","name":"Atlanta Hawks"},"teams":[{"team":"Washington Wizards","from":2025,"to":2025},{"team":"Atlanta Hawks","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"WAS/ATL","gp":4,"min":74,"pts":17,"reb":5,"ast":12,"stl":3,"blk":4,"tpm":0,"fgm":5,"fga":12,"fg3m":0,"fg3a":3,"ftm":7,"fta":7,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":4,"pts":17,"reb":5,"ast":12,"stl":3,"blk":4,"tpm":0,"fgm":5,"fga":12,"fg3m":0,"fg3a":3,"ftm":7,"fta":7,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":11,"date":"2026-04-12","opp":"MIA","home":false,"gameId":"0022501189","line":{"P":11,"R":0,"A":9}},{"stat":"Rebounds","v":3,"date":"2026-02-07","opp":"BKN","home":false,"gameId":"0022500747","line":{"P":4,"R":3,"A":2}},{"stat":"Assists","v":9,"date":"2026-04-12","opp":"MIA","home":false,"gameId":"0022501189","line":{"P":11,"R":0,"A":9}},{"stat":"Threes","v":0,"date":"2026-02-07","opp":"BKN","home":false,"gameId":"0022500747","line":{"P":4,"R":3,"A":2}},{"stat":"Steals","v":2,"date":"2026-02-11","opp":"CLE","home":false,"gameId":"0022500776","line":{"P":2,"R":1,"A":0}},{"stat":"Blocks","v":3,"date":"2026-02-07","opp":"BKN","home":false,"gameId":"0022500747","line":{"P":4,"R":3,"A":2}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1642933">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Cormac Ryan (Milwaukee Bucks) career stats: 157 points, 28 rebounds and 19 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-04-12","season":"2026-27","logsSince":"1996-97","person":{"id":1642504,"name":"Cormac Ryan","first":"Cormac","last":"Ryan","number":"30","position":"Guard","height":"6-5","weight":"205","birthDate":"1998-10-26","country":"USA","from":2025,"to":2026,"hometown":"New York City, New York","highSchools":[],"college":null,"lastAttended":"North Carolina","draft":null,"team":{"abbr":"MIL","name":"Milwaukee Bucks"},"teams":[{"team":"Milwaukee Bucks","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"MIL","gp":11,"min":271,"pts":157,"reb":28,"ast":19,"stl":11,"blk":3,"tpm":27,"fgm":53,"fga":102,"fg3m":27,"fg3a":59,"ftm":24,"fta":26,"td":0,"dd":1,"p40":0,"rare":3}],"career":{"gp":11,"pts":157,"reb":28,"ast":19,"stl":11,"blk":3,"tpm":27,"fgm":53,"fga":102,"fg3m":27,"fg3a":59,"ftm":24,"fta":26,"td":0,"dd":1,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":28,"date":"2026-04-10","opp":"BKN","home":true,"gameId":"0022501179","line":{"P":28,"R":5,"A":3}},{"stat":"Rebounds","v":10,"date":"2026-04-12","opp":"PHI","home":false,"gameId":"0022501191","line":{"P":22,"R":10,"A":4}},{"stat":"Assists","v":4,"date":"2026-04-01","opp":"HOU","home":false,"gameId":"0022501110","line":{"P":25,"R":2,"A":4}},{"stat":"Threes","v":5,"date":"2026-04-10","opp":"BKN","home":true,"gameId":"0022501179","line":{"P":28,"R":5,"A":3}},{"stat":"Steals","v":5,"date":"2026-04-05","opp":"MEM","home":true,"gameId":"0022501135","line":{"P":21,"R":4,"A":3}},{"stat":"Blocks","v":1,"date":"2026-03-25","opp":"POR","home":false,"gameId":"0022501061","line":{"P":2,"R":0,"A":0}}],"nights":[{"date":"2026-04-05","season":"2025-26","gameId":"0022501135","opp":"MEM","home":true,"wl":"W","P":21,"R":4,"A":3,"S":5,"B":0,"tpm":3,"fgm":7,"fga":8,"feats":["5+ STEALS"],"score":32}],"ddDates":["2026-04-12"],"buckets":[{"date":"2026-04-01","gameId":"0022501110","o":"HOU","q":"Q3","secs":196,"d":30,"a":34,"tags":["LOGO"],"shot":"Jump Shot","sc":"MIL 67–77 HOU"},{"date":"2026-04-05","gameId":"0022501135","o":"MEM","q":"Q1","secs":0,"d":26,"a":10,"tags":["BUZZER"],"shot":"Jump Shot","sc":"MEM 25–34 MIL"},{"date":"2026-04-10","gameId":"0022501179","o":"BKN","q":"Q1","secs":234,"d":30,"a":22,"tags":["LOGO"],"shot":"Jump Shot","sc":"BKN 10–31 MIL"}],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Logo three","short":"30+","count":2,"detail":"Deepest 30 ft"},{"tier":"legend","span":"game","name":"Double-double","short":"2×10","count":1,"detail":"First Apr 12, 2026 · latest Apr 12, 2026"},{"tier":"legend","span":"game","name":"Five steals","short":"5","count":1,"detail":"Apr 5, 2026 vs MEM"}]}</script>
+<meta name="rb-pid" content="1642504">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

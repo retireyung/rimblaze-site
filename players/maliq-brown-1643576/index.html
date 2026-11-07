@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Maliq Brown (San Antonio Spurs) career stats: 0 points, 0 rebounds and 1 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-10-20","season":"2026-27","logsSince":"1996-97","person":{"id":1643576,"name":"Maliq Brown","first":"Maliq","last":"Brown","number":"15","position":"Forward","height":"6-8","weight":"225","birthDate":"2003-11-16","country":"USA","from":2026,"to":2026,"hometown":"Culpeper, Virginia","highSchools":[{"name":"Blue Ridge School","place":"Virginia, Virginia"}],"college":"Syracuse University, Duke University","lastAttended":"Duke","draft":{"year":"2026","round":"2","pick":"44"},"team":{"abbr":"SAS","name":"San Antonio Spurs"},"teams":[{"team":"San Antonio Spurs","from":2026,"to":2026}],"active":true},"seasons":[{"season":"2026-27","team":"SAS","gp":1,"min":1,"pts":0,"reb":0,"ast":1,"stl":0,"blk":0,"tpm":0,"fgm":0,"fga":0,"fg3m":0,"fg3a":0,"ftm":0,"fta":0,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":1,"pts":0,"reb":0,"ast":1,"stl":0,"blk":0,"tpm":0,"fgm":0,"fga":0,"fg3m":0,"fg3a":0,"ftm":0,"fta":0,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":0,"date":"2026-10-20","opp":"OKC","home":true,"gameId":"0022600003","line":{"P":0,"R":0,"A":1}},{"stat":"Rebounds","v":0,"date":"2026-10-20","opp":"OKC","home":true,"gameId":"0022600003","line":{"P":0,"R":0,"A":1}},{"stat":"Assists","v":1,"date":"2026-10-20","opp":"OKC","home":true,"gameId":"0022600003","line":{"P":0,"R":0,"A":1}},{"stat":"Threes","v":0,"date":"2026-10-20","opp":"OKC","home":true,"gameId":"0022600003","line":{"P":0,"R":0,"A":1}},{"stat":"Steals","v":0,"date":"2026-10-20","opp":"OKC","home":true,"gameId":"0022600003","line":{"P":0,"R":0,"A":1}},{"stat":"Blocks","v":0,"date":"2026-10-20","opp":"OKC","home":true,"gameId":"0022600003","line":{"P":0,"R":0,"A":1}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":1,"ppg":0,"rpg":0,"apg":1},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":1,"ppg":0,"rpg":0,"apg":1},"months":[{"m":"2026-10","gp":1,"ppg":0,"rpg":0,"apg":1}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1643576">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

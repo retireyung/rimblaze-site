@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Felix Okpara (Washington Wizards) career stats: 1 points, 1 rebounds and 0 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-11-04","season":"2026-27","logsSince":"1996-97","person":{"id":1643590,"name":"Felix Okpara","first":"Felix","last":"Okpara","number":"34","position":"Center","height":"6-11","weight":"235","birthDate":"2004-04-20","country":"Nigeria","from":2026,"to":2026,"hometown":"Lagos, Nigeria","highSchools":[],"college":null,"lastAttended":"Tennessee","draft":{"year":"2026","round":"2","pick":"46"},"team":{"abbr":"WAS","name":"Washington Wizards"},"teams":[{"team":"Washington Wizards","from":2026,"to":2026}],"active":true},"seasons":[{"season":"2026-27","team":"WAS","gp":2,"min":4,"pts":1,"reb":1,"ast":0,"stl":0,"blk":0,"tpm":0,"fgm":0,"fga":1,"fg3m":0,"fg3a":0,"ftm":1,"fta":2,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":2,"pts":1,"reb":1,"ast":0,"stl":0,"blk":0,"tpm":0,"fgm":0,"fga":1,"fg3m":0,"fg3a":0,"ftm":1,"fta":2,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":1,"date":"2026-10-23","opp":"TOR","home":true,"gameId":"0022600097","line":{"P":1,"R":0,"A":0}},{"stat":"Rebounds","v":1,"date":"2026-11-04","opp":"ATL","home":true,"gameId":"0022600174","line":{"P":0,"R":1,"A":0}},{"stat":"Assists","v":0,"date":"2026-10-23","opp":"TOR","home":true,"gameId":"0022600097","line":{"P":1,"R":0,"A":0}},{"stat":"Threes","v":0,"date":"2026-10-23","opp":"TOR","home":true,"gameId":"0022600097","line":{"P":1,"R":0,"A":0}},{"stat":"Steals","v":0,"date":"2026-10-23","opp":"TOR","home":true,"gameId":"0022600097","line":{"P":1,"R":0,"A":0}},{"stat":"Blocks","v":0,"date":"2026-10-23","opp":"TOR","home":true,"gameId":"0022600097","line":{"P":1,"R":0,"A":0}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":2,"ppg":0.5,"rpg":0.5,"apg":0},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":2,"ppg":0.5,"rpg":0.5,"apg":0},"months":[{"m":"2026-10","gp":1,"ppg":1,"rpg":0,"apg":0},{"m":"2026-11","gp":1,"ppg":0,"rpg":1,"apg":0}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1643590">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

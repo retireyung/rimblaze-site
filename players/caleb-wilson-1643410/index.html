@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Caleb Wilson (Chicago Bulls) career stats: 151 points, 47 rebounds and 19 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-11-04","season":"2026-27","logsSince":"1996-97","person":{"id":1643410,"name":"Caleb Wilson","first":"Caleb","last":"Wilson","number":"8","position":"Forward","height":"6-10","weight":"215","birthDate":"2006-07-18","country":"USA","from":2026,"to":2026,"hometown":"Atlanta, Georgia","highSchools":[],"college":null,"lastAttended":"North Carolina","draft":{"year":"2026","round":"1","pick":"4"},"team":{"abbr":"CHI","name":"Chicago Bulls"},"teams":[{"team":"Chicago Bulls","from":2026,"to":2026}],"active":true},"seasons":[{"season":"2026-27","team":"CHI","gp":7,"min":239,"pts":151,"reb":47,"ast":19,"stl":14,"blk":9,"tpm":18,"fgm":54,"fga":125,"fg3m":18,"fg3a":56,"ftm":25,"fta":36,"td":0,"dd":1,"p40":0,"rare":1}],"career":{"gp":7,"pts":151,"reb":47,"ast":19,"stl":14,"blk":9,"tpm":18,"fgm":54,"fga":125,"fg3m":18,"fg3a":56,"ftm":25,"fta":36,"td":0,"dd":1,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":30,"date":"2026-10-24","opp":"WAS","home":true,"gameId":"0022600108","line":{"P":30,"R":14,"A":3}},{"stat":"Rebounds","v":14,"date":"2026-10-24","opp":"WAS","home":true,"gameId":"0022600108","line":{"P":30,"R":14,"A":3}},{"stat":"Assists","v":4,"date":"2026-10-28","opp":"NYK","home":true,"gameId":"0022600137","line":{"P":20,"R":6,"A":4}},{"stat":"Threes","v":6,"date":"2026-10-30","opp":"BOS","home":false,"gameId":"0022600016","line":{"P":23,"R":5,"A":4}},{"stat":"Steals","v":4,"date":"2026-11-02","opp":"PHI","home":false,"gameId":"0022600163","line":{"P":24,"R":7,"A":4}},{"stat":"Blocks","v":2,"date":"2026-10-23","opp":"MIL","home":false,"gameId":"0022600099","line":{"P":21,"R":6,"A":1}}],"nights":[],"ddDates":["2026-10-24"],"buckets":[{"date":"2026-11-02","gameId":"0022600163","o":"PHI","q":"Q2","secs":1,"d":26,"a":25,"tags":["BUZZER"],"shot":"Jump Shot","sc":"CHI 59–64 PHI"}],"splits":{"home":{"gp":2,"ppg":25,"rpg":10,"apg":3.5},"away":{"gp":6,"ppg":17.7,"rpg":5.3,"apg":2},"wins":{"gp":1,"ppg":21,"rpg":6,"apg":1},"losses":{"gp":7,"ppg":19.3,"rpg":6.6,"apg":2.6},"months":[{"m":"2026-10","gp":6,"ppg":21.2,"rpg":6.7,"apg":2.5},{"m":"2026-11","gp":2,"ppg":14.5,"rpg":6,"apg":2}]},"games30":1,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Double-double","short":"2×10","count":1,"detail":"First Oct 24, 2026 · latest Oct 24, 2026"},{"tier":"legend","span":"game","name":"30-point game","short":"30","count":1,"detail":"Career"}]}</script>
+<meta name="rb-pid" content="1643410">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

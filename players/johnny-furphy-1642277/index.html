@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Johnny Furphy (Indiana Pacers) career stats: 283 points, 224 rebounds and 60 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-02-08","season":"2026-27","logsSince":"1996-97","person":{"id":1642277,"name":"Johnny Furphy","first":"Johnny","last":"Furphy","number":"12","position":"Guard","height":"6-8","weight":"200","birthDate":"2004-12-08","country":"Australia","from":2024,"to":2026,"hometown":"Melbourne, Australia","highSchools":[],"college":"University of Kansas","lastAttended":"Kansas","draft":{"year":"2024","round":"2","pick":"35"},"team":{"abbr":"IND","name":"Indiana Pacers"},"teams":[{"team":"Indiana Pacers","from":2024,"to":2025}],"active":true},"seasons":[{"season":"2024-25","team":"IND","gp":50,"min":379,"pts":103,"reb":71,"ast":19,"stl":18,"blk":11,"tpm":15,"fgm":35,"fga":92,"fg3m":15,"fg3a":50,"ftm":18,"fta":22,"td":0,"dd":0,"p40":0,"rare":1},{"season":"2025-26","team":"IND","gp":35,"min":643,"pts":180,"reb":153,"ast":41,"stl":20,"blk":7,"tpm":23,"fgm":70,"fga":149,"fg3m":23,"fg3a":71,"ftm":17,"fta":35,"td":0,"dd":1,"p40":0,"rare":1}],"career":{"gp":85,"pts":283,"reb":224,"ast":60,"stl":38,"blk":18,"tpm":38,"fgm":105,"fga":241,"fg3m":38,"fg3a":121,"ftm":35,"fta":57,"td":0,"dd":1,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":18,"date":"2025-12-20","opp":"NOP","home":false,"gameId":"0022500389","line":{"P":18,"R":2,"A":0}},{"stat":"Rebounds","v":11,"date":"2026-01-06","opp":"CLE","home":true,"gameId":"0022500510","line":{"P":9,"R":11,"A":2}},{"stat":"Assists","v":6,"date":"2026-02-03","opp":"UTA","home":true,"gameId":"0022500717","line":{"P":14,"R":7,"A":6}},{"stat":"Threes","v":4,"date":"2024-12-04","opp":"BKN","home":false,"gameId":"0022400320","line":{"P":12,"R":7,"A":0}},{"stat":"Steals","v":3,"date":"2025-03-10","opp":"CHI","home":false,"gameId":"0022400933","line":{"P":4,"R":8,"A":0}},{"stat":"Blocks","v":2,"date":"2024-11-29","opp":"DET","home":true,"gameId":"0022400045","line":{"P":2,"R":1,"A":1}}],"nights":[],"ddDates":["2026-01-14"],"buckets":[{"date":"2025-04-11","gameId":"0022401172","o":"ORL","q":"Q3","secs":172,"d":30,"a":-42,"tags":["LOGO"],"shot":"Jump Shot","sc":"ORL 99–68 IND"},{"date":"2026-01-14","gameId":"0022500571","o":"TOR","q":"Q2","secs":691,"d":30,"a":-39,"tags":["LOGO"],"shot":"Jump Shot","sc":"TOR 41–22 IND"}],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Logo three","short":"30+","count":2,"detail":"Deepest 30 ft"},{"tier":"legend","span":"game","name":"Double-double","short":"2×10","count":1,"detail":"First Jan 14, 2026 · latest Jan 14, 2026"}]}</script>
+<meta name="rb-pid" content="1642277">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

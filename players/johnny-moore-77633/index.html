@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Johnny Moore career stats (1980–1989): 4,890 points, 1,548 rebounds and 3,866 assists. Every season, award, badge and career mark.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":null,"season":"2026-27","logsSince":"1996-97","person":{"id":77633,"name":"Johnny Moore","first":"Johnny","last":"Moore","number":"00","position":"Guard","height":"6-1","weight":"175","birthDate":"1958-03-03","country":"USA","from":1980,"to":1989,"hometown":"Altoona, Pennsylvania","highSchools":[{"name":"Altoona Area High School","place":"Pennsylvania, Pennsylvania"}],"college":"University of Texas at Austin","lastAttended":"Texas","draft":{"year":"1979","round":"2","pick":"43"},"team":{"abbr":"","name":""},"teams":[{"team":"SAN","from":1980,"to":1987},{"team":"New Jersey Nets","from":1987,"to":1987},{"team":"SAN","from":1989,"to":1989}],"active":false},"seasons":[{"season":"1980-81","team":"SAN","gp":82,"min":1578,"pts":604,"reb":196,"ast":373,"stl":120,"blk":22,"tpm":1,"fgm":249,"fga":520,"fg3m":1,"fg3a":19,"ftm":105,"fta":172,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1981-82","team":"SAN","gp":79,"min":2294,"pts":741,"reb":275,"ast":762,"stl":163,"blk":12,"tpm":1,"fgm":309,"fga":667,"fg3m":1,"fg3a":21,"ftm":122,"fta":182,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1982-83","team":"SAN","gp":77,"min":2552,"pts":941,"reb":277,"ast":753,"stl":194,"blk":32,"tpm":5,"fgm":394,"fga":841,"fg3m":5,"fg3a":22,"ftm":148,"fta":199,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1983-84","team":"SAN","gp":59,"min":1650,"pts":595,"reb":178,"ast":566,"stl":123,"blk":20,"tpm":28,"fgm":231,"fga":518,"fg3m":28,"fg3a":87,"ftm":105,"fta":139,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1984-85","team":"SAN","gp":82,"min":2689,"pts":1046,"reb":378,"ast":816,"stl":229,"blk":18,"tpm":25,"fgm":416,"fga":910,"fg3m":25,"fg3a":89,"ftm":189,"fta":248,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1985-86","team":"SAN","gp":28,"min":856,"pts":363,"reb":86,"ast":252,"stl":70,"blk":6,"tpm":4,"fgm":150,"fga":303,"fg3m":4,"fg3a":22,"ftm":59,"fta":86,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1986-87","team":"SAN","gp":55,"min":1234,"pts":474,"reb":100,"ast":250,"stl":83,"blk":3,"tpm":22,"fgm":198,"fga":448,"fg3m":22,"fg3a":79,"ftm":56,"fta":70,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1987-88","team":"SAN/NJN","gp":5,"min":61,"pts":8,"reb":6,"ast":12,"stl":3,"blk":0,"tpm":0,"fgm":4,"fga":10,"fg3m":0,"fg3a":1,"ftm":0,"fta":0,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1989-90","team":"SAN","gp":53,"min":516,"pts":118,"reb":52,"ast":82,"stl":32,"blk":3,"tpm":8,"fgm":47,"fga":126,"fg3m":8,"fg3a":34,"ftm":16,"fta":27,"td":null,"dd":null,"p40":null,"rare":null}],"career":{"gp":520,"pts":4890,"reb":1548,"ast":3866,"stl":1017,"blk":116,"tpm":94,"fgm":1998,"fga":4343,"fg3m":94,"fg3a":374,"ftm":800,"fta":1123,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":144,"tpm":null,"stl":180,"blk":null}},"awards":[],"highs":[],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":true,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="77633">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

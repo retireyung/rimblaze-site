@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Vladislav Goldin (Miami Heat) career stats: 7 points, 9 rebounds and 3 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-04-12","season":"2026-27","logsSince":"1996-97","person":{"id":1642884,"name":"Vladislav Goldin","first":"Vladislav","last":"Goldin","number":"50","position":"Center","height":"7-0","weight":"255","birthDate":"2001-05-12","country":"Russia","from":2025,"to":2026,"hometown":"Nalchik, Russia","highSchools":[],"college":"Florida Atlantic University, Texas Tech University, University of Michigan","lastAttended":"Michigan","draft":null,"team":{"abbr":"MIA","name":"Miami Heat"},"teams":[{"team":"Miami Heat","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"MIA","gp":9,"min":24,"pts":7,"reb":9,"ast":3,"stl":0,"blk":3,"tpm":0,"fgm":3,"fga":4,"fg3m":0,"fg3a":0,"ftm":1,"fta":1,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":9,"pts":7,"reb":9,"ast":3,"stl":0,"blk":3,"tpm":0,"fgm":3,"fga":4,"fg3m":0,"fg3a":0,"ftm":1,"fta":1,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":4,"date":"2026-02-01","opp":"CHI","home":true,"gameId":"0022500705","line":{"P":4,"R":1,"A":1}},{"stat":"Rebounds","v":2,"date":"2026-03-08","opp":"DET","home":true,"gameId":"0022500923","line":{"P":0,"R":2,"A":0}},{"stat":"Assists","v":1,"date":"2025-12-19","opp":"BOS","home":false,"gameId":"0022500381","line":{"P":0,"R":0,"A":1}},{"stat":"Threes","v":0,"date":"2025-12-19","opp":"BOS","home":false,"gameId":"0022500381","line":{"P":0,"R":0,"A":1}},{"stat":"Steals","v":0,"date":"2025-12-19","opp":"BOS","home":false,"gameId":"0022500381","line":{"P":0,"R":0,"A":1}},{"stat":"Blocks","v":1,"date":"2026-02-01","opp":"CHI","home":true,"gameId":"0022500705","line":{"P":4,"R":1,"A":1}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1642884">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

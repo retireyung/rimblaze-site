@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Jayson Kent (Portland Trail Blazers) career stats: 10 points, 6 rebounds and 0 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-10-21","season":"2026-27","logsSince":"1996-97","person":{"id":1643257,"name":"Jayson Kent","first":"Jayson","last":"Kent","number":"29","position":"Forward","height":"6-8","weight":"215","birthDate":"2002-02-03","country":"USA","from":2025,"to":2026,"hometown":"Austin, Texas","highSchools":[],"college":"Bradley University","lastAttended":"Texas","draft":null,"team":{"abbr":"POR","name":"Portland Trail Blazers"},"teams":[{"team":"Portland Trail Blazers","from":2025,"to":2026}],"active":true},"seasons":[{"season":"2025-26","team":"POR","gp":5,"min":22,"pts":10,"reb":5,"ast":0,"stl":1,"blk":1,"tpm":1,"fgm":4,"fga":7,"fg3m":1,"fg3a":4,"ftm":1,"fta":1,"td":0,"dd":0,"p40":0,"rare":null},{"season":"2026-27","team":"POR","gp":1,"min":7,"pts":0,"reb":1,"ast":0,"stl":1,"blk":0,"tpm":0,"fgm":0,"fga":4,"fg3m":0,"fg3a":2,"ftm":0,"fta":0,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":6,"pts":10,"reb":6,"ast":0,"stl":2,"blk":1,"tpm":1,"fgm":4,"fga":11,"fg3m":1,"fg3a":6,"ftm":1,"fta":1,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":5,"date":"2026-03-29","opp":"WAS","home":true,"gameId":"0022501087","line":{"P":5,"R":2,"A":0}},{"stat":"Rebounds","v":2,"date":"2026-03-29","opp":"WAS","home":true,"gameId":"0022501087","line":{"P":5,"R":2,"A":0}},{"stat":"Assists","v":0,"date":"2026-03-16","opp":"BKN","home":false,"gameId":"0022500985","line":{"P":2,"R":1,"A":0}},{"stat":"Threes","v":1,"date":"2026-03-22","opp":"DEN","home":false,"gameId":"0022501032","line":{"P":3,"R":1,"A":0}},{"stat":"Steals","v":1,"date":"2026-03-29","opp":"WAS","home":true,"gameId":"0022501087","line":{"P":5,"R":2,"A":0}},{"stat":"Blocks","v":1,"date":"2026-03-29","opp":"WAS","home":true,"gameId":"0022501087","line":{"P":5,"R":2,"A":0}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":1,"ppg":0,"rpg":1,"apg":0},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":1,"ppg":0,"rpg":1,"apg":0},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[{"m":"2026-10","gp":1,"ppg":0,"rpg":1,"apg":0}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1643257">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

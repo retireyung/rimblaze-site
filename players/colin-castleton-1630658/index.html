@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Colin Castleton (Orlando Magic) career stats: 161 points, 146 rebounds and 34 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-11-05","season":"2026-27","logsSince":"1996-97","person":{"id":1630658,"name":"Colin Castleton","first":"Colin","last":"Castleton","number":"14","position":"Center","height":"6-11","weight":"250","birthDate":"2000-05-25","country":"USA","from":2023,"to":2026,"hometown":"Pembroke Pines, Florida","highSchools":[{"name":"Father Lopez Catholic High School","place":"Florida, Florida"}],"college":"University of Florida, University of Michigan","lastAttended":"Florida","draft":null,"team":{"abbr":"ORL","name":"Orlando Magic"},"teams":[{"team":"Los Angeles Lakers","from":2023,"to":2023},{"team":"Memphis Grizzlies","from":2024,"to":2024},{"team":"Philadelphia 76ers","from":2024,"to":2024},{"team":"Toronto Raptors","from":2024,"to":2024},{"team":"Orlando Magic","from":2025,"to":2026}],"active":true},"seasons":[{"season":"2023-24","team":"LAL","gp":16,"min":59,"pts":24,"reb":12,"ast":3,"stl":2,"blk":0,"tpm":0,"fgm":9,"fga":16,"fg3m":0,"fg3a":0,"ftm":6,"fta":6,"td":0,"dd":0,"p40":0,"rare":null},{"season":"2024-25","team":"MEM/PHI/TOR","gp":26,"min":432,"pts":123,"reb":122,"ast":28,"stl":8,"blk":10,"tpm":2,"fgm":46,"fga":98,"fg3m":2,"fg3a":16,"ftm":29,"fta":38,"td":0,"dd":0,"p40":0,"rare":null},{"season":"2025-26","team":"ORL","gp":4,"min":21,"pts":5,"reb":8,"ast":1,"stl":1,"blk":0,"tpm":0,"fgm":2,"fga":5,"fg3m":0,"fg3a":0,"ftm":1,"fta":1,"td":0,"dd":0,"p40":0,"rare":null},{"season":"2026-27","team":"ORL","gp":3,"min":12,"pts":9,"reb":4,"ast":2,"stl":0,"blk":1,"tpm":0,"fgm":4,"fga":6,"fg3m":0,"fg3a":0,"ftm":1,"fta":2,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":49,"pts":161,"reb":146,"ast":34,"stl":11,"blk":11,"tpm":2,"fgm":61,"fga":125,"fg3m":2,"fg3a":16,"ftm":37,"fta":47,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":16,"date":"2025-04-11","opp":"ATL","home":true,"gameId":"0022401173","line":{"P":16,"R":8,"A":0}},{"stat":"Rebounds","v":14,"date":"2025-03-12","opp":"PHI","home":true,"gameId":"0022400947","line":{"P":7,"R":14,"A":2}},{"stat":"Assists","v":5,"date":"2025-03-07","opp":"UTA","home":true,"gameId":"0022400905","line":{"P":2,"R":7,"A":5}},{"stat":"Threes","v":1,"date":"2025-03-14","opp":"UTA","home":false,"gameId":"0022400966","line":{"P":13,"R":7,"A":2}},{"stat":"Steals","v":2,"date":"2025-03-07","opp":"UTA","home":true,"gameId":"0022400905","line":{"P":2,"R":7,"A":5}},{"stat":"Blocks","v":3,"date":"2025-03-12","opp":"PHI","home":true,"gameId":"0022400947","line":{"P":7,"R":14,"A":2}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":1,"ppg":7,"rpg":2,"apg":1},"away":{"gp":2,"ppg":1,"rpg":1,"apg":0.5},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":3,"ppg":3,"rpg":1.3,"apg":0.7},"months":[{"m":"2026-10","gp":2,"ppg":4.5,"rpg":2,"apg":0.5},{"m":"2026-11","gp":1,"ppg":0,"rpg":0,"apg":1}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1630658">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

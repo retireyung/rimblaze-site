@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Grant Nelson (Brooklyn Nets) career stats: 17 points, 6 rebounds and 5 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-03-05","season":"2026-27","logsSince":"1996-97","person":{"id":1641761,"name":"Grant Nelson","first":"Grant","last":"Nelson","number":"16","position":"Forward","height":"6-10","weight":"240","birthDate":"2002-03-18","country":"USA","from":2025,"to":2026,"hometown":"Devils Lake, North Dakota","highSchools":[],"college":"North Dakota State University, University of Alabama","lastAttended":"Alabama","draft":null,"team":{"abbr":"BKN","name":"Brooklyn Nets"},"teams":[{"team":"Brooklyn Nets","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"BKN","gp":4,"min":35,"pts":17,"reb":6,"ast":5,"stl":1,"blk":5,"tpm":0,"fgm":5,"fga":9,"fg3m":0,"fg3a":0,"ftm":7,"fta":10,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":4,"pts":17,"reb":6,"ast":5,"stl":1,"blk":5,"tpm":0,"fgm":5,"fga":9,"fg3m":0,"fg3a":0,"ftm":7,"fta":10,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":11,"date":"2026-03-01","opp":"CLE","home":true,"gameId":"0022500869","line":{"P":11,"R":4,"A":1}},{"stat":"Rebounds","v":4,"date":"2026-03-01","opp":"CLE","home":true,"gameId":"0022500869","line":{"P":11,"R":4,"A":1}},{"stat":"Assists","v":4,"date":"2026-02-27","opp":"BOS","home":false,"gameId":"0022500859","line":{"P":3,"R":2,"A":4}},{"stat":"Threes","v":0,"date":"2026-02-27","opp":"BOS","home":false,"gameId":"0022500859","line":{"P":3,"R":2,"A":4}},{"stat":"Steals","v":1,"date":"2026-03-01","opp":"CLE","home":true,"gameId":"0022500869","line":{"P":11,"R":4,"A":1}},{"stat":"Blocks","v":3,"date":"2026-03-01","opp":"CLE","home":true,"gameId":"0022500869","line":{"P":11,"R":4,"A":1}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1641761">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

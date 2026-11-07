@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Dominick Barlow (Philadelphia 76ers) career stats: 947 points, 640 rebounds and 166 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-04-12","season":"2026-27","logsSince":"1996-97","person":{"id":1631230,"name":"Dominick Barlow","first":"Dominick","last":"Barlow","number":"25","position":"Forward","height":"6-9","weight":"224","birthDate":"2003-05-26","country":"USA","from":2022,"to":2026,"hometown":"Dumont, New Jersey","highSchools":[{"name":"Dumont High School","place":"New Jersey, New Jersey"}],"college":null,"lastAttended":"Overtime Elite","draft":null,"team":{"abbr":"PHI","name":"Philadelphia 76ers"},"teams":[{"team":"San Antonio Spurs","from":2022,"to":2023},{"team":"Atlanta Hawks","from":2024,"to":2024},{"team":"Philadelphia 76ers","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2022-23","team":"SAS","gp":28,"min":408,"pts":110,"reb":102,"ast":24,"stl":10,"blk":19,"tpm":0,"fgm":46,"fga":86,"fg3m":0,"fg3a":4,"ftm":18,"fta":25,"td":0,"dd":2,"p40":0,"rare":1},{"season":"2023-24","team":"SAS","gp":33,"min":420,"pts":144,"reb":113,"ast":36,"stl":12,"blk":14,"tpm":3,"fgm":56,"fga":113,"fg3m":3,"fg3a":9,"ftm":29,"fta":42,"td":0,"dd":0,"p40":0,"rare":1},{"season":"2024-25","team":"ATL","gp":35,"min":375,"pts":148,"reb":85,"ast":19,"stl":9,"blk":16,"tpm":7,"fgm":60,"fga":113,"fg3m":7,"fg3a":27,"ftm":21,"fta":33,"td":0,"dd":1,"p40":0,"rare":null},{"season":"2025-26","team":"PHI","gp":71,"min":1689,"pts":545,"reb":340,"ast":87,"stl":63,"blk":53,"tpm":21,"fgm":215,"fga":399,"fg3m":21,"fg3a":82,"ftm":94,"fta":131,"td":0,"dd":2,"p40":0,"rare":null}],"career":{"gp":167,"pts":947,"reb":640,"ast":166,"stl":94,"blk":102,"tpm":31,"fgm":377,"fga":711,"fg3m":31,"fg3a":122,"ftm":162,"fta":231,"td":0,"dd":5,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":26,"date":"2026-02-02","opp":"LAC","home":false,"gameId":"0022500715","line":{"P":26,"R":16,"A":2}},{"stat":"Rebounds","v":19,"date":"2023-04-09","opp":"DAL","home":false,"gameId":"0022201224","line":{"P":21,"R":19,"A":1}},{"stat":"Assists","v":5,"date":"2023-04-02","opp":"SAC","home":false,"gameId":"0022201170","line":{"P":12,"R":10,"A":5}},{"stat":"Threes","v":2,"date":"2025-11-14","opp":"DET","home":false,"gameId":"0022500041","line":{"P":10,"R":8,"A":3}},{"stat":"Steals","v":3,"date":"2025-11-17","opp":"LAC","home":true,"gameId":"0022500243","line":{"P":7,"R":1,"A":0}},{"stat":"Blocks","v":4,"date":"2026-04-09","opp":"HOU","home":false,"gameId":"0022501169","line":{"P":2,"R":8,"A":0}}],"nights":[],"ddDates":["2023-04-02","2023-04-09","2025-03-23","2025-11-28","2026-02-02"],"buckets":[{"date":"2023-04-02","gameId":"0022201170","o":"SAC","q":"Q2","secs":0.8,"d":2,"a":3,"tags":["BUZZER"],"shot":"DUNK · cutting","sc":"SAS 63–58 SAC"},{"date":"2024-03-09","gameId":"0022300921","o":"GSW","q":"Q3","secs":1,"d":0,"a":0,"tags":["BUZZER"],"shot":"Layup · putback","sc":"SAS 96–79 GSW"}],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Double-double","short":"2×10","count":5,"detail":"First Apr 2, 2023 · latest Feb 2, 2026"}]}</script>
+<meta name="rb-pid" content="1631230">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

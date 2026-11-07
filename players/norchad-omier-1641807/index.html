@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Norchad Omier (Cleveland Cavaliers) career stats: 17 points, 7 rebounds and 2 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-11-06","season":"2026-27","logsSince":"1996-97","person":{"id":1641807,"name":"Norchad Omier","first":"Norchad","last":"Omier","number":"","position":"Forward","height":"6-5","weight":"248","birthDate":"2001-08-28","country":"Nicaragua","from":2025,"to":2026,"hometown":null,"highSchools":[],"college":null,"lastAttended":"Miami","draft":null,"team":{"abbr":"CLE","name":"Cleveland Cavaliers"},"teams":[{"team":"LA Clippers","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"LAC","gp":6,"min":24,"pts":17,"reb":7,"ast":2,"stl":1,"blk":0,"tpm":0,"fgm":7,"fga":10,"fg3m":0,"fg3a":1,"ftm":3,"fta":3,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":6,"pts":17,"reb":7,"ast":2,"stl":1,"blk":0,"tpm":0,"fgm":7,"fga":10,"fg3m":0,"fg3a":1,"ftm":3,"fta":3,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":6,"date":"2026-03-11","opp":"MIN","home":true,"gameId":"0022500952","line":{"P":6,"R":0,"A":1}},{"stat":"Rebounds","v":3,"date":"2026-03-04","opp":"IND","home":true,"gameId":"0022500898","line":{"P":2,"R":3,"A":0}},{"stat":"Assists","v":1,"date":"2026-03-11","opp":"MIN","home":true,"gameId":"0022500952","line":{"P":6,"R":0,"A":1}},{"stat":"Threes","v":0,"date":"2026-03-02","opp":"GSW","home":false,"gameId":"0022500882","line":{"P":0,"R":1,"A":0}},{"stat":"Steals","v":1,"date":"2026-03-11","opp":"MIN","home":true,"gameId":"0022500952","line":{"P":6,"R":0,"A":1}},{"stat":"Blocks","v":0,"date":"2026-03-02","opp":"GSW","home":false,"gameId":"0022500882","line":{"P":0,"R":1,"A":0}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":1,"ppg":0,"rpg":2,"apg":1},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":1,"ppg":0,"rpg":2,"apg":1},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[{"m":"2026-11","gp":1,"ppg":0,"rpg":2,"apg":1}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1641807">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

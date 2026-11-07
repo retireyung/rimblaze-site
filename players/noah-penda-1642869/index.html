@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Noah Penda (Orlando Magic) career stats: 227 points, 187 rebounds and 70 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-04-10","season":"2026-27","logsSince":"1996-97","person":{"id":1642869,"name":"Noah Penda","first":"Noah","last":"Penda","number":"93","position":"Guard-Forward","height":"6-7","weight":"242","birthDate":"2005-01-07","country":"France","from":2025,"to":2026,"hometown":"Paris, France","highSchools":[],"college":null,"lastAttended":"Le Mans Sarthe","draft":{"year":"2025","round":"2","pick":"32"},"team":{"abbr":"ORL","name":"Orlando Magic"},"teams":[{"team":"Orlando Magic","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"ORL","gp":59,"min":757,"pts":227,"reb":187,"ast":70,"stl":30,"blk":18,"tpm":30,"fgm":82,"fga":203,"fg3m":30,"fg3a":93,"ftm":33,"fta":48,"td":0,"dd":2,"p40":0,"rare":2}],"career":{"gp":59,"pts":227,"reb":187,"ast":70,"stl":30,"blk":18,"tpm":30,"fgm":82,"fga":203,"fg3m":30,"fg3a":93,"ftm":33,"fta":48,"td":0,"dd":2,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":13,"date":"2025-11-23","opp":"BOS","home":false,"gameId":"0022500277","line":{"P":13,"R":8,"A":4}},{"stat":"Rebounds","v":12,"date":"2025-12-20","opp":"UTA","home":false,"gameId":"0022500393","line":{"P":13,"R":12,"A":4}},{"stat":"Assists","v":4,"date":"2025-11-23","opp":"BOS","home":false,"gameId":"0022500277","line":{"P":13,"R":8,"A":4}},{"stat":"Threes","v":3,"date":"2026-01-07","opp":"BKN","home":false,"gameId":"0022500521","line":{"P":13,"R":11,"A":1}},{"stat":"Steals","v":4,"date":"2026-01-06","opp":"WAS","home":false,"gameId":"0022500511","line":{"P":10,"R":4,"A":2}},{"stat":"Blocks","v":2,"date":"2025-11-01","opp":"WAS","home":false,"gameId":"0022500145","line":{"P":3,"R":2,"A":3}}],"nights":[],"ddDates":["2025-12-20","2026-01-07"],"buckets":[{"date":"2025-12-22","gameId":"0022500407","o":"GSW","q":"Q4","secs":32.8,"d":30,"a":32,"tags":["LOGO"],"shot":"Jump Shot · pullup","sc":"ORL 97–118 GSW"},{"date":"2026-03-19","gameId":"0022501008","o":"CHA","q":"Q4","secs":559,"d":30,"a":36,"tags":["LOGO"],"shot":"Jump Shot","sc":"ORL 90–115 CHA"}],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Logo three","short":"30+","count":2,"detail":"Deepest 30 ft"},{"tier":"legend","span":"game","name":"Double-double","short":"2×10","count":2,"detail":"First Dec 20, 2025 · latest Jan 7, 2026"}]}</script>
+<meta name="rb-pid" content="1642869">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Jaden Akins (New York Knicks) career stats: 0 points, 0 rebounds and 0 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-10-27","season":"2026-27","logsSince":"1996-97","person":{"id":1643022,"name":"Jaden Akins","first":"Jaden","last":"Akins","number":"14","position":"Guard","height":"6-2","weight":"195","birthDate":"2003-02-25","country":"USA","from":2026,"to":2026,"hometown":"Farmington Hills, Michigan","highSchools":[],"college":null,"lastAttended":"Michigan State","draft":null,"team":{"abbr":"NYK","name":"New York Knicks"},"teams":[{"team":"New York Knicks","from":2026,"to":2026}],"active":true},"seasons":[{"season":"2026-27","team":"NYK","gp":2,"min":2,"pts":0,"reb":0,"ast":0,"stl":0,"blk":0,"tpm":0,"fgm":0,"fga":0,"fg3m":0,"fg3a":0,"ftm":0,"fta":0,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":2,"pts":0,"reb":0,"ast":0,"stl":0,"blk":0,"tpm":0,"fgm":0,"fga":0,"fg3m":0,"fg3a":0,"ftm":0,"fta":0,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":0,"date":"2026-10-25","opp":"ORL","home":true,"gameId":"0022600114","line":{"P":0,"R":0,"A":0}},{"stat":"Rebounds","v":0,"date":"2026-10-25","opp":"ORL","home":true,"gameId":"0022600114","line":{"P":0,"R":0,"A":0}},{"stat":"Assists","v":0,"date":"2026-10-25","opp":"ORL","home":true,"gameId":"0022600114","line":{"P":0,"R":0,"A":0}},{"stat":"Threes","v":0,"date":"2026-10-25","opp":"ORL","home":true,"gameId":"0022600114","line":{"P":0,"R":0,"A":0}},{"stat":"Steals","v":0,"date":"2026-10-25","opp":"ORL","home":true,"gameId":"0022600114","line":{"P":0,"R":0,"A":0}},{"stat":"Blocks","v":0,"date":"2026-10-25","opp":"ORL","home":true,"gameId":"0022600114","line":{"P":0,"R":0,"A":0}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":2,"ppg":0,"rpg":0,"apg":0},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":1,"ppg":0,"rpg":0,"apg":0},"losses":{"gp":1,"ppg":0,"rpg":0,"apg":0},"months":[{"m":"2026-10","gp":2,"ppg":0,"rpg":0,"apg":0}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1643022">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

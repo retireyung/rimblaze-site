@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Adou Thiero (Los Angeles Lakers) career stats: 47 points, 28 rebounds and 10 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-11-06","season":"2026-27","logsSince":"1996-97","person":{"id":1642876,"name":"Adou Thiero","first":"Adou","last":"Thiero","number":"1","position":"Guard","height":"6-7","weight":"220","birthDate":"2004-05-08","country":"USA","from":2025,"to":2026,"hometown":"Salt Lake City, Utah","highSchools":[],"college":null,"lastAttended":"Arkansas","draft":{"year":"2025","round":"2","pick":"36"},"team":{"abbr":"LAL","name":"Los Angeles Lakers"},"teams":[{"team":"Los Angeles Lakers","from":2025,"to":2025}],"active":true},"seasons":[{"season":"2025-26","team":"LAL","gp":25,"min":149,"pts":47,"reb":28,"ast":10,"stl":7,"blk":2,"tpm":1,"fgm":16,"fga":31,"fg3m":1,"fg3a":3,"ftm":14,"fta":22,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":25,"pts":47,"reb":28,"ast":10,"stl":7,"blk":2,"tpm":1,"fgm":16,"fga":31,"fg3m":1,"fg3a":3,"ftm":14,"fta":22,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":10,"date":"2026-04-07","opp":"OKC","home":true,"gameId":"0022501155","line":{"P":10,"R":4,"A":2}},{"stat":"Rebounds","v":4,"date":"2026-04-07","opp":"OKC","home":true,"gameId":"0022501155","line":{"P":10,"R":4,"A":2}},{"stat":"Assists","v":2,"date":"2025-12-23","opp":"PHX","home":false,"gameId":"0022500418","line":{"P":6,"R":2,"A":2}},{"stat":"Threes","v":1,"date":"2026-04-07","opp":"OKC","home":true,"gameId":"0022501155","line":{"P":10,"R":4,"A":2}},{"stat":"Steals","v":1,"date":"2025-11-30","opp":"NOP","home":true,"gameId":"0022500308","line":{"P":0,"R":0,"A":0}},{"stat":"Blocks","v":1,"date":"2025-12-30","opp":"DET","home":true,"gameId":"0022500460","line":{"P":0,"R":3,"A":1}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":1,"ppg":4,"rpg":4,"apg":2},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":1,"ppg":4,"rpg":4,"apg":2},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[{"m":"2026-11","gp":1,"ppg":4,"rpg":4,"apg":2}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1642876">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Darnell Valentine career stats (1981–1990): 5,400 points (916th all-time), 1,318 rebounds and 3,080 assists. Every season, award, badge and career mark.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":null,"season":"2026-27","logsSince":"1996-97","person":{"id":78395,"name":"Darnell Valentine","first":"Darnell","last":"Valentine","number":"1","position":"Guard","height":"6-2","weight":"183","birthDate":"1959-02-03","country":"USA","from":1981,"to":1990,"hometown":"Chicago, Illinois","highSchools":[{"name":"Wichita Heights High School","place":"Kansas, Kansas"}],"college":"University of Kansas","lastAttended":"Kansas","draft":{"year":"1981","round":"1","pick":"16"},"team":{"abbr":"","name":""},"teams":[{"team":"Portland Trail Blazers","from":1981,"to":1985},{"team":"LA Clippers","from":1985,"to":1987},{"team":"Cleveland Cavaliers","from":1988,"to":1988},{"team":"Cleveland Cavaliers","from":1990,"to":1990}],"active":false},"seasons":[{"season":"1981-82","team":"POR","gp":82,"min":1387,"pts":526,"reb":149,"ast":270,"stl":94,"blk":3,"tpm":0,"fgm":187,"fga":453,"fg3m":0,"fg3a":9,"ftm":152,"fta":200,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1982-83","team":"POR","gp":47,"min":1298,"pts":587,"reb":117,"ast":293,"stl":101,"blk":5,"tpm":0,"fgm":209,"fga":460,"fg3m":0,"fg3a":1,"ftm":169,"fta":213,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1983-84","team":"POR","gp":68,"min":1893,"pts":696,"reb":127,"ast":395,"stl":107,"blk":6,"tpm":0,"fgm":251,"fga":561,"fg3m":0,"fg3a":3,"ftm":194,"fta":246,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1984-85","team":"POR","gp":75,"min":2278,"pts":872,"reb":219,"ast":522,"stl":143,"blk":5,"tpm":0,"fgm":321,"fga":679,"fg3m":0,"fg3a":2,"ftm":230,"fta":290,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1985-86","team":"LAC/POR","gp":62,"min":1217,"pts":456,"reb":125,"ast":246,"stl":72,"blk":2,"tpm":4,"fgm":161,"fga":388,"fg3m":4,"fg3a":14,"ftm":130,"fta":175,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1986-87","team":"LAC","gp":65,"min":1759,"pts":726,"reb":150,"ast":447,"stl":116,"blk":10,"tpm":13,"fgm":275,"fga":671,"fg3m":13,"fg3a":56,"ftm":163,"fta":200,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1987-88","team":"LAC","gp":79,"min":1636,"pts":562,"reb":156,"ast":382,"stl":122,"blk":8,"tpm":15,"fgm":223,"fga":533,"fg3m":15,"fg3a":33,"ftm":101,"fta":136,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1988-89","team":"CLE","gp":77,"min":1086,"pts":366,"reb":103,"ast":174,"stl":57,"blk":7,"tpm":3,"fgm":136,"fga":319,"fg3m":3,"fg3a":14,"ftm":91,"fta":112,"td":null,"dd":null,"p40":null,"rare":null},{"season":"1990-91","team":"CLE","gp":65,"min":1841,"pts":609,"reb":172,"ast":351,"stl":98,"blk":12,"tpm":6,"fgm":230,"fga":496,"fg3m":6,"fg3a":25,"ftm":143,"fta":172,"td":null,"dd":null,"p40":null,"rare":null}],"career":{"gp":620,"pts":5400,"reb":1318,"ast":3080,"stl":910,"blk":58,"tpm":41,"fgm":1993,"fga":4560,"fg3m":41,"fg3a":157,"ftm":1373,"fta":1744,"td":0,"dd":0,"ranks":{"pts":916,"reb":null,"ast":233,"tpm":null,"stl":238,"blk":null}},"awards":[],"highs":[],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":true,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="78395">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

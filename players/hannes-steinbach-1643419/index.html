@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Hannes Steinbach (Charlotte Hornets) career stats: 8 points, 7 rebounds and 1 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-11-06","season":"2026-27","logsSince":"1996-97","person":{"id":1643419,"name":"Hannes Steinbach","first":"Hannes","last":"Steinbach","number":"22","position":"Forward","height":"6-10","weight":"248","birthDate":"2006-05-01","country":"Germany","from":2026,"to":2026,"hometown":"Würzburg, Germany","highSchools":[],"college":null,"lastAttended":"Washington","draft":{"year":"2026","round":"1","pick":"14"},"team":{"abbr":"CHA","name":"Charlotte Hornets"},"teams":[{"team":"Charlotte Hornets","from":2026,"to":2026}],"active":true},"seasons":[{"season":"2026-27","team":"CHA","gp":3,"min":23,"pts":8,"reb":7,"ast":1,"stl":0,"blk":0,"tpm":0,"fgm":4,"fga":8,"fg3m":0,"fg3a":0,"ftm":0,"fta":1,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":3,"pts":8,"reb":7,"ast":1,"stl":0,"blk":0,"tpm":0,"fgm":4,"fga":8,"fg3m":0,"fg3a":0,"ftm":0,"fta":1,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":6,"date":"2026-10-23","opp":"ATL","home":true,"gameId":"0022600094","line":{"P":6,"R":5,"A":0}},{"stat":"Rebounds","v":11,"date":"2026-11-06","opp":"BOS","home":true,"gameId":"0022600026","line":{"P":4,"R":11,"A":1}},{"stat":"Assists","v":1,"date":"2026-11-02","opp":"DET","home":true,"gameId":"0022600159","line":{"P":2,"R":2,"A":1}},{"stat":"Threes","v":0,"date":"2026-10-23","opp":"ATL","home":true,"gameId":"0022600094","line":{"P":6,"R":5,"A":0}},{"stat":"Steals","v":0,"date":"2026-10-23","opp":"ATL","home":true,"gameId":"0022600094","line":{"P":6,"R":5,"A":0}},{"stat":"Blocks","v":3,"date":"2026-11-06","opp":"BOS","home":true,"gameId":"0022600026","line":{"P":4,"R":11,"A":1}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":3,"ppg":4,"rpg":6,"apg":0.7},"away":{"gp":1,"ppg":0,"rpg":0,"apg":0},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":4,"ppg":3,"rpg":4.5,"apg":0.5},"months":[{"m":"2026-10","gp":2,"ppg":3,"rpg":2.5,"apg":0},{"m":"2026-11","gp":2,"ppg":3,"rpg":6.5,"apg":1}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[]}</script>
+<meta name="rb-pid" content="1643419">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

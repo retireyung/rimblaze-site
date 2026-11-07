@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Cedric Coward (Memphis Grizzlies) career stats: 943 points, 425 rebounds and 190 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-11-06","season":"2026-27","logsSince":"1996-97","person":{"id":1642907,"name":"Cedric Coward","first":"Cedric","last":"Coward","number":"23","position":"Guard","height":"6-6","weight":"206","birthDate":"2003-09-11","country":"USA","from":2025,"to":2026,"hometown":"Fresno, California","highSchools":[{"name":"Central High School","place":"California, California"}],"college":"Eastern Washington University, Willamette University, Washington State University","lastAttended":"Washington State","draft":{"year":"2025","round":"1","pick":"11"},"team":{"abbr":"MEM","name":"Memphis Grizzlies"},"teams":[{"team":"Memphis Grizzlies","from":2025,"to":2026}],"active":true},"seasons":[{"season":"2025-26","team":"MEM","gp":62,"min":1598,"pts":843,"reb":364,"ast":171,"stl":40,"blk":27,"tpm":93,"fgm":305,"fga":648,"fg3m":93,"fg3a":275,"ftm":140,"fta":166,"td":0,"dd":7,"p40":0,"rare":2},{"season":"2026-27","team":"MEM","gp":7,"min":205,"pts":100,"reb":61,"ast":19,"stl":11,"blk":1,"tpm":19,"fgm":37,"fga":78,"fg3m":19,"fg3a":38,"ftm":7,"fta":10,"td":0,"dd":2,"p40":0,"rare":null}],"career":{"gp":69,"pts":943,"reb":425,"ast":190,"stl":51,"blk":28,"tpm":112,"fgm":342,"fga":726,"fg3m":112,"fg3a":313,"ftm":147,"fta":176,"td":0,"dd":9,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[],"highs":[{"stat":"Points","v":28,"date":"2025-12-30","opp":"PHI","home":true,"gameId":"0022500458","line":{"P":28,"R":16,"A":4}},{"stat":"Rebounds","v":16,"date":"2025-12-30","opp":"PHI","home":true,"gameId":"0022500458","line":{"P":28,"R":16,"A":4}},{"stat":"Assists","v":6,"date":"2025-12-12","opp":"UTA","home":true,"gameId":"0022501213","line":{"P":17,"R":12,"A":6}},{"stat":"Threes","v":6,"date":"2025-10-25","opp":"IND","home":true,"gameId":"0022500103","line":{"P":27,"R":6,"A":4}},{"stat":"Steals","v":4,"date":"2026-03-28","opp":"CHI","home":true,"gameId":"0022501079","line":{"P":24,"R":9,"A":4}},{"stat":"Blocks","v":2,"date":"2025-11-11","opp":"NYK","home":false,"gameId":"0022500208","line":{"P":11,"R":3,"A":5}}],"nights":[],"ddDates":["2025-10-31","2025-11-09","2025-11-18","2025-12-05","2025-12-12","2025-12-30","2026-03-10","2026-10-25","2026-10-26"],"buckets":[{"date":"2026-03-18","gameId":"0022500651","o":"DEN","q":"Q1","secs":0.2,"d":18,"a":-69,"tags":["BUZZER"],"shot":"Jump Shot","sc":"DEN 30–31 MEM"},{"date":"2026-03-28","gameId":"0022501079","o":"CHI","q":"Q3","secs":0.4,"d":10,"a":-28,"tags":["BUZZER"],"shot":"Jump Shot · driving floating","sc":"CHI 88–98 MEM"}],"splits":{"home":{"gp":5,"ppg":12,"rpg":8.2,"apg":2.2},"away":{"gp":3,"ppg":16.7,"rpg":9.7,"apg":2.7},"wins":{"gp":5,"ppg":13.4,"rpg":8.6,"apg":2.4},"losses":{"gp":3,"ppg":14.3,"rpg":9,"apg":2.3},"months":[{"m":"2026-10","gp":5,"ppg":13.4,"rpg":8.6,"apg":2.4},{"m":"2026-11","gp":3,"ppg":14.3,"rpg":9,"apg":2.3}]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"game","name":"Double-double","short":"2×10","count":9,"detail":"First Oct 31, 2025 · latest Oct 26, 2026"}]}</script>
+<meta name="rb-pid" content="1642907">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });

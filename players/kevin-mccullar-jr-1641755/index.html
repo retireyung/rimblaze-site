@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="Kevin McCullar Jr. (Toronto Raptors) career stats: 56 points, 36 rebounds and 22 assists. Every season, career high, big night, logo three and milestone, updated after every game.">
 <meta name="twitter:image" content="https://rimblaze.com/og-image.png">
 <meta name="rb-prod" content="1">
-<script type="application/json" id="rb-data">{"updated":"2026-04-12","season":"2026-27","logsSince":"1996-97","person":{"id":1641755,"name":"Kevin McCullar Jr.","first":"Kevin","last":"McCullar Jr.","number":"9","position":"Guard","height":"6-6","weight":"210","birthDate":"2001-03-15","country":"USA","from":2024,"to":2026,"hometown":null,"highSchools":[],"college":null,"lastAttended":"Kansas","draft":{"year":"2024","round":"2","pick":"56"},"team":{"abbr":"TOR","name":"Toronto Raptors"},"teams":[{"team":"New York Knicks","from":2024,"to":2025}],"active":true},"seasons":[{"season":"2024-25","team":"NYK","gp":4,"min":29,"pts":6,"reb":8,"ast":2,"stl":1,"blk":1,"tpm":0,"fgm":2,"fga":7,"fg3m":0,"fg3a":1,"ftm":2,"fta":2,"td":0,"dd":0,"p40":0,"rare":null},{"season":"2025-26","team":"NYK","gp":21,"min":155,"pts":50,"reb":28,"ast":20,"stl":9,"blk":0,"tpm":8,"fgm":20,"fga":47,"fg3m":8,"fg3a":24,"ftm":2,"fta":5,"td":0,"dd":0,"p40":0,"rare":null}],"career":{"gp":25,"pts":56,"reb":36,"ast":22,"stl":10,"blk":1,"tpm":8,"fgm":22,"fga":54,"fg3m":8,"fg3a":25,"ftm":4,"fta":7,"td":0,"dd":0,"ranks":{"pts":null,"reb":null,"ast":null,"tpm":null,"stl":null,"blk":null}},"awards":[{"name":"NBA Champion","season":"2025-26","team":"New York Knicks"}],"highs":[{"stat":"Points","v":14,"date":"2026-04-12","opp":"CHA","home":true,"gameId":"0022501190","line":{"P":14,"R":2,"A":1}},{"stat":"Rebounds","v":8,"date":"2025-04-13","opp":"BKN","home":false,"gameId":"0022401188","line":{"P":4,"R":8,"A":2}},{"stat":"Assists","v":6,"date":"2026-01-02","opp":"ATL","home":true,"gameId":"0022500479","line":{"P":0,"R":5,"A":6}},{"stat":"Threes","v":3,"date":"2025-12-27","opp":"ATL","home":false,"gameId":"0022500435","line":{"P":13,"R":8,"A":2}},{"stat":"Steals","v":2,"date":"2025-12-27","opp":"ATL","home":false,"gameId":"0022500435","line":{"P":13,"R":8,"A":2}},{"stat":"Blocks","v":1,"date":"2025-04-13","opp":"BKN","home":false,"gameId":"0022401188","line":{"P":4,"R":8,"A":2}}],"nights":[],"ddDates":[],"buckets":[],"splits":{"home":{"gp":0,"ppg":null,"rpg":null,"apg":null},"away":{"gp":0,"ppg":null,"rpg":null,"apg":null},"wins":{"gp":0,"ppg":null,"rpg":null,"apg":null},"losses":{"gp":0,"ppg":null,"rpg":null,"apg":null},"months":[]},"games30":0,"logsPartial":false,"splitsLabel":null,"badges":[{"tier":"legend","span":"career","name":"Championship ring","short":"1×","detail":"1 ring · 2025-26"}]}</script>
+<meta name="rb-pid" content="1641755">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:site_name" content="RimBlaze">
 <meta name="theme-color" content="#18202F">
@@ -488,9 +488,13 @@ function hashId(){var m=/player-(\d+)/.exec(location.hash);return m?m[1]:null;}
 function boot(){
   var e=embedded('rb-data');
   if(e){D=e;MODE='live';render();return;}
-  var id=hashId();
+  // A pre-rendered profile names its player in <meta name="rb-pid"> and loads his data file,
+  // keeping the page light; its pre-rendered content stays up if that fails.
+  var pm=document.querySelector('meta[name="rb-pid"]'),pid=pm&&pm.content;
+  var id=hashId()||pid;
   var tryFetch=id?fetch('data/players/'+id+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}):Promise.reject();
   tryFetch.then(function(j){D=j;MODE='live';render();},function(){
+    if(pid&&!hashId())return;
     if(/(^|\.)rimblaze\.com$/.test(location.hostname)){notFound(id);return;}
     D=embedded('rb-sample');MODE='sample';render();
   });
