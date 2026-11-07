@@ -9,7 +9,7 @@ export const FEAT_WEIGHT = {
 };
 
 // Bump this when the rules change: cached results computed under an older version are recomputed.
-export const RULES_VERSION = 2;
+export const RULES_VERSION = 3;
 
 // p = {P,R,A,S,B,tpm,fgm,fga, qMax?} (qMax: his most points in one quarter or overtime, from play-by-play)
 export function tens(p) { return [p.P, p.R, p.A, p.S, p.B].filter(v => v >= 10).length; }
@@ -56,6 +56,8 @@ function* scoring(actions, home, away) {
     const a = actions[i];
     const sh = a.scoreHome === '' || a.scoreHome == null ? null : +a.scoreHome, sa = a.scoreAway === '' || a.scoreAway == null ? null : +a.scoreAway;
     if (sh == null || sa == null || isNaN(sh) || isNaN(sa)) { yield { i, a, pts: 0 }; continue; }
+    // Archived play-by-play (stats.nba.com v3) puts "0"/"0" on every play that doesn't score: no score, not a reset.
+    if (sh === 0 && sa === 0 && (h > 0 || w > 0)) { yield { i, a, pts: 0 }; continue; }
     const dh = sh - h, dw = sa - w; h = sh; w = sa;
     // One play scores at most 4 (a four-point play); anything else is a gap in the record, so just resync.
     if (dh < 0 || dw < 0 || dh > 4 || dw > 4 || (dh > 0 && dw > 0)) { yield { i, a, pts: 0, h, w }; continue; }
@@ -118,7 +120,9 @@ export function rareBuckets(actions, game, ctx = {}) {
     if (late && secs <= 30 && before <= 0 && after > 0) tags.push(game.final && holds(st.i, a.teamTricode) ? 'GAME-WINNER' : 'GO-AHEAD');
     if (late && secs <= 60 && before >= 1 && before <= 3 && after >= 4 && (!game.final || holds(st.i, a.teamTricode))) tags.push('DAGGER');
     // and-ones
-    const ft = actions.find(x => x.actionType === 'freethrow' && x.personId === a.personId && x.period === a.period && x.clock === a.clock && /1 of 1/.test(x.subType || ''));
+    // the and-one free throw must go in (archived play-by-play marks a miss with no result and a 0-0 score)
+    const ftMade = x => x.shotResult === 'Made' || (x.shotResult !== 'Missed' && !(+x.scoreHome === 0 && +x.scoreAway === 0));
+    const ft = actions.find(x => x.actionType === 'freethrow' && x.personId === a.personId && x.period === a.period && x.clock === a.clock && /1 of 1/i.test(x.subType || '') && ftMade(x));
     if (ft) tags.push(pts === 3 ? '4-PT PLAY' : 'AND-ONE');
     // streaks
     if (pts === 3 && (fire.get(a.personId) || 0) >= STREAK.fire) { tags.push('ON FIRE'); extra.fire = fire.get(a.personId); }

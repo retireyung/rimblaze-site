@@ -94,7 +94,12 @@ async function rareData(root, season) {
     for (const q of (await readJSON(path.join(qdir, f), [])) || []) quarters.push({ ...q, s: f.slice(0, 7) });
   const have = new Set(files.map(f => f.slice(0, 7)));
   const missing = seasonList(FIRST, season).filter(s => !have.has(s));
-  return { all, quarters, missing, seasons: [...have].sort() };
+  // Quarter scoring is reliable for seasons rebuilt with rules v3+ (which read archived play-by-play correctly),
+  // seasons from NBA.com's live feed (2017-18 on) and this season. Use the unbroken run ending this season.
+  const rules = (await readJSON(path.join(dir, 'rules.json'), {})) || {};
+  const okQ = s => (rules[s] || 0) >= 3 || s >= '2017-18' || s === season;
+  let qFrom = season; for (const s of seasonList(FIRST, season).reverse()) { if (!okQ(s)) break; qFrom = s; }
+  return { all, quarters: quarters.filter(q => q.s >= qFrom), qFrom, missing, seasons: [...have].sort() };
 }
 function leaders(list, test, k = 25) {
   const by = new Map();
@@ -332,9 +337,8 @@ def('rare', 'longest-shots', 'Longest shots', 'The deepest made shots, half-cour
     qa, related: RARE_REL.filter(s => s !== 'longest-shots'), items: top.map(b => `${name(b.pid, b.n)}: ${b.d} ft, ${fmtShort(b.date)}`) });
 });
 
-const Q_FROM = '2017-18'; // earlier play-by-play misses too many scoring plays to rank quarters
 def('rare', '20-point-quarters', '20-point quarters', 'Most points in a single quarter', D => {
-  const { name, who } = D.c, Q = D.rare.quarters.filter(q => q.s >= Q_FROM).sort((a, b) => b.qMax - a.qMax || a.date.localeCompare(b.date));
+  const Q_FROM = D.rare.qFrom, { name, who } = D.c, Q = D.rare.quarters.filter(q => q.s >= Q_FROM).sort((a, b) => b.qMax - a.qMax || a.date.localeCompare(b.date));
   if (!Q.length) return null;
   const top = Q.slice(0, 50), now = Q.filter(q => q.s === D.season), by = leaders(Q.map(q => ({ ...q, n: '' })), () => true, 15), t0 = top[0];
   const per = p => p <= 4 ? 'Q' + p : p === 5 ? 'OT' : 'OT' + (p - 4);
@@ -346,7 +350,7 @@ def('rare', '20-point-quarters', '20-point quarters', 'Most points in a single q
     h1: '20-point <em>quarters.</em>', lead: `Every quarter where one player scored 20 or more points in the NBA regular season since ${Q_FROM}, counted from NBA.com play-by-play.`,
     strip: stripOf([['Most in a quarter', t0.qMax, `${esc(name(t0.pid))} · ${esc(fmtShort(t0.date))}`], ['This season', now.length, now.length ? `best: ${now[0].qMax} by ${esc(name(now[0].pid))}` : 'None yet'], ['Most 20-point quarters', by[0].v, esc(andList(ties(by, name)))], ['Since', Q_FROM.slice(2), `${num(Q.length)} quarters`]]),
     sections: [`<section><h2>This season (${esc(D.season)})</h2>${table(['Player', 'Points', 'Quarter', 'Date'], rows(now), 'No 20-point quarters yet this season.')}</section>`,
-      `<section><h2>Top 50 quarters since ${Q_FROM}</h2>${table(['Player', 'Points', 'Quarter', 'Date'], rows(top))}<p class="note">Counted from play-by-play. Seasons before ${Q_FROM} are left out because their play-by-play skips too many scoring plays to rank quarters.</p></section>`,
+      `<section><h2>Top 50 quarters since ${Q_FROM}</h2>${table(['Player', 'Points', 'Quarter', 'Date'], rows(top))}<p class="note">Counted from play-by-play.${Q_FROM > FIRST ? ` Seasons before ${Q_FROM} are still being rebuilt from archived play-by-play and are added when they are done.` : ''}</p></section>`,
       `<section><h2>Most 20-point quarters</h2>${table(['Player', 'Quarters'], by.map(r => [who(r.pid), `<span class="big">${r.v}</span>`]))}</section>`],
     qa, related: ['most-points-in-a-game', '50-point-games', '40-point-games', 'buzzer-beaters'], items: top.map(q => `${name(q.pid)}: ${q.qMax} points, ${fmtShort(q.date)}`) });
 });

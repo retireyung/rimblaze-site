@@ -197,6 +197,9 @@ async function main() {
     await writeJSON(outFile, all);
     await writeJSON(path.join(DATA, 'quarters', season + '.json'), quarters);
     done[season] = RULES_VERSION; await writeJSON(DONE, done);
+    // which rules each archived season was built with, for the site (records pages trust only current-rules seasons where it matters)
+    const rulesFile = path.join(DATA, 'buckets', 'rules.json'), rules = (await readJSON(rulesFile, {})) || {};
+    rules[season] = RULES_VERSION; await writeJSON(rulesFile, rules);
   }
   log(`backfill finished: ${grand} rare buckets.${DRY ? '' : ' The next stats build adds them to "Since tracking began".'}`);
 }

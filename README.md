@@ -24,6 +24,8 @@ Big nights also include the **20-point quarter** (20+ points in one quarter or o
 
 The streak thresholds were set from real games so each lands about once a night league-wide. Changing any rule means bumping `RULES_VERSION`: cached results from an older version are recomputed (the live and stats builds redo this season's games; the backfill rebuilds past seasons from its saved play-by-play in `data/cache/pbp/` without downloading).
 
+Rules version 3 (Nov 7, 2026) fixed two things in archived play-by-play (stats.nba.com v3), which puts a 0-0 score on every play that doesn't score: those rows no longer read as the score resetting (that had broken GAME-WINNER, DAGGER, TAKEOVER, MILESTONE and 20-point quarters in older seasons), and an and-one now needs the free throw to go in. The backfill records each season's rules version in `data/buckets/rules.json`; the records pages use it to decide which seasons' quarter scoring to trust.
+
 ## What's here
 
 | Path | What it is |
