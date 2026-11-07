@@ -24,6 +24,7 @@ import { renderSite } from './pages.mjs';
 import { TEAM_NAMES } from './teams.mjs';
 import { feats, featScore, tens, rareBuckets, quarterPoints, isRare, isDeep, isClutch, RULES_VERSION, WATCH_MIN, MILESTONES, nextMilestone, badges } from './feats.mjs';
 import { careerIndex } from './career.mjs';
+import { gameRecords } from './records.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data'), CACHE = path.join(DATA, 'cache');
@@ -337,6 +338,12 @@ async function main() {
   await writeData(path.join(DATA, 'alltime.json'), alltime);
 
   await writeData(path.join(DATA, 'career.json'), { updated: new Date().toISOString(), watch: watch.slice(0, 12), clubs });
+
+  // records.json: single-game, single-season and career feat records from every game log since 1996-97 (/records/)
+  try {
+    const fromYear = new Map(profiles.map(p => [p.person.id, p.person.from]));
+    await writeData(path.join(DATA, 'records.json'), { updated: new Date().toISOString(), ...gameRecords(allLines, { season: SEASON, fromYear }) });
+  } catch (e) { log(`records skipped: ${e.message}`); }
 
   if (!process.argv.includes('--skip-pages')) await renderSite({ root: ROOT, profiles, alltime, slugify, log, cur, buckets, season: SEASON });
   log(`done · ${profiles.length} player files`);

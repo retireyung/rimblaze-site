@@ -86,12 +86,12 @@ ${ld({ '@context': 'https://schema.org', '@graph': graph })}
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,700..900&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>${CSS}</style>
 <header class="top"><div class="wrap"><a class="logo" href="/"><img src="/favicon.svg" alt="">Rim<b>Blaze</b></a>
-<nav class="main" aria-label="Primary">${navLink('/', 'Live', 'live')}${navLink('/nights/', 'Game nights', 'nights')}${navLink('/teams/', 'Teams', 'teams')}${navLink('/all-time/', 'All-time', 'all-time')}${navLink('/players/', 'Players', 'players')}</nav></div></header>
+<nav class="main" aria-label="Primary">${navLink('/', 'Live', 'live')}${navLink('/nights/', 'Game nights', 'nights')}${navLink('/teams/', 'Teams', 'teams')}${navLink('/records/', 'Records', 'records')}${navLink('/all-time/', 'All-time', 'all-time')}${navLink('/players/', 'Players', 'players')}</nav></div></header>
 <main class="wrap">
 ${body}
 </main>
 <footer><div class="wrap">
-<nav class="explore" aria-label="Explore"><a href="/nights/">Every game night</a><a href="/teams/">All 30 teams</a><a href="/all-time/">All-time scoring leaders</a><a href="/all-time/rebounds/">Rebounding leaders</a><a href="/all-time/assists/">Assist leaders</a><a href="/all-time/threes/">3-point leaders</a><a href="/players/">Players A–Z</a></nav>
+<nav class="explore" aria-label="Explore"><a href="/nights/">Every game night</a><a href="/teams/">All 30 teams</a><a href="/records/">NBA records</a><a href="/records/triple-doubles/">Triple-double records</a><a href="/records/50-point-games/">Every 50-point game</a><a href="/records/buzzer-beaters/">Buzzer-beaters</a><a href="/records/milestone-watch/">Milestone watch</a><a href="/all-time/">All-time scoring leaders</a><a href="/all-time/rebounds/">Rebounding leaders</a><a href="/all-time/assists/">Assist leaders</a><a href="/all-time/threes/">3-point leaders</a><a href="/players/">Players A–Z</a></nav>
 <span>© 2026 RimBlaze. Stats from NBA.com. Not affiliated with the National Basketball Association.</span>
 </div></footer>
 `;

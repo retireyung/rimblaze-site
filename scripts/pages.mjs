@@ -10,6 +10,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { prerender } from './prerender.mjs';
+import { renderRecords } from './records.mjs';
 import { renderTeams } from './teamPages.mjs';
 import { TEAMS, teamSlug } from './teams.mjs';
 
@@ -195,7 +196,7 @@ h1{font-size:clamp(2.4rem,8vw,4.6rem);margin:28px 0 12px}h1 em{font-style:normal
 .grp li i{font-style:normal;font:500 10px "IBM Plex Mono",monospace;color:#fff;background:var(--leather);padding:1px 5px;border-radius:3px;margin-left:4px;vertical-align:1px}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;margin-top:30px}footer .wrap{padding-block:26px 34px}
 </style>
-<header class="top"><div class="wrap"><a class="logo" href="/"><img src="/favicon.svg" alt="">Rim<b>Blaze</b></a><nav aria-label="Primary"><a href="/">Live</a><a href="/nights/">Game nights</a><a href="/teams/">Teams</a><a href="/all-time/">All-time</a><a href="/players/" aria-current="page">Players</a></nav></div></header>
+<header class="top"><div class="wrap"><a class="logo" href="/"><img src="/favicon.svg" alt="">Rim<b>Blaze</b></a><nav aria-label="Primary"><a href="/">Live</a><a href="/nights/">Game nights</a><a href="/teams/">Teams</a><a href="/records/">Records</a><a href="/all-time/">All-time</a><a href="/players/" aria-current="page">Players</a></nav></div></header>
 <main class="wrap">
 <h1>NBA players <em>A–Z.</em></h1>
 <p class="lead">${esc(desc)}</p>
@@ -209,7 +210,7 @@ ${body}
 }
 
 // ---------- sitemap ----------
-async function sitemap(profiles, slugify, alltime) {
+async function sitemap(profiles, slugify, alltime, recordUrls = []) {
   const today = new Date().toISOString().slice(0, 10);
   let nights = [];
   try { nights = JSON.parse(await readFile(path.join(ROOT_DIR, 'data', 'live', 'index.json'), 'utf8')).dates || []; } catch {}
@@ -218,6 +219,7 @@ async function sitemap(profiles, slugify, alltime) {
     [SITE + '/nights/', latestNight, 'hourly', '0.8'], ...nights.slice().reverse().map(d => [`${SITE}/nights/${d}/`, d, d === latestNight ? 'hourly' : 'monthly', '0.6']),
     [SITE + '/teams/', today, 'daily', '0.8'], ...Object.keys(TEAMS).map(a => [`${SITE}/teams/${teamSlug(a)}/`, today, 'daily', '0.7']),
     ...(alltime ? Object.values(BOARD).map(b => [`${SITE}/all-time/${b.slug}`, today, 'daily', '0.8']) : []),
+    ...recordUrls.map(u => [u, today, 'daily', u.endsWith('/records/') ? '0.9' : '0.8']),
     ...profiles.map(p => [`${SITE}/players/${slugify(p.person.name)}-${p.person.id}/`, p.updated || today, p.person.active ? 'daily' : 'monthly', p.person.active ? '0.7' : '0.6'])];
   await writeFile(path.join(ROOT_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, d, f, pr]) => `  <url><loc>${u}</loc><lastmod>${d}</lastmod><changefreq>${f}</changefreq><priority>${pr}</priority></url>`).join('\n')}\n</urlset>\n`);
   return urls.length;
@@ -233,6 +235,18 @@ export async function renderSite({ root, profiles, alltime, slugify, log, cur = 
   const n2 = await allTimePages(alltime);
   const n3 = await directory(profiles, slugify);
   const nT = await renderTeams({ root, profiles, cur, buckets, season, slugify });
-  const n4 = await sitemap(profiles, slugify, alltime);
-  log(`pages: ${n1} profiles, ${n2} all-time boards, directory of ${n3}, ${nT} team pages updated, sitemap of ${n4} URLs`);
+  let rec = { urls: [], pages: 0 };
+  try { rec = await renderRecords({ root, season }); } catch (e) { log(`records pages skipped: ${e.message}`); }
+  const n4 = await sitemap(profiles, slugify, alltime, rec.urls);
+  log(`pages: ${n1} profiles, ${n2} all-time boards, directory of ${n3}, ${nT} team pages updated, ${rec.pages} record pages, sitemap of ${n4} URLs`);
+}
+
+// Adds (or refreshes) URLs in an existing sitemap without rebuilding the rest of it.
+export async function addToSitemap(root, urls) {
+  const f = path.join(root, 'sitemap.xml'), today = new Date().toISOString().slice(0, 10);
+  let xml = await readFile(f, 'utf8');
+  // every /records/ entry is replaced, so a page that no longer exists drops out
+  xml = xml.replace(/\s*<url><loc>https:\/\/rimblaze\.com\/records\/[^<]*<\/loc>.*?<\/url>/g, '');
+  const add = urls.map(u => `  <url><loc>${u}</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>${u.endsWith('/records/') ? '0.9' : '0.8'}</priority></url>`).join('\n');
+  await writeFile(f, xml.replace('</urlset>', add + '\n</urlset>'));
 }
