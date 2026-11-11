@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://rimblaze.com/</loc><lastmod>2026-11-10</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://rimblaze.com/players/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/</loc><lastmod>2026-11-11</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://rimblaze.com/players/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://rimblaze.com/nights/</loc><lastmod>2026-11-09</lastmod><changefreq>hourly</changefreq><priority>0.8</priority></url>
   <url><loc>https://rimblaze.com/nights/2026-11-09/</loc><lastmod>2026-11-09</lastmod><changefreq>hourly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/nights/2026-11-08/</loc><lastmod>2026-11-08</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -23,74 +23,74 @@
   <url><loc>https://rimblaze.com/nights/2026-10-22/</loc><lastmod>2026-10-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/nights/2026-10-21/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/nights/2026-10-20/</loc><lastmod>2026-10-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/teams/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/teams/atlanta-hawks/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/boston-celtics/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/brooklyn-nets/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/charlotte-hornets/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/chicago-bulls/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/cleveland-cavaliers/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/dallas-mavericks/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/denver-nuggets/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/detroit-pistons/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/golden-state-warriors/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/houston-rockets/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/indiana-pacers/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/la-clippers/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/los-angeles-lakers/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/memphis-grizzlies/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/miami-heat/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/milwaukee-bucks/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/minnesota-timberwolves/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/new-orleans-pelicans/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/new-york-knicks/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/oklahoma-city-thunder/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/orlando-magic/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/philadelphia-76ers/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/phoenix-suns/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/portland-trail-blazers/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/sacramento-kings/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/san-antonio-spurs/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/toronto-raptors/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/utah-jazz/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/teams/washington-wizards/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/all-time/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/all-time/rebounds/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/all-time/assists/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/all-time/threes/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/all-time/steals/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/all-time/blocks/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://rimblaze.com/records/most-points-in-a-game/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/most-rebounds-in-a-game/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/most-assists-in-a-game/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/most-threes-in-a-game/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/most-steals-in-a-game/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/most-blocks-in-a-game/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/triple-doubles/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/double-doubles/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/30-point-games/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/40-point-games/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/50-point-games/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/20-rebound-games/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/15-assist-games/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/10-three-games/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/double-double-streaks/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/30-point-streaks/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/buzzer-beaters/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/buzzer-beating-game-winners/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/game-winners/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/logo-threes/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/four-point-plays/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/longest-shots/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/20-point-quarters/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/records/milestone-watch/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/all-time/rare-buckets/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/teams/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/teams/atlanta-hawks/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/boston-celtics/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/brooklyn-nets/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/charlotte-hornets/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/chicago-bulls/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/cleveland-cavaliers/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/dallas-mavericks/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/denver-nuggets/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/detroit-pistons/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/golden-state-warriors/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/houston-rockets/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/indiana-pacers/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/la-clippers/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/los-angeles-lakers/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/memphis-grizzlies/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/miami-heat/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/milwaukee-bucks/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/minnesota-timberwolves/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/new-orleans-pelicans/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/new-york-knicks/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/oklahoma-city-thunder/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/orlando-magic/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/philadelphia-76ers/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/phoenix-suns/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/portland-trail-blazers/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/sacramento-kings/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/san-antonio-spurs/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/toronto-raptors/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/utah-jazz/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/teams/washington-wizards/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/all-time/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/all-time/rebounds/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/all-time/assists/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/all-time/threes/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/all-time/steals/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/all-time/blocks/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://rimblaze.com/records/most-points-in-a-game/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/most-rebounds-in-a-game/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/most-assists-in-a-game/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/most-threes-in-a-game/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/most-steals-in-a-game/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/most-blocks-in-a-game/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/triple-doubles/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/double-doubles/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/30-point-games/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/40-point-games/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/50-point-games/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/20-rebound-games/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/15-assist-games/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/10-three-games/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/double-double-streaks/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/30-point-streaks/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/buzzer-beaters/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/buzzer-beating-game-winners/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/game-winners/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/logo-threes/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/four-point-plays/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/longest-shots/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/20-point-quarters/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/records/milestone-watch/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/all-time/rare-buckets/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://rimblaze.com/players/precious-achiuwa-1630173/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/darius-acuff-jr-1643411/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/steven-adams-203500/</loc><lastmod>2026-10-23</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/bam-adebayo-1628389/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/michael-ajayi-1642369/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/michael-ajayi-1642369/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jaden-akins-1643022/</loc><lastmod>2026-10-27</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/santi-aldama-1630583/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/trey-alexander-1641725/</loc><lastmod>2026-04-12</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -123,17 +123,17 @@
   <url><loc>https://rimblaze.com/players/reece-beekman-1641736/</loc><lastmod>2026-10-23</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/joan-beringer-1642866/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/saddiq-bey-1630180/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/tarik-biberovic-1641844/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/tyler-bilodeau-1643548/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/tarik-biberovic-1641844/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/tyler-bilodeau-1643548/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/goga-bitadze-1629048/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/nate-bittle-1642927/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/nate-bittle-1642927/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/anthony-black-1641710/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/leaky-black-1641778/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/bogdan-bogdanovic-203992/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/adem-bona-1641737/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/devin-booker-1626164/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/cameron-boozer-1643409/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/kylan-boswell-1643573/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/kylan-boswell-1643573/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jamaree-bouyea-1631123/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jaden-bradley-1643558/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/tony-bradley-1628396/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -186,7 +186,7 @@
   <url><loc>https://rimblaze.com/players/zach-collins-1628380/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/mike-conley-201144/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/ryan-conwell-1643553/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/quadir-copeland-1643595/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/quadir-copeland-1643595/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/bilal-coulibaly-1641731/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/cedric-coward-1642907/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/isaiah-crawford-1642384/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -199,15 +199,15 @@
   <url><loc>https://rimblaze.com/players/demar-derozan-201942/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/rayj-dennis-1642484/</loc><lastmod>2026-11-02</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/donte-divincenzo-1628978/</loc><lastmod>2026-04-12</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/malik-dia-1643738/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/malik-dia-1643738/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/moussa-diabate-1631217/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/alpha-diallo-1643813/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/mohamed-diawara-1642885/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/gradey-dick-1641711/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/ousmane-dieng-1631172/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/khalifa-diop-1631215/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/khalifa-diop-1631215/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/josh-dix-1643717/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/tre-donaldson-1643621/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/tre-donaldson-1643621/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/luka-doncic-1629029/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/luguentz-dort-1629652/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/ayo-dosunmu-1630245/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -337,7 +337,7 @@
   <url><loc>https://rimblaze.com/players/deandre-jordan-201599/</loc><lastmod>2026-10-28</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/nikola-jovic-1631107/</loc><lastmod>2026-11-05</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/ryan-kalkbrenner-1641750/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/arthur-kaluma-1641751/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/arthur-kaluma-1641751/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/alex-karaban-1642284/</loc><lastmod>2026-11-06</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/luke-kennard-1628379/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jayson-kent-1643257/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -423,13 +423,13 @@
   <url><loc>https://rimblaze.com/players/pete-nance-1631250/</loc><lastmod>2026-04-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/larry-nance-jr-1626204/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/grant-nelson-1641761/</loc><lastmod>2026-03-05</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/izaiyah-nelson-1643593/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/izaiyah-nelson-1643593/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/andrew-nembhard-1629614/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/ryan-nembhard-1642948/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/aaron-nesmith-1630174/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/asa-newell-1642854/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/georges-niang-1627777/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/tyler-nickel-1643589/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/tyler-nickel-1643589/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/yanic-konan-niederhauser-1642949/</loc><lastmod>2026-03-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/zeke-nnaji-1630192/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jusuf-nurkic-203994/</loc><lastmod>2026-02-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -440,7 +440,7 @@
   <url><loc>https://rimblaze.com/players/isaac-okoro-1630171/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/felix-okpara-1643590/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/norchad-omier-1641807/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/ugonna-onyenso-1642391/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/ugonna-onyenso-1642391/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/kelly-oubre-jr-1626162/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/gary-payton-ii-1627780/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/koa-peat-1643520/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -451,7 +451,7 @@
   <url><loc>https://rimblaze.com/players/julian-phillips-1641763/</loc><lastmod>2026-04-12</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/labaron-philon-jr-1642889/</loc><lastmod>2026-11-06</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jalen-pickett-1629618/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/jaron-pierre-jr-1643555/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/jaron-pierre-jr-1643555/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/scotty-pippen-jr-1630590/</loc><lastmod>2026-10-29</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/daeqwon-plowden-1631342/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/brandin-podziemski-1641764/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -470,7 +470,7 @@
   <url><loc>https://rimblaze.com/players/tyrese-proctor-1642878/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/olivier-maxence-prosper-1641765/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/zyon-pullin-1642389/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/jayden-quaintance-1643519/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/jayden-quaintance-1643519/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/derik-queen-1642852/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/neemias-queta-1629674/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/immanuel-quickley-1630193/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -499,7 +499,7 @@
   <url><loc>https://rimblaze.com/players/ben-saraf-1642879/</loc><lastmod>2026-10-25</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/alex-sarr-1642259/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/marcus-sasser-1631204/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/richie-saunders-1643563/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/richie-saunders-1643563/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/baylor-scheierman-1631248/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/dennis-schroder-203471/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jaylin-sellers-1643637/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -527,7 +527,7 @@
   <url><loc>https://rimblaze.com/players/malachi-smith-1641869/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/tolu-smith-1642449/</loc><lastmod>2026-11-04</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jabari-smith-jr-1631095/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/thomas-sorber-1642850/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/thomas-sorber-1642850/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/cam-spencer-1642285/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/pat-spencer-1630311/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/hannes-steinbach-1643419/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -557,11 +557,11 @@
   <url><loc>https://rimblaze.com/players/oscar-tshiebwe-1631131/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/myles-turner-1626167/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jaylon-tyson-1642281/</loc><lastmod>2026-10-29</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/ernest-udeh-jr-1643640/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/ernest-udeh-jr-1643640/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/fred-vanvleet-1627832/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/jarred-vanderbilt-1629020/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/devin-vassell-1630170/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/henri-veesaar-1643539/</loc><lastmod>2026-11-10</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rimblaze.com/players/henri-veesaar-1643539/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/tristan-vukcevic-1641774/</loc><lastmod>2026-04-01</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/nikola-vucevic-202696/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/dean-wade-1629731/</loc><lastmod>2026-11-08</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -608,197 +608,197 @@
   <url><loc>https://rimblaze.com/players/ivica-zubac-1627826/</loc><lastmod>2026-11-09</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/tristan-da-silva-1641783/</loc><lastmod>2026-11-07</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://rimblaze.com/players/sergio-de-larrea-1643547/</loc><lastmod>2026-10-26</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://rimblaze.com/players/kareem-abdul-jabbar-76003/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/kareem-abdul-jabbar-76003/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/karl-malone-252/</loc><lastmod>2004-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kobe-bryant-977/</loc><lastmod>2016-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/michael-jordan-893/</loc><lastmod>2003-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dirk-nowitzki-1717/</loc><lastmod>2019-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/wilt-chamberlain-76375/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/wilt-chamberlain-76375/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/shaquille-o-neal-406/</loc><lastmod>2011-04-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/carmelo-anthony-2546/</loc><lastmod>2022-04-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/moses-malone-77449/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/elvin-hayes-76979/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/moses-malone-77449/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/elvin-hayes-76979/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/russell-westbrook-201566/</loc><lastmod>2026-03-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/hakeem-olajuwon-165/</loc><lastmod>2002-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/oscar-robertson-600015/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/oscar-robertson-600015/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dominique-wilkins-1122/</loc><lastmod>1999-05-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tim-duncan-1495/</loc><lastmod>2016-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/paul-pierce-1718/</loc><lastmod>2017-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/john-havlicek-76970/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/john-havlicek-76970/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kevin-garnett-708/</loc><lastmod>2016-01-23</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/vince-carter-1713/</loc><lastmod>2020-03-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/alex-english-76673/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/alex-english-76673/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/reggie-miller-397/</loc><lastmod>2005-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jerry-west-78497/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jerry-west-78497/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/patrick-ewing-121/</loc><lastmod>2002-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/ray-allen-951/</loc><lastmod>2014-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/allen-iverson-947/</loc><lastmod>2010-02-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/charles-barkley-787/</loc><lastmod>2000-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/robert-parish-305/</loc><lastmod>1997-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/adrian-dantley-76504/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/adrian-dantley-76504/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dwyane-wade-2548/</loc><lastmod>2019-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/elgin-baylor-76127/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/elgin-baylor-76127/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/chris-paul-101108/</loc><lastmod>2025-12-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/clyde-drexler-17/</loc><lastmod>1998-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/gary-payton-56/</loc><lastmod>2007-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/larry-bird-1449/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/hal-greer-76882/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/walt-bellamy-76144/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/larry-bird-1449/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/hal-greer-76882/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/walt-bellamy-76144/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/pau-gasol-2200/</loc><lastmod>2019-03-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bob-pettit-77847/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bob-pettit-77847/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/david-robinson-764/</loc><lastmod>2003-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/george-gervin-76804/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/george-gervin-76804/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/lamarcus-aldridge-200746/</loc><lastmod>2022-04-06</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/mitch-richmond-782/</loc><lastmod>2002-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/joe-johnson-2207/</loc><lastmod>2021-12-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tom-chambers-1472/</loc><lastmod>1997-11-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/antawn-jamison-1712/</loc><lastmod>2014-02-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/john-stockton-304/</loc><lastmod>2003-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bernard-king-77264/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bernard-king-77264/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/clifford-robinson-361/</loc><lastmod>2007-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/walter-davis-1453/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/walter-davis-1453/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dwight-howard-2730/</loc><lastmod>2022-04-08</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tony-parker-2225/</loc><lastmod>2019-03-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/terry-cummings-187/</loc><lastmod>2000-01-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jamal-crawford-2037/</loc><lastmod>2020-08-04</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bob-lanier-600005/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bob-lanier-600005/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/eddie-johnson-698/</loc><lastmod>1999-02-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/gail-goodrich-76832/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/reggie-theus-78310/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/gail-goodrich-76832/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/reggie-theus-78310/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dale-ellis-107/</loc><lastmod>2000-03-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/scottie-pippen-937/</loc><lastmod>2004-02-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jason-terry-1891/</loc><lastmod>2018-04-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/chet-walker-78435/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/isiah-thomas-78318/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bob-mcadoo-77498/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/chet-walker-78435/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/isiah-thomas-78318/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bob-mcadoo-77498/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/zach-randolph-2216/</loc><lastmod>2018-03-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/mark-aguirre-76016/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dolph-schayes-78076/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/rick-barry-600013/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/mark-aguirre-76016/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dolph-schayes-78076/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/rick-barry-600013/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tracy-mcgrady-1503/</loc><lastmod>2012-04-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/julius-erving-76681/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/julius-erving-76681/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/glen-rice-779/</loc><lastmod>2004-01-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dave-bing-76166/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/world-free-76753/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/calvin-murphy-77669/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/lou-hudson-77074/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dave-bing-76166/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/world-free-76753/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/calvin-murphy-77669/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/lou-hudson-77074/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/chris-mullin-904/</loc><lastmod>2001-02-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/lenny-wilkens-78530/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bailey-howell-77070/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/magic-johnson-77142/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/lenny-wilkens-78530/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bailey-howell-77070/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/magic-johnson-77142/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/shawn-marion-1890/</loc><lastmod>2015-04-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rudy-gay-200752/</loc><lastmod>2023-03-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/rolando-blackman-76176/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/rolando-blackman-76176/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/otis-thorpe-901/</loc><lastmod>2001-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jason-kidd-467/</loc><lastmod>2013-04-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/earl-monroe-600006/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/earl-monroe-600006/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/steve-nash-959/</loc><lastmod>2014-04-08</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/kevin-mchale-1450/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/kevin-mchale-1450/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/michael-finley-714/</loc><lastmod>2010-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jack-sikma-78149/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jack-sikma-78149/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kevin-willis-788/</loc><lastmod>2007-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jeff-malone-117/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jeff-malone-117/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/chris-bosh-2547/</loc><lastmod>2016-02-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/chris-webber-185/</loc><lastmod>2008-03-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/grant-hill-255/</loc><lastmod>2013-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bob-cousy-600003/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bob-cousy-600003/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/elton-brand-1882/</loc><lastmod>2016-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/buck-williams-433/</loc><lastmod>1998-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/latrell-sprewell-84/</loc><lastmod>2005-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/nate-archibald-76054/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/nate-archibald-76054/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jerry-stackhouse-711/</loc><lastmod>2013-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/joe-dumars-247/</loc><lastmod>1999-05-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kyle-lowry-200768/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/james-worthy-1460/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/james-worthy-1460/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/stephon-marbury-950/</loc><lastmod>2009-04-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/andre-miller-1889/</loc><lastmod>2016-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/paul-arizin-76056/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/randy-smith-78200/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/paul-arizin-76056/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/randy-smith-78200/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/juwan-howard-436/</loc><lastmod>2013-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/derek-harper-157/</loc><lastmod>1999-05-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rasheed-wallace-739/</loc><lastmod>2013-04-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/amar-e-stoudemire-2405/</loc><lastmod>2016-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/kiki-vandeweghe-78404/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/pete-maravich-77459/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jack-twyman-78388/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/kiki-vandeweghe-78404/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/pete-maravich-77459/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jack-twyman-78388/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/chauncey-billups-1497/</loc><lastmod>2014-02-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/detlef-schrempf-96/</loc><lastmod>2001-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/richard-hamilton-1888/</loc><lastmod>2013-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/larry-nance-77685/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/larry-nance-77685/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kevin-love-201567/</loc><lastmod>2026-03-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jeff-hornacek-204/</loc><lastmod>2000-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/antoine-walker-952/</loc><lastmod>2008-02-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/sam-cassell-208/</loc><lastmod>2008-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/lou-williams-101150/</loc><lastmod>2022-04-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/terry-porter-345/</loc><lastmod>2002-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/walt-frazier-76750/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/artis-gilmore-600014/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/walt-frazier-76750/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/artis-gilmore-600014/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rashard-lewis-1740/</loc><lastmod>2014-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dennis-johnson-77141/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bob-dandridge-76500/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/sam-jones-77196/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dennis-johnson-77141/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bob-dandridge-76500/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/sam-jones-77196/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tim-hardaway-896/</loc><lastmod>2003-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dick-barnett-76107/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dick-barnett-76107/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/shawn-kemp-431/</loc><lastmod>2003-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/sam-perkins-64/</loc><lastmod>2001-04-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/john-drew-76598/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/john-drew-76598/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/byron-scott-2/</loc><lastmod>1997-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dick-van-arsdale-78398/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dick-van-arsdale-78398/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/shareef-abdur-rahim-949/</loc><lastmod>2007-11-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/mike-mitchell-77615/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/mike-mitchell-77615/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/richard-jefferson-2210/</loc><lastmod>2018-03-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/james-edwards-229/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/james-edwards-229/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/monta-ellis-101145/</loc><lastmod>2017-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/mike-bibby-1710/</loc><lastmod>2012-04-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/richie-guerin-76902/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dan-issel-77097/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jamaal-wilkes-78532/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/richie-guerin-76902/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dan-issel-77097/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jamaal-wilkes-78532/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jason-richardson-2202/</loc><lastmod>2015-04-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/purvis-short-78139/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/spencer-haywood-76981/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/purvis-short-78139/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/spencer-haywood-76981/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/allan-houston-275/</loc><lastmod>2005-01-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/paul-millsap-200794/</loc><lastmod>2022-03-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bill-russell-78049/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bill-russell-78049/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/blake-griffin-201933/</loc><lastmod>2023-04-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kemba-walker-202689/</loc><lastmod>2023-01-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jeff-green-201145/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/hersey-hawkins-765/</loc><lastmod>2001-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/ricky-pierce-894/</loc><lastmod>1998-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rod-strickland-393/</loc><lastmod>2005-02-23</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/nate-thurmond-600001/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jojo-white-78510/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/nate-thurmond-600001/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jojo-white-78510/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/al-jefferson-2744/</loc><lastmod>2018-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/alonzo-mourning-297/</loc><lastmod>2007-12-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/glenn-robinson-299/</loc><lastmod>2005-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/tom-van-arsdale-78399/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/tom-van-arsdale-78399/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/thaddeus-young-201152/</loc><lastmod>2024-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/eric-gordon-201569/</loc><lastmod>2025-12-23</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/eddie-jones-224/</loc><lastmod>2008-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/gus-williams-78549/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dave-debusschere-76545/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jerry-lucas-77418/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/gus-williams-78549/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dave-debusschere-76545/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jerry-lucas-77418/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/manu-ginobili-1938/</loc><lastmod>2018-04-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/david-west-2561/</loc><lastmod>2018-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/fred-brown-76272/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/fred-brown-76272/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/carlos-boozer-2430/</loc><lastmod>2015-04-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/andre-iguodala-2738/</loc><lastmod>2023-03-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/alvan-adams-76011/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/alvan-adams-76011/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/ron-harper-166/</loc><lastmod>2001-02-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bob-love-77412/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/marques-johnson-77160/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bob-love-77412/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/marques-johnson-77160/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/chuck-person-456/</loc><lastmod>2000-03-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/deron-williams-101114/</loc><lastmod>2017-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bill-laimbeer-100263/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bill-laimbeer-100263/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/peja-stojakovic-978/</loc><lastmod>2011-04-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/billy-cunningham-76487/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/orlando-woolridge-78615/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/billy-cunningham-76487/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/orlando-woolridge-78615/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/xavier-mcdaniel-1365/</loc><lastmod>1998-01-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dave-cowens-76462/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/cliff-hagan-76912/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dave-cowens-76462/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/cliff-hagan-76912/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/baron-davis-1884/</loc><lastmod>2012-04-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/steven-smith-120/</loc><lastmod>2005-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/vlade-divac-124/</loc><lastmod>2005-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/rudy-tomjanovich-78350/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/rudy-tomjanovich-78350/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/luol-deng-2736/</loc><lastmod>2019-02-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jermaine-o-neal-979/</loc><lastmod>2014-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/al-harrington-1733/</loc><lastmod>2014-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -806,79 +806,79 @@
   <url><loc>https://rimblaze.com/players/corey-maggette-1894/</loc><lastmod>2012-12-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kevin-johnson-134/</loc><lastmod>2000-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/metta-world-peace-1897/</loc><lastmod>2017-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jeff-mullins-77662/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jeff-mullins-77662/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/horace-grant-270/</loc><lastmod>2004-03-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/josh-smith-2746/</loc><lastmod>2017-11-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/stephen-jackson-1536/</loc><lastmod>2014-01-04</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bob-boozer-76206/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bob-boozer-76206/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kendall-gill-383/</loc><lastmod>2005-01-04</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/derrick-coleman-934/</loc><lastmod>2004-11-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/wayman-tisdale-47/</loc><lastmod>1997-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rik-smits-22/</loc><lastmod>2000-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jonas-valanciunas-202685/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/mychal-thompson-78331/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/paul-westphal-78500/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/sidney-wicks-78520/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/mychal-thompson-78331/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/paul-westphal-78500/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/sidney-wicks-78520/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/demarcus-cousins-202326/</loc><lastmod>2022-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/lamar-odom-1885/</loc><lastmod>2013-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/wes-unseld-78392/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/wes-unseld-78392/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dikembe-mutombo-87/</loc><lastmod>2009-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/paul-silas-78151/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/paul-silas-78151/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/charles-oakley-891/</loc><lastmod>2004-04-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dennis-rodman-23/</loc><lastmod>2000-03-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bill-bridges-76253/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bill-bridges-76253/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/ben-wallace-1112/</loc><lastmod>2012-04-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tyson-chandler-2199/</loc><lastmod>2020-02-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/johnny-kerr-77248/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/sam-lacey-77326/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/johnny-kerr-77248/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/sam-lacey-77326/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/marcus-camby-948/</loc><lastmod>2013-03-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/a-c-green-920/</loc><lastmod>2001-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/johnny-green-76867/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/leroy-ellis-76663/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/johnny-green-76867/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/leroy-ellis-76663/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/michael-cage-262/</loc><lastmod>2000-01-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dale-davis-905/</loc><lastmod>2007-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/willis-reed-77929/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/willis-reed-77929/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/p-j-brown-136/</loc><lastmod>2008-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/larry-smith-78195/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/larry-foust-76744/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/happy-hairston-76916/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/caldwell-jones-77175/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/larry-smith-78195/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/larry-foust-76744/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/happy-hairston-76916/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/caldwell-jones-77175/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/antonio-mcdyess-686/</loc><lastmod>2011-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/clyde-lee-77357/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/wayne-embry-76668/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/maurice-lucas-77420/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/james-donaldson-76583/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/gus-johnson-77150/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/clyde-lee-77357/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/wayne-embry-76668/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/maurice-lucas-77420/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/james-donaldson-76583/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/gus-johnson-77150/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kurt-thomas-703/</loc><lastmod>2013-03-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/david-lee-101135/</loc><lastmod>2017-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/anthony-mason-193/</loc><lastmod>2003-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/truck-robinson-77993/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dan-roundfield-78025/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/ray-scott-78100/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/truck-robinson-77993/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dan-roundfield-78025/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/ray-scott-78100/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/olden-polynice-178/</loc><lastmod>2003-12-23</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/erick-dampier-956/</loc><lastmod>2012-04-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rick-mahorn-328/</loc><lastmod>1999-05-04</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/clifford-ray-77917/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/clifford-ray-77917/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/samuel-dalembert-2223/</loc><lastmod>2014-12-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/mark-eaton-76631/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/rudy-larusso-77340/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/mark-eaton-76631/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/rudy-larusso-77340/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tyrone-hill-238/</loc><lastmod>2003-11-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/clar-weatherspoon-221/</loc><lastmod>2005-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/antonio-davis-213/</loc><lastmod>2006-02-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/tree-rollins-78014/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/tom-meschery-77584/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/tree-rollins-78014/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/tom-meschery-77584/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/lasalle-thompson-78/</loc><lastmod>1997-03-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/harry-gallatin-76773/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/clyde-lovellette-77414/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jim-washington-78466/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/harry-gallatin-76773/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/clyde-lovellette-77414/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jim-washington-78466/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/marc-gasol-201188/</loc><lastmod>2021-05-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/joe-smith-693/</loc><lastmod>2011-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/david-greenwood-76881/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/david-greenwood-76881/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/serge-ibaka-201586/</loc><lastmod>2023-01-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/herb-williams-1006/</loc><lastmod>1999-05-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/willie-naulls-77693/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/mike-gminski-76826/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/mickey-johnson-77168/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/willie-naulls-77693/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/mike-gminski-76826/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/mickey-johnson-77168/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tristan-thompson-202684/</loc><lastmod>2025-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rony-seikaly-938/</loc><lastmod>1999-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/marcin-gortat-101162/</loc><lastmod>2019-02-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -886,82 +886,82 @@
   <url><loc>https://rimblaze.com/players/donyell-marshall-923/</loc><lastmod>2009-04-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jerome-kersey-760/</loc><lastmod>2001-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/zaza-pachulia-2585/</loc><lastmod>2019-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/walter-dukes-76611/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/walter-dukes-76611/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/brad-miller-1802/</loc><lastmod>2012-04-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/zydrunas-ilgauskas-980/</loc><lastmod>2011-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/grant-long-3/</loc><lastmod>2003-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/elden-campbell-922/</loc><lastmod>2005-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/andrew-bogut-101106/</loc><lastmod>2019-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/bill-cartwright-76362/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/darrall-imhoff-77093/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/wayne-cooper-76441/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/bill-cartwright-76362/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/darrall-imhoff-77093/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/wayne-cooper-76441/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/benoit-benjamin-104/</loc><lastmod>1999-11-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/joakim-noah-201149/</loc><lastmod>2020-08-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/joe-graboski-76838/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/joe-graboski-76838/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/hot-rod-williams-73/</loc><lastmod>1999-05-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/alton-lister-175/</loc><lastmod>1998-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/emeka-okafor-2731/</loc><lastmod>2018-04-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/elmore-smith-78188/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/zelmo-beaty-76133/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/vern-mikkelsen-77593/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/george-johnson-77149/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/garfield-heard-76985/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/elmore-smith-78188/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/zelmo-beaty-76133/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/vern-mikkelsen-77593/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/george-johnson-77149/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/garfield-heard-76985/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/vin-baker-452/</loc><lastmod>2006-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/neil-johnston-77169/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/neil-johnston-77169/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/nene-2403/</loc><lastmod>2019-04-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/enes-freedom-202683/</loc><lastmod>2022-02-08</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/mason-plumlee-203486/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/christian-laettner-363/</loc><lastmod>2005-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/thomas-sanders-78060/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/thomas-sanders-78060/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/udonis-haslem-2617/</loc><lastmod>2023-04-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/reggie-evans-2501/</loc><lastmod>2015-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/taj-gibson-201959/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/tom-heinsohn-76988/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/tom-boerwinkle-76192/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/tom-heinsohn-76988/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/tom-boerwinkle-76192/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/troy-murphy-2211/</loc><lastmod>2012-11-28</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/rich-kelley-77235/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/rich-kelley-77235/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/dan-schayes-7/</loc><lastmod>1999-05-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/nicolas-batum-201587/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/ray-felix-76704/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/ray-felix-76704/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/brian-grant-258/</loc><lastmod>2006-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/drew-gooden-2400/</loc><lastmod>2016-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/tom-gola-76828/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jerry-sloan-78173/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/tom-gola-76828/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jerry-sloan-78173/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/derrick-favors-202324/</loc><lastmod>2022-02-24</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/tom-gugliotta-339/</loc><lastmod>2005-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/chris-kaman-2549/</loc><lastmod>2016-04-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/otto-moore-77636/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/otto-moore-77636/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/marvin-williams-101107/</loc><lastmod>2020-08-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jim-fox-76747/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jim-fox-76747/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/hassan-whiteside-202355/</loc><lastmod>2022-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/chris-dudley-201/</loc><lastmod>2003-01-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/joe-barry-carroll-76353/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/joe-barry-carroll-76353/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/trevor-ariza-2772/</loc><lastmod>2022-03-31</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/mark-jackson-349/</loc><lastmod>2004-04-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rajon-rondo-200765/</loc><lastmod>2022-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/maurice-cheeks-76385/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/guy-rodgers-78003/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/maurice-cheeks-76385/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/guy-rodgers-78003/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/muggsy-bogues-177/</loc><lastmod>2001-01-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/john-lucas-77419/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/norm-nixon-77721/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/john-lucas-77419/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/norm-nixon-77721/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/mookie-blaylock-302/</loc><lastmod>2002-01-08</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/avery-johnson-422/</loc><lastmod>2004-04-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/nick-van-exel-89/</loc><lastmod>2006-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/john-wall-202322/</loc><lastmod>2023-01-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/damon-stoudamire-757/</loc><lastmod>2008-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/kevin-porter-77876/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/rickey-green-76874/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/norm-van-lier-78406/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/kevin-porter-77876/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/rickey-green-76874/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/norm-van-lier-78406/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kenny-anderson-72/</loc><lastmod>2005-03-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/sleepy-floyd-76726/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/sleepy-floyd-76726/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/ricky-rubio-201937/</loc><lastmod>2023-04-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jose-calderon-101181/</loc><lastmod>2019-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/raymond-felton-101109/</loc><lastmod>2019-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/nate-mcmillan-203/</loc><lastmod>1998-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/doc-rivers-470/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/doc-rivers-470/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/mark-price-899/</loc><lastmod>1998-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/brad-davis-76516/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/lafayette-lever-77376/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/brad-davis-76516/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/lafayette-lever-77376/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jason-williams-1715/</loc><lastmod>2011-03-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jeff-teague-201952/</loc><lastmod>2021-05-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/sherman-douglas-428/</loc><lastmod>2001-03-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -970,79 +970,79 @@
   <url><loc>https://rimblaze.com/players/terrell-brandon-210/</loc><lastmod>2002-02-04</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/goran-dragic-201609/</loc><lastmod>2023-04-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/spud-webb-892/</loc><lastmod>1998-02-28</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/jay-humphries-77081/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/vern-fleming-313/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/jay-humphries-77081/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/vern-fleming-313/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/eric-snow-727/</loc><lastmod>2008-02-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kirk-hinrich-2550/</loc><lastmod>2016-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/michael-adams-149/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/dick-mcguire-77537/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/danny-ainge-76017/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/rory-sparrow-600009/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/michael-adams-149/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/dick-mcguire-77537/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/danny-ainge-76017/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/rory-sparrow-600009/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/pooh-richardson-71/</loc><lastmod>1999-03-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/david-wesley-133/</loc><lastmod>2007-03-23</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/kenny-smith-181/</loc><lastmod>1997-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/mo-williams-2590/</loc><lastmod>2016-04-06</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/john-bagley-76082/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/john-bagley-76082/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jarrett-jack-101127/</loc><lastmod>2018-04-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/alvin-robertson-926/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/alvin-robertson-926/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/brian-shaw-216/</loc><lastmod>2003-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/micheal-ray-richardson-77952/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/scott-skiles-101/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/micheal-ray-richardson-77952/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/scott-skiles-101/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/earl-watson-2248/</loc><lastmod>2014-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/devin-harris-2734/</loc><lastmod>2019-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/johnny-moore-77633/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/johnny-moore-77633/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/derek-fisher-965/</loc><lastmod>2014-04-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/ray-williams-78571/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/ray-williams-78571/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/derrick-rose-201565/</loc><lastmod>2024-02-28</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/d-j-augustin-201571/</loc><lastmod>2022-04-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/andy-phillip-77853/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/paul-pressey-77879/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/andy-phillip-77853/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/paul-pressey-77879/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/luke-ridnour-2557/</loc><lastmod>2015-04-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/larry-drew-76599/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/larry-drew-76599/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/d-angelo-russell-1626156/</loc><lastmod>2026-01-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/boris-diaw-2564/</loc><lastmod>2017-04-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/michael-cooper-76444/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/michael-cooper-76444/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/sedale-threatt-9/</loc><lastmod>1997-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/reggie-jackson-202704/</loc><lastmod>2025-02-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/walt-hazzard-76983/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/walt-hazzard-76983/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/darren-collison-201954/</loc><lastmod>2021-12-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/eric-bledsoe-202339/</loc><lastmod>2022-02-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/ricky-sobers-78215/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/ricky-sobers-78215/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/anfernee-hardaway-358/</loc><lastmod>2007-12-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/archie-clark-76397/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/archie-clark-76397/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/steve-francis-1883/</loc><lastmod>2007-12-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/steve-blake-2581/</loc><lastmod>2016-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/eddie-johnson-77144/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/eddie-johnson-77144/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/darrell-armstrong-353/</loc><lastmod>2008-04-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/johnny-davis-76526/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/mike-newlin-77710/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/allen-leavell-77353/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/johnny-davis-76526/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/mike-newlin-77710/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/allen-leavell-77353/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/jamaal-tinsley-2224/</loc><lastmod>2013-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/ty-lawson-201951/</loc><lastmod>2017-04-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/bimbo-coles-902/</loc><lastmod>2004-02-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/john-johnson-77152/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/darrell-walker-78437/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/john-johnson-77152/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/darrell-walker-78437/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/j-j-barea-200826/</loc><lastmod>2020-08-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/larry-costello-76454/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/vinnie-johnson-77167/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/larry-costello-76454/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/vinnie-johnson-77167/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/rafer-alston-1747/</loc><lastmod>2010-03-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/lucius-allen-76027/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/slater-martin-77480/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/lucius-allen-76027/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/slater-martin-77480/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/spencer-dinwiddie-203915/</loc><lastmod>2025-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/brandon-jennings-201943/</loc><lastmod>2018-04-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/gerald-henderson-76993/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/tom-henderson-76996/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/gerald-henderson-76993/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/tom-henderson-76996/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/toni-kukoc-389/</loc><lastmod>2006-04-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/quinn-buckner-76296/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/foots-walker-78436/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/quinn-buckner-76296/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/foots-walker-78436/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/john-starks-317/</loc><lastmod>2002-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/phil-ford-76736/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/darnell-valentine-78395/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/phil-ford-76736/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/darnell-valentine-78395/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/ish-smith-202397/</loc><lastmod>2024-02-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/elfrid-payton-203901/</loc><lastmod>2025-04-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/gary-grant-202/</loc><lastmod>2001-01-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/lionel-hollins-77043/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://rimblaze.com/players/johnny-dawkins-1008/</loc><lastmod>2026-11-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/lionel-hollins-77043/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/players/johnny-dawkins-1008/</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/greg-anthony-21/</loc><lastmod>2002-04-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/players/doug-christie-57/</loc><lastmod>2007-02-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>
