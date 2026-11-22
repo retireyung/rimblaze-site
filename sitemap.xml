@@ -2,8 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://rimblaze.com/</loc><lastmod>2026-11-22</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
   <url><loc>https://rimblaze.com/players/</loc><lastmod>2026-11-22</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/nights/</loc><lastmod>2026-11-21</lastmod><changefreq>hourly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://rimblaze.com/nights/2026-11-21/</loc><lastmod>2026-11-21</lastmod><changefreq>hourly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/nights/</loc><lastmod>2026-11-22</lastmod><changefreq>hourly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://rimblaze.com/nights/2026-11-22/</loc><lastmod>2026-11-22</lastmod><changefreq>hourly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://rimblaze.com/nights/2026-11-21/</loc><lastmod>2026-11-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/nights/2026-11-20/</loc><lastmod>2026-11-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/nights/2026-11-19/</loc><lastmod>2026-11-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rimblaze.com/nights/2026-11-18/</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
