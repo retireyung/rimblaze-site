@@ -26,15 +26,33 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Prepare files
         run: |
           mkdir -p _site
           rsync -a --exclude '.git' --exclude '.github' --exclude '_site' --exclude 'data/cache' \
             --exclude 'node_modules' --exclude 'tools' --exclude 'scripts' --exclude 'templates' ./ _site/
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+          include-hidden-files: true
+      # GitHub sometimes can't find the just-uploaded artifact yet ("No artifacts named
+      # github-pages were found"). That failed about half of all deploys in Nov 2026,
+      # so wait and try again before giving up.
+      - id: deploy1
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - if: steps.deploy1.outcome == 'failure'
+        run: sleep 20
+      - id: deploy2
+        if: steps.deploy1.outcome == 'failure'
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - if: steps.deploy2.outcome == 'failure'
+        run: sleep 40
+      - id: deploy3
+        if: steps.deploy2.outcome == 'failure'
+        uses: actions/deploy-pages@v5
       - id: deployment
-        uses: actions/deploy-pages@v4
+        run: echo "page_url=${{ steps.deploy1.outputs.page_url || steps.deploy2.outputs.page_url || steps.deploy3.outputs.page_url }}" >> "$GITHUB_OUTPUT"
